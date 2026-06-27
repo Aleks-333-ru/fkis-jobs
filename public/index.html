@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Вакансии ФКиС — физическая культура и спорт</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="alternate icon" type="image/png" href="logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=PT+Serif:wght@700&family=PT+Sans:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f4f6f9; --panel:#ffffff; --ink:#22303f; --muted:#6f7d8c;
+    --blue:#234e9e; --blue-dark:#1b3d7a; --blue-bright:#3a64ad;
+    --blue-soft:#eaf0f8;
+    --accent:#e07d2a; --accent-dark:#c4691d; --line:#e3e8ef;
+    --hh:#234e9e; --tv:#e07d2a;
+    --shadow:0 1px 2px rgba(20,40,80,.04),0 6px 20px rgba(20,40,80,.06);
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:'PT Sans',system-ui,Arial,sans-serif;line-height:1.55;}
+  a{color:var(--blue-bright)}
+  .wrap{max-width:1140px;margin:0 auto;padding:0 20px}
+
+  /* ---- Шапка: белая полоса с логотипом ---- */
+  header.top{background:#fff;border-bottom:1px solid var(--line)}
+  .top-inner{display:flex;align-items:center;gap:20px;padding:14px 0}
+  .logo{height:66px;width:auto;flex:0 0 auto}
+  .org{min-width:0}
+  .org-name{font-family:'PT Serif',Georgia,serif;color:var(--blue);font-weight:700;
+    font-size:clamp(14px,1.9vw,17px);line-height:1.25}
+  .org-tag{color:var(--muted);font-size:13px;margin-top:4px}
+
+  /* ---- Синяя полоса с названием сервиса ---- */
+  .titlebar{background:var(--blue);color:#fff;border-bottom:3px solid var(--accent)}
+  .titlebar-inner{display:flex;justify-content:space-between;align-items:center;
+    gap:14px;padding:15px 0;flex-wrap:wrap}
+  .titlebar h1{font-family:'PT Serif',Georgia,serif;margin:0;font-weight:700;
+    font-size:clamp(19px,3vw,26px);line-height:1.15}
+  .board{display:inline-flex;align-items:baseline;gap:10px;flex:0 0 auto}
+  .board .num{font-family:'PT Serif',Georgia,serif;font-weight:700;
+    font-size:clamp(34px,6vw,52px);line-height:1;color:#fff;font-variant-numeric:tabular-nums}
+  .board .lbl{font-size:13px;text-transform:uppercase;letter-spacing:.1em;color:#cdd9ec}
+
+  /* ---- Двухколоночная сетка ---- */
+  .layout{display:grid;grid-template-columns:300px 1fr;gap:24px;
+    align-items:start;padding:26px 0 10px}
+
+  /* ---- Боковая панель фильтров ---- */
+  aside.filters{background:var(--panel);border:1px solid var(--line);border-radius:10px;
+    box-shadow:var(--shadow);position:sticky;top:16px}
+  .filters .head{background:var(--blue);color:#fff;padding:12px 16px;
+    border-radius:10px 10px 0 0;font-family:'PT Serif',Georgia,serif;font-size:16px}
+  .filters .body{padding:16px}
+  .fld{margin-bottom:14px}
+  label.f{display:block;font-size:12px;font-weight:700;color:var(--blue);
+    text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px}
+  input,select{width:100%;padding:9px 11px;border:1px solid var(--line);
+    border-radius:6px;font-size:15px;font-family:inherit;color:var(--ink);background:#fff}
+  input:focus,select:focus{outline:2px solid var(--blue-bright);outline-offset:0;border-color:var(--blue-bright)}
+  .sources{display:flex;flex-direction:column;gap:8px}
+  .chk{display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer;color:var(--ink)}
+  .chk input{width:auto}
+  .src-hint{font-size:11px;color:var(--muted);margin-top:7px;line-height:1.4}
+  button.go{width:100%;background:var(--blue);color:#fff;border:none;border-radius:6px;
+    font-family:inherit;font-weight:700;letter-spacing:.02em;
+    font-size:15px;padding:11px 18px;cursor:pointer;margin-top:4px}
+  button.go:hover{background:var(--blue-dark)}
+  button.go:focus-visible{outline:3px solid var(--blue-bright);outline-offset:2px}
+  .status{font-size:12px;color:var(--muted);margin-top:10px;text-align:center}
+
+  /* ---- Контент ---- */
+  main.content{min-width:0}
+  .content h2{font-family:'PT Serif',Georgia,serif;font-size:22px;margin:0 0 6px;
+    display:inline-block;border-bottom:3px solid var(--accent);padding-bottom:6px}
+  .note{font-size:13px;color:var(--muted);margin:0 0 16px}
+  .banner{background:#fbf3e7;border:1px solid #ecd6b3;color:#8a5a1c;
+    border-radius:8px;padding:11px 14px;font-size:13px;margin-bottom:16px}
+
+  .card{background:var(--panel);border:1px solid var(--line);border-left:5px solid var(--hh);
+    border-radius:8px;box-shadow:var(--shadow);margin-bottom:14px;padding:16px 18px;
+    transition:box-shadow .15s ease,transform .15s ease}
+  .card:hover{box-shadow:0 2px 4px rgba(20,40,80,.06),0 12px 28px rgba(20,40,80,.1);transform:translateY(-2px)}
+  .card.trudvsem{border-left-color:var(--tv)}
+  .card.superjob{border-left-color:#3f8f5b}
+  .card.jooble{border-left-color:#2f7c92}
+  .ctop{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+  .card h3{margin:0;font-size:17px;font-weight:700;line-height:1.3;color:var(--ink)}
+  .src{flex:0 0 auto;font-size:11px;font-weight:700;text-transform:uppercase;
+    letter-spacing:.04em;padding:3px 9px;border-radius:5px;white-space:nowrap}
+  .src.hh{background:#e6f0f8;color:var(--hh)}
+  .src.trudvsem{background:#fbeede;color:var(--accent-dark)}
+  .src.superjob{background:#e7f1ea;color:#2f7d4f}
+  .src.jooble{background:#e6f0f3;color:#2a6f83}
+  .company{color:var(--muted);font-size:14px;margin:4px 0 10px}
+  .salary{font-family:'PT Serif',Georgia,serif;font-weight:700;font-size:18px;color:var(--blue);
+    font-variant-numeric:tabular-nums}
+  .salary.none{color:var(--muted);font-family:'PT Sans';font-weight:400;font-size:14px}
+  .meta{display:flex;flex-wrap:wrap;gap:7px;margin-top:11px}
+  .tag{font-size:12px;background:#eef2f6;color:#3d5163;border-radius:5px;padding:4px 9px}
+  .cactions{margin-top:14px;display:flex;gap:10px;flex-wrap:wrap}
+  button.more{background:#fff;color:var(--blue);border:1px solid var(--blue);
+    border-radius:6px;font-family:inherit;font-weight:700;font-size:14px;
+    padding:8px 16px;cursor:pointer}
+  button.more:hover{background:var(--blue);color:#fff}
+
+  .empty{text-align:center;color:var(--muted);padding:54px 0;font-size:15px;
+    background:var(--panel);border:1px dashed var(--line);border-radius:8px}
+  .more-wrap{text-align:center;margin:6px 0 10px}
+  button.loadmore{display:none;background:#fff;color:var(--blue);border:1px solid var(--blue);
+    border-radius:6px;font-family:inherit;font-weight:700;font-size:15px;padding:10px 26px;cursor:pointer}
+  button.loadmore:hover{background:var(--blue);color:#fff}
+
+  footer{color:var(--muted);font-size:12px;text-align:center;padding:30px 0 40px;
+    border-top:1px solid var(--line);margin-top:20px}
+  footer .f-org{color:var(--blue);font-weight:700;margin-bottom:6px}
+
+  /* ---- Модальное окно «Подробнее» ---- */
+  .overlay{position:fixed;inset:0;background:rgba(10,25,45,.55);
+    display:none;align-items:flex-start;justify-content:center;
+    padding:40px 16px;overflow:auto;z-index:50}
+  .overlay.open{display:flex}
+  .modal{background:var(--panel);max-width:680px;width:100%;border-radius:10px;
+    box-shadow:0 20px 60px rgba(0,0,0,.35);overflow:hidden;animation:pop .15s ease-out}
+  @keyframes pop{from{transform:translateY(8px);opacity:0}to{transform:none;opacity:1}}
+  .modal .mhead{background:var(--blue);color:#fff;padding:18px 22px;position:relative}
+  .modal .mhead .src{position:absolute;top:16px;right:54px}
+  .modal h3{margin:0 64px 0 0;font-family:'PT Serif',Georgia,serif;font-size:20px;line-height:1.3}
+  .modal .mclose{position:absolute;top:14px;right:16px;width:30px;height:30px;
+    border:none;background:rgba(255,255,255,.15);color:#fff;border-radius:6px;
+    font-size:20px;line-height:1;cursor:pointer}
+  .modal .mclose:hover{background:rgba(255,255,255,.3)}
+  .modal .mbody{padding:20px 22px}
+  .modal .mcompany{color:var(--muted);font-size:15px;margin-bottom:14px}
+  .modal .msalary{font-family:'PT Serif',Georgia,serif;font-weight:700;font-size:22px;
+    color:var(--blue);margin-bottom:14px}
+  .modal .msalary.none{color:var(--muted);font-family:'PT Sans';font-weight:400;font-size:15px}
+  .dl{display:grid;grid-template-columns:140px 1fr;gap:8px 14px;font-size:14px;
+    margin:14px 0;padding:14px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .dl dt{color:var(--muted)}
+  .dl dd{margin:0;color:var(--ink)}
+  .desc{font-size:14px;color:#33414f;white-space:pre-line}
+  .desc h4{font-family:'PT Serif',Georgia,serif;font-size:15px;color:var(--ink);margin:0 0 6px}
+  .mfoot{padding:16px 22px;border-top:1px solid var(--line);display:flex;gap:12px;flex-wrap:wrap}
+  a.goto{flex:1;text-align:center;background:var(--accent);color:#fff;text-decoration:none;
+    border-radius:6px;font-weight:700;font-size:15px;padding:12px 18px;min-width:200px}
+  a.goto:hover{background:var(--accent-dark)}
+  a.goto.disabled{background:#c9ced6;color:#fff;pointer-events:none}
+  button.mcancel{background:#fff;color:var(--ink);border:1px solid var(--line);
+    border-radius:6px;font-family:inherit;font-weight:700;font-size:15px;padding:12px 20px;cursor:pointer}
+  button.mcancel:hover{background:#f3f5f8}
+
+  @media(max-width:860px){
+    .layout{grid-template-columns:1fr}
+    aside.filters{position:static}
+  }
+  @media(max-width:560px){
+    .logo{height:52px}
+    .top-inner{gap:14px}
+  }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap top-inner">
+    <img class="logo" src="logo.png" alt="Университет имени П.Ф. Лесгафта — 130 лет (1896–2026)">
+    <div class="org">
+      <div class="org-name">Федеральное государственное бюджетное образовательное учреждение высшего образования «Национальный государственный Университет физической культуры, спорта и здоровья имени&nbsp;П.&nbsp;Ф.&nbsp;Лесгафта, Санкт-Петербург»</div>
+      <div class="org-tag">Сервис подбора вакансий в сфере физической культуры и спорта</div>
+    </div>
+  </div>
+</header>
+<div class="titlebar">
+  <div class="wrap titlebar-inner">
+    <h1>Вакансии в сфере физической культуры и спорта</h1>
+    <div class="board"><span class="num" id="count">0</span><span class="lbl">найдено</span></div>
+  </div>
+</div>
+
+<div class="wrap layout">
+  <!-- Боковая панель фильтров -->
+  <aside class="filters">
+    <div class="head">Параметры поиска</div>
+    <div class="body">
+      <div class="fld">
+        <label class="f" for="q">Поиск по названию</label>
+        <input id="q" placeholder="например: тренер по плаванию">
+      </div>
+      <div class="fld">
+        <label class="f" for="region">Город / регион</label>
+        <input id="region" placeholder="например: Казань">
+      </div>
+      <div class="fld">
+        <label class="f" for="cat">Должность</label>
+        <select id="cat">
+          <option value="">Все</option>
+          <option>Тренер</option>
+          <option>Учитель ФК</option>
+          <option>Инструктор</option>
+          <option>Фитнес</option>
+          <option>Методист</option>
+          <option>Другое</option>
+        </select>
+      </div>
+      <div class="fld">
+        <label class="f" for="salary">Зарплата от, ₽</label>
+        <input id="salary" type="number" min="0" step="5000" placeholder="0">
+      </div>
+      <div class="fld">
+        <label class="f" for="empl">Занятость</label>
+        <select id="empl">
+          <option value="">Любая</option>
+          <option>Полная</option>
+          <option>Частичная</option>
+          <option>Проектная</option>
+        </select>
+      </div>
+      <div class="fld">
+        <label class="f">Источник</label>
+        <div class="sources">
+          <label class="chk"><input type="checkbox" id="s-hh" checked> hh.ru</label>
+          <label class="chk"><input type="checkbox" id="s-tv" checked> Работа России</label>
+          <label class="chk"><input type="checkbox" id="s-sj"> SuperJob</label>
+          <label class="chk"><input type="checkbox" id="s-jb"> Jooble</label>
+        </div>
+        <div class="src-hint">SuperJob и Jooble — после добавления ключей API на сервере.</div>
+      </div>
+      <button class="go" id="find">Найти вакансии</button>
+      <div class="status" id="status"></div>
+    </div>
+  </aside>
+
+  <!-- Контент -->
+  <main class="content">
+    <h2>Открытые вакансии</h2>
+    <p class="note">Подбор вакансий тренеров, учителей физкультуры, инструкторов и методистов из открытых источников.</p>
+    <div id="banner"></div>
+    <div id="list"></div>
+    <div class="more-wrap">
+      <button class="loadmore" id="more">Загрузить ещё</button>
+    </div>
+  </main>
+</div>
+
+<footer class="wrap">
+  <div class="f-org">Национальный государственный университет физической культуры, спорта и здоровья имени П.Ф. Лесгафта, Санкт-Петербург · 1896–2026, 130 лет</div>
+  <div>Данные: hh.ru API и «Работа России» (trudvsem.ru). Сервис подбора вакансий в сфере физической культуры и спорта.</div>
+</footer>
+
+<!-- Модальное окно «Подробнее» -->
+<div class="overlay" id="overlay" role="dialog" aria-modal="true" aria-labelledby="m-title">
+  <div class="modal">
+    <div class="mhead">
+      <span class="src" id="m-src"></span>
+      <button class="mclose" id="m-close" aria-label="Закрыть">×</button>
+      <h3 id="m-title"></h3>
+    </div>
+    <div class="mbody">
+      <div class="mcompany" id="m-company"></div>
+      <div class="msalary" id="m-salary"></div>
+      <dl class="dl" id="m-dl"></dl>
+      <div class="desc">
+        <h4>Описание вакансии</h4>
+        <div id="m-desc"></div>
+      </div>
+    </div>
+    <div class="mfoot">
+      <a class="goto" id="m-goto" href="#" target="_blank" rel="noopener">Перейти к вакансии на площадку</a>
+      <button class="mcancel" id="m-cancel">Закрыть</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// --- Демо-данные: показываются, если сервер не запущен ----------------------
+const SAMPLE = [
+  {source:'hh',title:'Тренер по плаванию (детская секция)',company:'СШОР «Дельфин»',region:'Москва',salaryFrom:60000,salaryTo:85000,employment:'Полная занятость',schedule:'Сменный график',url:'#',category:'Тренер',publishedAt:'2026-06-25T09:00:00',description:'Проведение групповых и индивидуальных тренировок по плаванию для детей 6–14 лет. Составление программ подготовки, контроль техники, участие в соревнованиях. Требования: профильное образование, опыт работы с детьми, действующая медкнижка.'},
+  {source:'trudvsem',title:'Учитель физической культуры',company:'МБОУ «Школа №42»',region:'Казань',salaryFrom:38000,salaryTo:null,employment:'Полная занятость',schedule:'Полный день',url:'#',category:'Учитель ФК',publishedAt:'2026-06-24T12:30:00',description:'Преподавание физической культуры в 1–11 классах согласно ФГОS. Организация спортивных секций и школьных соревнований. Требования: высшее педагогическое образование, отсутствие судимости.'},
+  {source:'hh',title:'Фитнес-инструктор тренажёрного зала',company:'World Class',region:'Санкт-Петербург',salaryFrom:55000,salaryTo:90000,employment:'Полная занятость',schedule:'Сменный график',url:'#',category:'Фитнес',publishedAt:'2026-06-26T08:15:00',description:'Консультирование клиентов в тренажёрном зале, составление программ тренировок, проведение вводных инструктажей. Требования: знание анатомии и техники упражнений, сертификаты приветствуются.'},
+  {source:'trudvsem',title:'Инструктор по лыжному спорту',company:'СШ «Олимпиец»',region:'Екатеринбург',salaryFrom:42000,salaryTo:50000,employment:'Частичная занятость',schedule:'Гибкий график',url:'#',category:'Инструктор',publishedAt:'2026-06-22T15:00:00',description:'Обучение основам лыжной подготовки, сопровождение групп на трассе, контроль безопасности. Сезонная занятость с возможностью продления. Требования: спортивный разряд, опыт инструктажа.'},
+  {source:'hh',title:'Тренер по фитнесу (групповые программы)',company:'Spirit Fitness',region:'Москва',salaryFrom:70000,salaryTo:120000,employment:'Полная занятость',schedule:'Сменный график',url:'#',category:'Тренер',publishedAt:'2026-06-25T18:40:00',description:'Проведение групповых занятий (силовые, функциональные, аэробные направления). Формирование лояльной аудитории, ведение расписания. Требования: опыт от 1 года, харизма, профильные сертификаты.'},
+  {source:'trudvsem',title:'Методист спортивной школы',company:'ДЮСШ №3',region:'Новосибирск',salaryFrom:35000,salaryTo:45000,employment:'Полная занятость',schedule:'Полный день',url:'#',category:'Методист',publishedAt:'2026-06-21T10:00:00',description:'Разработка учебно-тренировочных программ, методическое сопровождение тренеров, ведение документации и отчётности. Требования: высшее образование в области физкультуры, знание нормативной базы.'},
+  {source:'hh',title:'Учитель физкультуры (начальные классы)',company:'Частная школа «Лидер»',region:'Москва',salaryFrom:80000,salaryTo:null,employment:'Полная занятость',schedule:'Полный день',url:'#',category:'Учитель ФК',publishedAt:'2026-06-23T11:20:00',description:'Уроки физической культуры в начальной школе, организация подвижных игр и утренней зарядки. Современная спортивная база. Требования: педагогическое образование, любовь к детям.'},
+  {source:'trudvsem',title:'Инструктор-методист по адаптивной физкультуре',company:'Центр реабилитации',region:'Казань',salaryFrom:40000,salaryTo:55000,employment:'Полная занятость',schedule:'Полный день',url:'#',category:'Инструктор',publishedAt:'2026-06-20T09:30:00',description:'Проведение занятий адаптивной физкультурой для людей с ограниченными возможностями здоровья, разработка индивидуальных программ. Требования: профильное образование (АФК), терпение и эмпатия.'},
+  {source:'superjob',title:'Тренер тренажёрного зала',company:'Фитнес-клуб «Атлет»',region:'Нижний Новгород',salaryFrom:50000,salaryTo:75000,employment:'Полная занятость',schedule:'Сменный график',url:'#',category:'Тренер',publishedAt:'2026-06-26T10:10:00',description:'Проведение персональных тренировок, ведение клиентской базы, контроль техники выполнения упражнений. Требования: профильное образование, опыт работы от 1 года.'},
+  {source:'jooble',title:'Учитель физической культуры',company:'Лицей №7',region:'Самара',salaryFrom:41000,salaryTo:null,employment:'Полная занятость',schedule:'Полный день',url:'#',category:'Учитель ФК',publishedAt:'2026-06-24T08:00:00',description:'Преподавание физкультуры в средних и старших классах, подготовка школьников к сдаче нормативов ГТО. Требования: высшее педагогическое образование.'},
+];
+
+let DATA = [];
+let usingDemo = false;
+let currentPage = 0;
+
+const $ = (id) => document.getElementById(id);
+const fmt = (n) => n.toLocaleString('ru-RU');
+
+// Единый справочник источников: ключ → метка и id чекбокса
+const SOURCES = {
+  hh:       { label: 'hh.ru',         chk: 's-hh' },
+  trudvsem: { label: 'Работа России', chk: 's-tv' },
+  superjob: { label: 'SuperJob',      chk: 's-sj' },
+  jooble:   { label: 'Jooble',        chk: 's-jb' },
+};
+const srcLabel = (s) => (SOURCES[s] ? SOURCES[s].label : s);
+
+function salaryText(v){
+  if(!v.salaryFrom && !v.salaryTo) return {cls:'none',text:'з/п не указана'};
+  let t;
+  if(v.salaryFrom && v.salaryTo) t = `${fmt(v.salaryFrom)} – ${fmt(v.salaryTo)} ₽`;
+  else if(v.salaryFrom) t = `от ${fmt(v.salaryFrom)} ₽`;
+  else t = `до ${fmt(v.salaryTo)} ₽`;
+  return {cls:'',text:t};
+}
+
+function emplGroup(s=''){
+  s=s.toLowerCase();
+  if(s.includes('частич')) return 'Частичная';
+  if(s.includes('проект')) return 'Проектная';
+  if(s.includes('полн')) return 'Полная';
+  return '';
+}
+
+function dateText(s){
+  if(!s) return '';
+  const d = new Date(s);
+  if(isNaN(d)) return '';
+  return d.toLocaleDateString('ru-RU',{day:'numeric',month:'long',year:'numeric'});
+}
+
+function applyFilters(){
+  const region = $('region').value.trim().toLowerCase();
+  const cat = $('cat').value;
+  const salary = parseInt($('salary').value,10) || 0;
+  const empl = $('empl').value;
+
+  const out = DATA.filter(v=>{
+    const cfg = SOURCES[v.source];
+    if(cfg && !$(cfg.chk).checked) return false;
+    if(region && !(v.region||'').toLowerCase().includes(region)) return false;
+    if(cat && v.category!==cat) return false;
+    if(empl && emplGroup(v.employment)!==empl) return false;
+    if(salary){
+      const top = v.salaryFrom || v.salaryTo || 0;
+      if(top < salary) return false;
+    }
+    return true;
+  });
+
+  render(out);
+}
+
+// Текущий отфильтрованный список — чтобы модалка знала, что показывать
+let VIEW = [];
+
+function render(items){
+  VIEW = items;
+  $('count').textContent = fmt(items.length);
+  const list = $('list');
+  if(!items.length){
+    list.innerHTML = '<div class="empty">Ничего не нашлось. Смягчите фильтры или измените запрос.</div>';
+    return;
+  }
+  list.innerHTML = items.map((v,i)=>{
+    const s = salaryText(v);
+    return `<article class="card ${v.source}">
+      <div class="ctop">
+        <h3>${escapeHtml(v.title)}</h3>
+        <span class="src ${v.source}">${srcLabel(v.source)}</span>
+      </div>
+      <div class="company">${escapeHtml(v.company)} · ${escapeHtml(v.region||'регион не указан')}</div>
+      <div class="salary ${s.cls}">${s.text}</div>
+      <div class="meta">
+        <span class="tag">${escapeHtml(v.category)}</span>
+        ${v.employment?`<span class="tag">${escapeHtml(v.employment)}</span>`:''}
+        ${v.schedule?`<span class="tag">${escapeHtml(v.schedule)}</span>`:''}
+      </div>
+      <div class="cactions">
+        <button class="more" data-i="${i}">Подробнее о вакансии</button>
+      </div>
+    </article>`;
+  }).join('');
+
+  list.querySelectorAll('button.more').forEach(b=>{
+    b.addEventListener('click',()=>openModal(VIEW[+b.dataset.i]));
+  });
+}
+
+function escapeHtml(s=''){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+
+// --- Модальное окно ---------------------------------------------------------
+function openModal(v){
+  if(!v) return;
+  const s = salaryText(v);
+  $('m-title').textContent = v.title || 'Вакансия';
+  const srcEl = $('m-src');
+  srcEl.textContent = srcLabel(v.source);
+  srcEl.className = 'src ' + v.source;
+  $('m-company').textContent = `${v.company||'Компания не указана'} · ${v.region||'регион не указан'}`;
+  const sal = $('m-salary');
+  sal.textContent = s.text;
+  sal.className = 'msalary ' + s.cls;
+
+  const rows = [];
+  if(v.category) rows.push(['Должность', v.category]);
+  if(v.employment) rows.push(['Занятость', v.employment]);
+  if(v.schedule) rows.push(['График', v.schedule]);
+  if(v.region) rows.push(['Регион', v.region]);
+  const pub = dateText(v.publishedAt);
+  if(pub) rows.push(['Опубликовано', pub]);
+  rows.push(['Источник', srcLabel(v.source)]);
+  $('m-dl').innerHTML = rows.map(([k,val])=>
+    `<dt>${escapeHtml(k)}</dt><dd>${escapeHtml(val)}</dd>`).join('');
+
+  $('m-desc').textContent = v.description && v.description.trim()
+    ? v.description.trim()
+    : 'Подробное описание не предоставлено источником. Полная информация — на странице вакансии.';
+
+  const goto = $('m-goto');
+  if(v.url && v.url !== '#'){
+    goto.href = v.url;
+    goto.classList.remove('disabled');
+    goto.textContent = 'Перейти к вакансии на площадку';
+  }else{
+    goto.href = '#';
+    goto.classList.add('disabled');
+    goto.textContent = 'Ссылка доступна с реальными данными';
+  }
+
+  $('overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  $('m-close').focus();
+}
+
+function closeModal(){
+  $('overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+$('m-close').addEventListener('click', closeModal);
+$('m-cancel').addEventListener('click', closeModal);
+$('overlay').addEventListener('click', e=>{ if(e.target === $('overlay')) closeModal(); });
+document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeModal(); });
+
+// --- Загрузка данных --------------------------------------------------------
+function currentSources(){
+  return Object.keys(SOURCES).filter(k => $(SOURCES[k].chk).checked);
+}
+
+async function fetchPage(page){
+  const text = $('q').value.trim();
+  const src = currentSources();
+  const r = await fetch(`/api/vacancies?text=${encodeURIComponent(text)}&source=${src.join(',')}&page=${page}`);
+  if(!r.ok) throw new Error('нет ответа сервера');
+  return r.json();
+}
+
+function mergeUnique(base, extra){
+  const seen = new Set(base.map(v=>(v.title+'|'+v.company).toLowerCase()));
+  let added=0;
+  for(const v of (extra||[])){
+    const k=(v.title+'|'+v.company).toLowerCase();
+    if(!seen.has(k)){ seen.add(k); base.push(v); added++; }
+  }
+  return added;
+}
+
+async function load(){
+  currentPage = 0;
+  $('status').textContent = 'Загружаю…';
+  $('banner').innerHTML = '';
+  $('more').style.display = 'none';
+  try{
+    const j = await fetchPage(0);
+    DATA = j.vacancies || [];
+    usingDemo = false;
+    if(j.errors && j.errors.length){
+      $('banner').innerHTML = `<div class="banner">Часть источников недоступна: ${escapeHtml(j.errors.join('; '))}</div>`;
+    }
+    $('status').textContent = `Загружено: ${fmt(DATA.length)} вакансий`;
+    $('more').style.display = DATA.length ? 'inline-block' : 'none';
+  }catch(e){
+    DATA = SAMPLE;
+    usingDemo = true;
+    $('banner').innerHTML = '<div class="banner">Сервер не запущен — показаны демо-данные. Запустите <b>node server.js</b>, чтобы видеть реальные вакансии с hh.ru и «Работа России».</div>';
+    $('status').textContent = 'Демо-режим';
+    $('more').style.display = 'none';
+  }
+  applyFilters();
+}
+
+async function loadMore(){
+  if(usingDemo) return;
+  currentPage++;
+  $('more').textContent = 'Загружаю…';
+  try{
+    const j = await fetchPage(currentPage);
+    const added = mergeUnique(DATA, j.vacancies);
+    $('status').textContent = `Загружено: ${fmt(DATA.length)} вакансий`;
+    if(added === 0) $('more').style.display = 'none';
+  }catch(e){
+    $('more').style.display = 'none';
+  }
+  $('more').textContent = 'Загрузить ещё';
+  applyFilters();
+}
+
+// Кнопка и Enter — перезапрашивают с сервера; остальные поля фильтруют мгновенно
+$('find').addEventListener('click', load);
+$('more').addEventListener('click', loadMore);
+$('q').addEventListener('keydown', e=>{ if(e.key==='Enter') load(); });
+['region','cat','salary','empl','s-hh','s-tv','s-sj','s-jb'].forEach(id=>{
+  $(id).addEventListener('input', applyFilters);
+  $(id).addEventListener('change', applyFilters);
+});
+
+load();
+</script>
+</body>
+</html>

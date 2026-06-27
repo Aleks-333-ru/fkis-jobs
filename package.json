@@ -1,0 +1,13 @@
+{
+  "name": "fkis-jobs",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Агрегатор вакансий в сфере физической культуры и спорта (Университет Лесгафта)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
