@@ -53,7 +53,9 @@
   aside.filters{background:var(--panel);border:1px solid var(--line);border-radius:10px;
     box-shadow:var(--shadow);position:sticky;top:16px}
   .filters .head{background:var(--blue);color:#fff;padding:12px 16px;
-    border-radius:10px 10px 0 0;font-family:'PT Serif',Georgia,serif;font-size:16px}
+    border-radius:10px 10px 0 0;font-family:'PT Serif',Georgia,serif;font-size:16px;
+    display:flex;justify-content:space-between;align-items:center}
+  .filters .head .chev{display:none;font-size:18px;line-height:1}
   .filters .body{padding:16px}
   .fld{margin-bottom:14px}
   label.f{display:block;font-size:12px;font-weight:700;color:var(--blue);
@@ -154,12 +156,32 @@
   button.mcancel:hover{background:#f3f5f8}
 
   @media(max-width:860px){
-    .layout{grid-template-columns:1fr}
+    .layout{grid-template-columns:1fr;padding-top:18px}
     aside.filters{position:static}
+    .filters .head{cursor:pointer}
+    .filters .head .chev{display:inline-block;transition:transform .2s}
+    aside.filters.collapsed .body{display:none}
+    aside.filters.collapsed .head{border-radius:10px}
+    aside.filters.collapsed .head .chev{transform:rotate(-90deg)}
   }
   @media(max-width:560px){
-    .logo{height:52px}
-    .top-inner{gap:14px}
+    .wrap{padding:0 14px}
+    .logo{height:48px}
+    .top-inner{gap:12px;padding:12px 0}
+    .titlebar-inner{padding:12px 0}
+    .board .num{font-size:32px}
+    .content h2{font-size:20px}
+    .card{padding:14px}
+    button.more{width:100%}
+    /* Полноэкранное окно «Подробнее» */
+    .overlay{padding:0;align-items:stretch}
+    .modal{border-radius:0;min-height:100vh}
+    .modal .mhead .src{position:static;display:inline-block;margin-bottom:8px}
+    .modal h3{margin:0 40px 0 0}
+    .dl{grid-template-columns:1fr;gap:3px 0;padding:12px 0}
+    .dl dt{margin-top:8px}
+    .mfoot{flex-direction:column}
+    .mfoot a.goto,.mfoot button.mcancel{width:100%;min-width:0;flex:none}
   }
 </style>
 </head>
@@ -184,7 +206,7 @@
 <div class="wrap layout">
   <!-- Боковая панель фильтров -->
   <aside class="filters">
-    <div class="head">Параметры поиска</div>
+    <div class="head" id="filters-head">Параметры поиска<span class="chev" aria-hidden="true">▾</span></div>
     <div class="body">
       <div class="fld">
         <label class="f" for="q">Поиск по названию</label>
@@ -515,6 +537,13 @@ $('q').addEventListener('keydown', e=>{ if(e.key==='Enter') load(); });
   $(id).addEventListener('input', applyFilters);
   $(id).addEventListener('change', applyFilters);
 });
+
+// Сворачивание панели фильтров на мобильных (десктоп — всегда раскрыта)
+const _aside = document.querySelector('aside.filters');
+const _isMobile = () => window.matchMedia('(max-width:860px)').matches;
+$('filters-head').addEventListener('click', ()=>{ if(_isMobile()) _aside.classList.toggle('collapsed'); });
+$('find').addEventListener('click', ()=>{ if(_isMobile()) _aside.classList.add('collapsed'); });
+if(_isMobile()) _aside.classList.add('collapsed');
 
 load();
 </script>
