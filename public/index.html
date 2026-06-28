@@ -8,178 +8,351 @@
 <link rel="alternate icon" type="image/png" href="logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=PT+Serif:wght@700&family=PT+Sans:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&family=Open+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#f4f6f9; --panel:#ffffff; --ink:#22303f; --muted:#6f7d8c;
-    --blue:#234e9e; --blue-dark:#1b3d7a; --blue-bright:#3a64ad;
-    --blue-soft:#eaf0f8;
-    --accent:#e07d2a; --accent-dark:#c4691d; --line:#e3e8ef;
-    --hh:#234e9e; --tv:#e07d2a;
-    --shadow:0 1px 2px rgba(20,40,80,.04),0 6px 20px rgba(20,40,80,.06);
+    /* Поверхности */
+    --bg:#f4f6fa; --bg-grad-1:#eef2f8; --bg-grad-2:#f6f8fb;
+    --panel:#ffffff; --panel-soft:#fafbfd;
+    /* Текст */
+    --ink:#18222f; --ink-soft:#3c4a5c; --muted:#8793a3;
+    /* Фирменные цвета вуза */
+    --navy:#173f7d; --navy-2:#1d4f9c; --navy-deep:#102a55; --navy-bright:#3a6bbf;
+    --navy-soft:#eaf1fa;
+    --accent:#e0852b; --accent-2:#f2a542; --accent-deep:#bd6c1a;
+    /* Линии / кольца фокуса */
+    --line:#e6ebf2; --line-soft:#eef2f7;
+    --ring:rgba(29,79,156,.16);
+    /* Заливки — однотонные (без градиентов) */
+    --grad-navy:var(--navy);
+    --grad-accent:var(--accent);
+    /* Тени — мягкие, многослойные */
+    --shadow-xs:0 1px 2px rgba(16,38,71,.035);
+    --shadow-sm:0 1px 2px rgba(16,38,71,.03),0 2px 5px rgba(16,38,71,.035);
+    --shadow:0 1px 3px rgba(16,38,71,.035),0 6px 18px rgba(16,38,71,.05);
+    --shadow-lg:0 16px 44px rgba(16,38,71,.12);
+    /* Скругления */
+    --r-lg:18px; --r:14px; --r-sm:10px; --r-xs:8px;
+    --ease:cubic-bezier(.4,.14,.2,1);
   }
   *{box-sizing:border-box}
-  html{-webkit-text-size-adjust:100%}
-  body{margin:0;background:var(--bg);color:var(--ink);
-    font-family:'PT Sans',system-ui,Arial,sans-serif;line-height:1.55;}
-  a{color:var(--blue-bright)}
-  .wrap{max-width:1140px;margin:0 auto;padding:0 20px}
+  html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+  body{margin:0;color:var(--ink);
+    font-family:'Open Sans',system-ui,-apple-system,Segoe UI,Arial,sans-serif;
+    font-size:16px;line-height:1.6;letter-spacing:-.003em;
+    background:
+      radial-gradient(1200px 600px at 78% -8%, var(--bg-grad-1), transparent 60%),
+      radial-gradient(900px 500px at 0% 0%, #eaf1fa, transparent 55%),
+      var(--bg);
+    background-attachment:fixed;
+    -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;}
+  a{color:var(--navy-2);text-decoration:none}
+  a:hover{color:var(--navy)}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 24px}
 
-  /* ---- Шапка: белая полоса с логотипом ---- */
-  header.top{background:#fff;border-bottom:1px solid var(--line)}
-  .top-inner{display:flex;align-items:center;gap:20px;padding:14px 0}
-  .logo{height:66px;width:auto;flex:0 0 auto}
+  /* ---- Шапка: чистая белая полоса с логотипом ---- */
+  header.top{background:rgba(255,255,255,.82);backdrop-filter:saturate(160%) blur(10px);
+    border-bottom:1px solid var(--line);position:relative;z-index:5}
+  .top-inner{display:flex;align-items:center;gap:22px;padding:16px 0}
+  .logo{height:64px;width:auto;flex:0 0 auto}
   .org{min-width:0}
-  .org-name{font-family:'PT Serif',Georgia,serif;color:var(--blue);font-weight:700;
-    font-size:clamp(14px,1.9vw,17px);line-height:1.25}
-  .org-tag{color:var(--muted);font-size:13px;margin-top:4px}
+  .org-name{font-family:'Montserrat',system-ui,sans-serif;color:var(--navy);font-weight:600;
+    font-size:clamp(14px,1.85vw,17px);line-height:1.3;letter-spacing:-.01em}
+  .org-tag{color:var(--muted);font-size:13px;margin-top:5px;font-weight:500}
 
-  /* ---- Синяя полоса с названием сервиса ---- */
-  .titlebar{background:var(--blue);color:#fff;border-bottom:3px solid var(--accent)}
-  .titlebar-inner{display:flex;justify-content:space-between;align-items:center;
-    gap:14px;padding:15px 0;flex-wrap:wrap}
-  .titlebar h1{font-family:'PT Serif',Georgia,serif;margin:0;font-weight:700;
-    font-size:clamp(19px,3vw,26px);line-height:1.15}
-  .board{display:inline-flex;align-items:baseline;gap:10px;flex:0 0 auto}
-  .board .num{font-family:'PT Serif',Georgia,serif;font-weight:700;
-    font-size:clamp(34px,6vw,52px);line-height:1;color:#fff;font-variant-numeric:tabular-nums}
-  .board .lbl{font-size:13px;text-transform:uppercase;letter-spacing:.1em;color:#cdd9ec}
+  /* ---- Тёмная «героическая» полоса с акцентами ---- */
+  .titlebar{position:relative;overflow:hidden;color:#fff;
+    background:var(--grad-navy)}
+  .titlebar::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;
+    background:var(--grad-accent)}
+  .titlebar-inner{position:relative;display:flex;justify-content:space-between;
+    align-items:center;gap:24px;padding:36px 0;flex-wrap:wrap}
+  .titlebar .lead{max-width:660px;min-width:0}
+  .titlebar .eyebrow{display:inline-flex;align-items:center;gap:8px;
+    background:rgba(242,165,66,.18);color:#f8ca8e;
+    font-size:11.5px;font-weight:800;text-transform:uppercase;letter-spacing:.13em;
+    padding:6px 13px;border-radius:999px;margin-bottom:16px}
+  .titlebar .eyebrow .dot{width:7px;height:7px;border-radius:50%;background:var(--grad-accent);
+    box-shadow:0 0 0 3px rgba(242,165,66,.22)}
+  .titlebar h1{font-family:'Montserrat',system-ui,sans-serif;margin:0;font-weight:800;
+    color:#fff;font-size:clamp(24px,3.6vw,36px);line-height:1.14;letter-spacing:-.02em}
+  .titlebar h1 .accent{background:var(--grad-accent);-webkit-background-clip:text;
+    background-clip:text;-webkit-text-fill-color:transparent}
+  .titlebar .subtitle{margin:15px 0 0;color:#c5d4ec;font-size:15.5px;
+    line-height:1.55;max-width:560px}
+  .quick{display:flex;flex-wrap:wrap;gap:7px;margin-top:0}
+  .qchip{display:inline-flex;align-items:center;gap:6px;
+    font-family:inherit;font-size:12.5px;font-weight:600;color:var(--ink-soft);
+    background:var(--panel-soft);border:1.5px solid var(--line);border-radius:999px;
+    padding:5px 9px 5px 10px;cursor:pointer;transition:all .16s var(--ease)}
+  .qico{width:15px;height:15px;flex:0 0 auto;opacity:.8}
+  .qcount{font-size:10.5px;font-weight:700;color:var(--muted);background:var(--line-soft);
+    border-radius:999px;padding:1px 6px;min-width:18px;text-align:center;font-variant-numeric:tabular-nums}
+  .qcount:empty{display:none}
+  .qchip:hover{border-color:var(--navy-bright);color:var(--navy);background:#fff}
+  .qchip:hover .qico{opacity:1}
+  .qchip.active{background:var(--navy-2);border-color:var(--navy-2);color:#fff;
+    box-shadow:0 3px 10px rgba(23,63,125,.22)}
+  .qchip.active .qico{opacity:1}
+  .qchip.active .qcount{background:rgba(255,255,255,.22);color:#fff}
+  /* Счётчик найденных — лёгкая карточка с акцентом сверху */
+  .board{position:relative;flex:0 0 auto;display:flex;flex-direction:column;align-items:center;
+    gap:2px;padding:18px 30px;border-radius:var(--r);overflow:hidden;
+    background:#fff;border:1px solid var(--line);box-shadow:var(--shadow)}
+  .board::before{content:"";position:absolute;left:0;right:0;top:0;height:4px;background:var(--grad-accent)}
+  .board .num{font-family:'Open Sans';font-weight:800;
+    font-size:clamp(36px,5.5vw,52px);line-height:1;color:var(--navy);
+    font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+  .board .lbl{font-size:11px;text-transform:uppercase;letter-spacing:.18em;
+    color:var(--accent-deep);font-weight:800}
 
   /* ---- Двухколоночная сетка ---- */
-  .layout{display:grid;grid-template-columns:300px 1fr;gap:24px;
-    align-items:start;padding:26px 0 10px}
+  .layout{display:grid;grid-template-columns:312px 1fr;gap:30px;
+    align-items:start;padding:34px 0 12px}
 
   /* ---- Боковая панель фильтров ---- */
-  aside.filters{background:var(--panel);border:1px solid var(--line);border-radius:10px;
-    box-shadow:var(--shadow);position:sticky;top:16px}
-  .filters .head{background:var(--blue);color:#fff;padding:12px 16px;
-    border-radius:10px 10px 0 0;font-family:'PT Serif',Georgia,serif;font-size:16px;
+  aside.filters{background:var(--panel);border:1px solid var(--line);
+    border-radius:var(--r-lg);box-shadow:var(--shadow);position:sticky;top:18px;
+    overflow:hidden;display:flex;flex-direction:column;max-height:calc(100vh - 36px)}
+  .filters .head{flex:0 0 auto;background:var(--navy-soft);color:var(--navy);padding:15px 20px;
+    font-family:'Montserrat',system-ui,sans-serif;font-size:16px;font-weight:700;letter-spacing:-.01em;
+    border-bottom:1px solid var(--line);
     display:flex;justify-content:space-between;align-items:center}
   .filters .head .chev{display:none;font-size:18px;line-height:1}
-  .filters .body{padding:16px}
-  .fld{margin-bottom:14px}
-  label.f{display:block;font-size:12px;font-weight:700;color:var(--blue);
-    text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px}
-  input,select{width:100%;padding:9px 11px;border:1px solid var(--line);
-    border-radius:6px;font-size:15px;font-family:inherit;color:var(--ink);background:#fff}
-  input:focus,select:focus{outline:2px solid var(--blue-bright);outline-offset:0;border-color:var(--blue-bright)}
-  .sources{display:flex;flex-direction:column;gap:8px}
-  .chk{display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer;color:var(--ink)}
-  .chk input{width:auto}
-  .src-hint{font-size:11px;color:var(--muted);margin-top:7px;line-height:1.4}
-  button.go{width:100%;background:var(--blue);color:#fff;border:none;border-radius:6px;
-    font-family:inherit;font-weight:700;letter-spacing:.02em;
-    font-size:15px;padding:11px 18px;cursor:pointer;margin-top:4px}
-  button.go:hover{background:var(--blue-dark)}
-  button.go:focus-visible{outline:3px solid var(--blue-bright);outline-offset:2px}
-  .status{font-size:12px;color:var(--muted);margin-top:10px;text-align:center}
+  .filters .body{flex:1 1 auto;overflow-y:auto;overscroll-behavior:contain;padding:20px;
+    scrollbar-width:thin;scrollbar-color:#cdd8e6 transparent}
+  .filters .body::-webkit-scrollbar{width:8px}
+  .filters .body::-webkit-scrollbar-thumb{background:#d4dded;border-radius:8px}
+  .filters .body::-webkit-scrollbar-thumb:hover{background:#bfcce0}
+  .fld{margin-bottom:18px}
+  label.f{display:block;font-size:11px;font-weight:700;color:var(--navy);
+    text-transform:uppercase;letter-spacing:.09em;margin-bottom:8px}
+  input,select{width:100%;padding:11px 13px;border:1.5px solid var(--line);
+    border-radius:var(--r-sm);font-size:15px;font-family:inherit;color:var(--ink);
+    background:var(--panel-soft);transition:border-color .18s var(--ease),
+    box-shadow .18s var(--ease),background .18s var(--ease);-webkit-appearance:none;appearance:none}
+  select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%238793a3' d='M1 1.5 6 6.5 11 1.5'/%3E%3C/svg%3E");
+    background-repeat:no-repeat;background-position:right 13px center;padding-right:34px;cursor:pointer}
+  input::placeholder{color:#aab4c2}
+  input:focus,select:focus{outline:none;border-color:var(--navy-2);
+    background:#fff;box-shadow:0 0 0 4px var(--ring)}
+  .sources{display:flex;flex-direction:column;gap:9px}
+  .chk{display:flex;align-items:center;gap:11px;font-size:14.5px;font-weight:600;
+    cursor:pointer;color:var(--ink-soft);padding:10px 13px;border:1.5px solid var(--line);
+    border-radius:var(--r-sm);background:var(--panel-soft);
+    transition:border-color .18s var(--ease),background .18s var(--ease),color .18s var(--ease)}
+  .chk:hover{border-color:#cdd8e6}
+  .chk input{width:auto;accent-color:var(--navy-2);width:17px;height:17px;cursor:pointer}
+  .chk:has(input:checked){border-color:var(--navy-2);background:var(--navy-soft);color:var(--navy)}
+  .chk-inline{margin-top:10px;font-size:13.5px}
+  .src-hint{font-size:11.5px;color:var(--muted);margin-top:9px;line-height:1.45}
+  button.reset{width:100%;background:none;color:var(--muted);border:none;
+    font-family:inherit;font-weight:600;font-size:13px;padding:10px 0 2px;
+    cursor:pointer;transition:color .16s var(--ease)}
+  button.reset:hover{color:var(--navy-2)}
+  button.go{width:100%;background:var(--grad-navy);color:#fff;border:none;
+    border-radius:var(--r-sm);font-family:inherit;font-weight:700;letter-spacing:.01em;
+    font-size:15px;padding:13px 18px;cursor:pointer;margin-top:6px;
+    box-shadow:0 4px 12px rgba(23,63,125,.18);
+    transition:transform .16s var(--ease),box-shadow .16s var(--ease),filter .16s var(--ease)}
+  button.go:hover{transform:translateY(-1px);box-shadow:0 7px 18px rgba(23,63,125,.24);filter:brightness(1.05)}
+  button.go:active{transform:translateY(0)}
+  button.go:focus-visible{outline:none;box-shadow:0 0 0 4px var(--ring),0 6px 18px rgba(23,63,125,.28)}
+  .status{font-size:12px;color:var(--muted);margin-top:12px;text-align:center;font-weight:600}
 
   /* ---- Контент ---- */
   main.content{min-width:0}
-  .content h2{font-family:'PT Serif',Georgia,serif;font-size:22px;margin:0 0 6px;
-    display:inline-block;border-bottom:3px solid var(--accent);padding-bottom:6px}
-  .note{font-size:13px;color:var(--muted);margin:0 0 16px}
-  .banner{background:#fbf3e7;border:1px solid #ecd6b3;color:#8a5a1c;
-    border-radius:8px;padding:11px 14px;font-size:13px;margin-bottom:16px}
+  .content h2{font-family:'Montserrat',system-ui,sans-serif;font-size:26px;font-weight:600;
+    margin:0 0 8px;letter-spacing:-.015em;color:var(--ink)}
+  .content h2 .accent{background:var(--grad-accent);-webkit-background-clip:text;
+    background-clip:text;-webkit-text-fill-color:transparent}
+  .note{font-size:14.5px;color:var(--muted);margin:0 0 22px;max-width:62ch}
+  .banner{background:linear-gradient(180deg,#fff7ec,#fdf1e1);border:1px solid #f0dcbb;
+    color:#8a5a1c;border-radius:var(--r);padding:13px 16px;font-size:13.5px;
+    margin-bottom:18px;box-shadow:var(--shadow-xs)}
 
-  .card{background:var(--panel);border:1px solid var(--line);border-left:5px solid var(--hh);
-    border-radius:8px;box-shadow:var(--shadow);margin-bottom:14px;padding:16px 18px;
-    transition:box-shadow .15s ease,transform .15s ease}
-  .card:hover{box-shadow:0 2px 4px rgba(20,40,80,.06),0 12px 28px rgba(20,40,80,.1);transform:translateY(-2px)}
-  .card.trudvsem{border-left-color:var(--tv)}
-  .card.superjob{border-left-color:#3f8f5b}
-  .card.jooble{border-left-color:#2f7c92}
-  .ctop{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
-  .card h3{margin:0;font-size:17px;font-weight:700;line-height:1.3;color:var(--ink)}
-  .src{flex:0 0 auto;font-size:11px;font-weight:700;text-transform:uppercase;
-    letter-spacing:.04em;padding:3px 9px;border-radius:5px;white-space:nowrap}
-  .src.hh{background:#e6f0f8;color:var(--hh)}
-  .src.trudvsem{background:#fbeede;color:var(--accent-dark)}
-  .src.superjob{background:#e7f1ea;color:#2f7d4f}
-  .src.jooble{background:#e6f0f3;color:#2a6f83}
-  .company{color:var(--muted);font-size:14px;margin:4px 0 10px}
-  .salary{font-family:'PT Serif',Georgia,serif;font-weight:700;font-size:18px;color:var(--blue);
-    font-variant-numeric:tabular-nums}
-  .salary.none{color:var(--muted);font-family:'PT Sans';font-weight:400;font-size:14px}
-  .meta{display:flex;flex-wrap:wrap;gap:7px;margin-top:11px}
-  .tag{font-size:12px;background:#eef2f6;color:#3d5163;border-radius:5px;padding:4px 9px}
-  .cactions{margin-top:14px;display:flex;gap:10px;flex-wrap:wrap}
-  button.more{background:#fff;color:var(--blue);border:1px solid var(--blue);
-    border-radius:6px;font-family:inherit;font-weight:700;font-size:14px;
-    padding:8px 16px;cursor:pointer}
-  button.more:hover{background:var(--blue);color:#fff}
+  .card{position:relative;background:var(--panel);border:1px solid var(--line);
+    border-radius:var(--r);box-shadow:var(--shadow-sm);margin-bottom:16px;
+    padding:20px 22px 18px 24px;overflow:hidden;
+    transition:box-shadow .2s var(--ease),transform .2s var(--ease),border-color .2s var(--ease)}
+  .card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;
+    background:var(--navy-2)}
+  .card:hover{box-shadow:var(--shadow);transform:translateY(-3px);border-color:#dde5ef}
+  .card.trudvsem::before{background:var(--accent)}
+  .card.superjob::before{background:#3f9b62}
+  .ctop{display:flex;justify-content:space-between;gap:14px;align-items:flex-start}
+  .card h3{margin:0;font-size:17.5px;font-weight:700;line-height:1.32;
+    color:var(--ink);letter-spacing:-.01em}
+  .src{display:inline-flex;align-items:center;gap:6px;flex:0 0 auto;
+    font-size:10.5px;font-weight:700;text-transform:uppercase;
+    letter-spacing:.06em;padding:4px 11px 4px 6px;border-radius:999px;white-space:nowrap}
+  .src-logo{width:16px;height:16px;border-radius:4px;object-fit:cover;
+    display:block;flex:0 0 auto;box-shadow:0 0 0 1px rgba(16,38,71,.06)}
+  .src.hh{background:#e7f0fa;color:var(--navy-2)}
+  .src.trudvsem{background:#fbeede;color:var(--accent-deep)}
+  .src.superjob{background:#e6f3ec;color:#2f7d4f}
+  .company{color:var(--muted);font-size:14px;margin:6px 0 12px;font-weight:500}
+  .salary{font-family:'Open Sans';font-weight:800;font-size:19px;color:var(--navy);
+    font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+  .salary.none{color:var(--muted);font-weight:500;font-size:14px;letter-spacing:0}
+  /* ---- Адрес и требования в карточке ---- */
+  .cinfo{margin-top:13px;display:flex;flex-direction:column;gap:8px}
+  .cinfo-row{display:flex;gap:9px;align-items:flex-start;font-size:13.5px;
+    color:var(--ink-soft);line-height:1.45}
+  .cinfo-row svg{flex:0 0 auto;width:17px;height:17px;margin-top:1px;
+    color:var(--navy-2);opacity:.9}
+  .cinfo-row.req svg{color:var(--accent)}
+  .ci-text{min-width:0}
+  .ci-addr{display:-webkit-box;-webkit-line-clamp:2;line-clamp:2;
+    -webkit-box-orient:vertical;overflow:hidden}
+  .ci-req{display:-webkit-box;-webkit-line-clamp:2;line-clamp:2;
+    -webkit-box-orient:vertical;overflow:hidden}
+  .ci-req b{font-weight:700;color:var(--ink)}
+  .meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:13px}
+  .tag{font-size:12px;font-weight:600;background:#eef2f7;color:#48586b;
+    border-radius:999px;padding:5px 12px}
+  .cactions{margin-top:16px;display:flex;gap:10px 14px;flex-wrap:wrap;align-items:center}
+  .cdate{margin-left:auto;display:inline-flex;align-items:center;gap:6px;
+    font-size:12.5px;color:var(--muted);font-weight:600;white-space:nowrap}
+  .cdate svg{width:15px;height:15px;flex:0 0 auto;opacity:.85}
+  /* Кнопка-звезда «Избранное» */
+  button.fav{display:inline-flex;align-items:center;justify-content:center;
+    width:38px;height:38px;padding:0;border:1.5px solid #d6e0ee;border-radius:var(--r-sm);
+    background:#fff;color:#aab4c2;cursor:pointer;flex:0 0 auto;
+    transition:color .16s var(--ease),border-color .16s var(--ease),background .16s var(--ease),transform .12s var(--ease)}
+  button.fav svg{width:19px;height:19px;fill:none}
+  button.fav:hover{color:var(--accent);border-color:#f0d3a8;background:#fff8ef}
+  button.fav:active{transform:scale(.9)}
+  button.fav.is-fav{color:var(--accent-2);border-color:#f3d6a6;background:#fff7ec}
+  button.fav.is-fav svg{fill:currentColor}
+  .chk-fav{font-size:13.5px}
+  .favcount{color:var(--accent-deep);font-weight:700;margin-left:2px}
+  button.more{background:#fff;color:var(--navy-2);border:1.5px solid #d6e0ee;
+    border-radius:var(--r-sm);font-family:inherit;font-weight:700;font-size:14px;
+    padding:9px 18px;cursor:pointer;
+    transition:background .16s var(--ease),color .16s var(--ease),border-color .16s var(--ease)}
+  button.more:hover{background:var(--navy-2);color:#fff;border-color:var(--navy-2)}
 
-  .empty{text-align:center;color:var(--muted);padding:54px 0;font-size:15px;
-    background:var(--panel);border:1px dashed var(--line);border-radius:8px}
-  .more-wrap{text-align:center;margin:6px 0 10px}
-  button.loadmore{display:none;background:#fff;color:var(--blue);border:1px solid var(--blue);
-    border-radius:6px;font-family:inherit;font-weight:700;font-size:15px;padding:10px 26px;cursor:pointer}
-  button.loadmore:hover{background:var(--blue);color:#fff}
+  /* ---- Каскадное появление карточек ---- */
+  @keyframes cardIn{
+    from{opacity:0;transform:translateY(16px)}
+    to{opacity:1;transform:none}
+  }
+  #list.reveal .card{animation:cardIn .5s var(--ease) both}
+  #list.reveal .card:nth-child(1){animation-delay:.00s}
+  #list.reveal .card:nth-child(2){animation-delay:.05s}
+  #list.reveal .card:nth-child(3){animation-delay:.10s}
+  #list.reveal .card:nth-child(4){animation-delay:.15s}
+  #list.reveal .card:nth-child(5){animation-delay:.20s}
+  #list.reveal .card:nth-child(6){animation-delay:.25s}
+  #list.reveal .card:nth-child(7){animation-delay:.30s}
+  #list.reveal .card:nth-child(8){animation-delay:.35s}
+  #list.reveal .card:nth-child(9){animation-delay:.40s}
+  #list.reveal .card:nth-child(n+10){animation-delay:.45s}
+  @media(prefers-reduced-motion:reduce){
+    #list.reveal .card{animation:none}
+  }
 
-  footer{color:var(--muted);font-size:12px;text-align:center;padding:30px 0 40px;
-    border-top:1px solid var(--line);margin-top:20px}
-  footer .f-org{color:var(--blue);font-weight:700;margin-bottom:6px}
+  .empty{text-align:center;color:var(--muted);padding:60px 24px;font-size:15px;
+    background:var(--panel);border:1px dashed #d6deea;border-radius:var(--r);font-weight:500}
+  .more-wrap{text-align:center;margin:8px 0 12px}
+  button.loadmore{display:none;background:#fff;color:var(--navy-2);border:1.5px solid #d6e0ee;
+    border-radius:var(--r-sm);font-family:inherit;font-weight:700;font-size:15px;
+    padding:12px 30px;cursor:pointer;box-shadow:var(--shadow-xs);
+    transition:background .16s var(--ease),color .16s var(--ease),transform .16s var(--ease)}
+  button.loadmore:hover{background:var(--navy-2);color:#fff;transform:translateY(-1px)}
+  /* Спиннер автоподгрузки */
+  .spinner{display:flex;align-items:center;justify-content:center;gap:10px;
+    color:var(--muted);font-size:14px;font-weight:600;padding:8px 0 16px}
+  .spinner[hidden]{display:none}
+  .sp-ring{width:18px;height:18px;border:2.5px solid var(--line);
+    border-top-color:var(--navy-2);border-radius:50%;animation:spin .7s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  /* Кнопка «Наверх» */
+  .totop{position:fixed;right:26px;bottom:26px;width:48px;height:48px;z-index:40;
+    display:flex;align-items:center;justify-content:center;border:none;border-radius:50%;
+    background:var(--grad-navy);color:#fff;cursor:pointer;box-shadow:0 8px 24px rgba(16,38,71,.28);
+    opacity:0;visibility:hidden;transform:translateY(12px);
+    transition:opacity .25s var(--ease),transform .2s var(--ease),visibility .25s var(--ease),filter .16s var(--ease)}
+  .totop.show{opacity:1;visibility:visible;transform:none}
+  .totop:hover{filter:brightness(1.1);transform:translateY(-2px)}
+  .totop svg{width:22px;height:22px}
+  @media(max-width:560px){.totop{right:16px;bottom:16px;width:44px;height:44px}}
+
+  footer{color:var(--muted);font-size:12.5px;text-align:center;padding:36px 0 46px;
+    border-top:1px solid var(--line);margin-top:26px;line-height:1.7}
+  footer .f-org{font-family:'Montserrat',system-ui,sans-serif;color:var(--navy);font-weight:600;
+    font-size:14px;margin-bottom:8px}
 
   /* ---- Модальное окно «Подробнее» ---- */
-  .overlay{position:fixed;inset:0;background:rgba(10,25,45,.55);
-    display:none;align-items:flex-start;justify-content:center;
-    padding:40px 16px;overflow:auto;z-index:50}
+  .overlay{position:fixed;inset:0;background:rgba(12,26,46,.5);
+    backdrop-filter:blur(4px);display:none;align-items:flex-start;justify-content:center;
+    padding:48px 16px;overflow:auto;z-index:50}
   .overlay.open{display:flex}
-  .modal{background:var(--panel);max-width:680px;width:100%;border-radius:10px;
-    box-shadow:0 20px 60px rgba(0,0,0,.35);overflow:hidden;animation:pop .15s ease-out}
-  @keyframes pop{from{transform:translateY(8px);opacity:0}to{transform:none;opacity:1}}
-  .modal .mhead{background:var(--blue);color:#fff;padding:18px 22px;position:relative}
-  .modal .mhead .src{position:absolute;top:16px;right:54px}
-  .modal h3{margin:0 64px 0 0;font-family:'PT Serif',Georgia,serif;font-size:20px;line-height:1.3}
-  .modal .mclose{position:absolute;top:14px;right:16px;width:30px;height:30px;
-    border:none;background:rgba(255,255,255,.15);color:#fff;border-radius:6px;
-    font-size:20px;line-height:1;cursor:pointer}
-  .modal .mclose:hover{background:rgba(255,255,255,.3)}
-  .modal .mbody{padding:20px 22px}
-  .modal .mcompany{color:var(--muted);font-size:15px;margin-bottom:14px}
-  .modal .msalary{font-family:'PT Serif',Georgia,serif;font-weight:700;font-size:22px;
-    color:var(--blue);margin-bottom:14px}
-  .modal .msalary.none{color:var(--muted);font-family:'PT Sans';font-weight:400;font-size:15px}
-  .dl{display:grid;grid-template-columns:140px 1fr;gap:8px 14px;font-size:14px;
-    margin:14px 0;padding:14px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
-  .dl dt{color:var(--muted)}
-  .dl dd{margin:0;color:var(--ink)}
-  .desc{font-size:14px;color:#33414f;white-space:pre-line}
-  .desc h4{font-family:'PT Serif',Georgia,serif;font-size:15px;color:var(--ink);margin:0 0 6px}
-  .mfoot{padding:16px 22px;border-top:1px solid var(--line);display:flex;gap:12px;flex-wrap:wrap}
-  a.goto{flex:1;text-align:center;background:var(--accent);color:#fff;text-decoration:none;
-    border-radius:6px;font-weight:700;font-size:15px;padding:12px 18px;min-width:200px}
-  a.goto:hover{background:var(--accent-dark)}
-  a.goto.disabled{background:#c9ced6;color:#fff;pointer-events:none}
-  button.mcancel{background:#fff;color:var(--ink);border:1px solid var(--line);
-    border-radius:6px;font-family:inherit;font-weight:700;font-size:15px;padding:12px 20px;cursor:pointer}
-  button.mcancel:hover{background:#f3f5f8}
+  .modal{background:var(--panel);max-width:700px;width:100%;border-radius:var(--r-lg);
+    box-shadow:var(--shadow-lg);overflow:hidden;animation:pop .22s var(--ease)}
+  @keyframes pop{from{transform:translateY(14px) scale(.98);opacity:0}to{transform:none;opacity:1}}
+  .modal .mhead{background:var(--grad-navy);color:#fff;padding:22px 26px;position:relative}
+  .modal .mhead::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;
+    background:var(--grad-accent)}
+  .modal .mhead .src{margin-bottom:12px}
+  .modal h3{margin:0 44px 0 0;font-family:'Montserrat',system-ui,sans-serif;font-size:21px;
+    font-weight:600;line-height:1.32;letter-spacing:-.01em}
+  .modal .mclose{position:absolute;top:16px;right:18px;width:32px;height:32px;
+    border:none;background:rgba(255,255,255,.16);color:#fff;border-radius:8px;
+    font-size:20px;line-height:1;cursor:pointer;transition:background .16s var(--ease)}
+  .modal .mclose:hover{background:rgba(255,255,255,.32)}
+  .modal .mbody{padding:24px 26px}
+  .modal .mcompany{color:var(--muted);font-size:15px;margin-bottom:14px;font-weight:500}
+  .modal .msalary{font-family:'Open Sans';font-weight:800;font-size:24px;
+    color:var(--navy);margin-bottom:14px;letter-spacing:-.01em}
+  .modal .msalary.none{color:var(--muted);font-weight:500;font-size:15px}
+  .dl{display:grid;grid-template-columns:148px 1fr;gap:10px 16px;font-size:14.5px;
+    margin:16px 0;padding:18px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .dl dt{color:var(--muted);font-weight:600}
+  .dl dd{margin:0;color:var(--ink-soft)}
+  .desc{font-size:14.5px;color:var(--ink-soft);white-space:pre-line;line-height:1.7}
+  .desc h4{font-family:'Montserrat',system-ui,sans-serif;font-size:16px;font-weight:600;
+    color:var(--ink);margin:0 0 8px}
+  .mfoot{padding:18px 26px;border-top:1px solid var(--line);display:flex;gap:12px;flex-wrap:wrap}
+  a.goto{flex:1;text-align:center;background:var(--grad-accent);color:#fff;text-decoration:none;
+    border-radius:var(--r-sm);font-weight:700;font-size:15px;padding:13px 18px;min-width:200px;
+    box-shadow:0 6px 18px rgba(224,133,43,.3);
+    transition:transform .16s var(--ease),box-shadow .16s var(--ease),filter .16s var(--ease)}
+  a.goto:hover{transform:translateY(-1px);box-shadow:0 10px 24px rgba(224,133,43,.36);filter:brightness(1.04);color:#fff}
+  a.goto.disabled{background:#cdd3dc;color:#fff;pointer-events:none;box-shadow:none}
+  button.mcancel{background:#fff;color:var(--ink-soft);border:1.5px solid var(--line);
+    border-radius:var(--r-sm);font-family:inherit;font-weight:700;font-size:15px;
+    padding:13px 22px;cursor:pointer;transition:background .16s var(--ease)}
+  button.mcancel:hover{background:#f3f5f9}
 
   @media(max-width:860px){
-    .layout{grid-template-columns:1fr;padding-top:18px}
-    aside.filters{position:static}
+    .layout{grid-template-columns:1fr;padding-top:22px;gap:22px}
+    aside.filters{position:static;max-height:none}
+    .filters .body{overflow:visible}
     .filters .head{cursor:pointer}
-    .filters .head .chev{display:inline-block;transition:transform .2s}
+    .filters .head .chev{display:inline-block;transition:transform .2s var(--ease)}
     aside.filters.collapsed .body{display:none}
-    aside.filters.collapsed .head{border-radius:10px}
     aside.filters.collapsed .head .chev{transform:rotate(-90deg)}
+    .titlebar-inner{padding:24px 0}
   }
   @media(max-width:560px){
-    .wrap{padding:0 14px}
-    .logo{height:48px}
-    .top-inner{gap:12px;padding:12px 0}
-    .titlebar-inner{padding:12px 0}
-    .board .num{font-size:32px}
-    .content h2{font-size:20px}
-    .card{padding:14px}
+    .wrap{padding:0 16px}
+    .logo{height:50px}
+    .top-inner{gap:14px;padding:13px 0}
+    .titlebar-inner{padding:20px 0;gap:16px}
+    .titlebar .eyebrow{margin-bottom:9px}
+    .board{flex-direction:row;align-items:baseline;gap:10px;padding:12px 18px}
+    .board .num{font-size:34px}
+    .content h2{font-size:22px}
+    .card{padding:18px 18px 16px 20px}
     button.more{width:100%}
     /* Полноэкранное окно «Подробнее» */
     .overlay{padding:0;align-items:stretch}
     .modal{border-radius:0;min-height:100vh}
-    .modal .mhead .src{position:static;display:inline-block;margin-bottom:8px}
     .modal h3{margin:0 40px 0 0}
-    .dl{grid-template-columns:1fr;gap:3px 0;padding:12px 0}
-    .dl dt{margin-top:8px}
+    .dl{grid-template-columns:1fr;gap:3px 0;padding:14px 0}
+    .dl dt{margin-top:10px}
     .mfoot{flex-direction:column}
     .mfoot a.goto,.mfoot button.mcancel{width:100%;min-width:0;flex:none}
   }
@@ -198,7 +371,11 @@
 </header>
 <div class="titlebar">
   <div class="wrap titlebar-inner">
-    <h1>Вакансии в сфере физической культуры и спорта</h1>
+    <div class="lead">
+      <div class="eyebrow"><span class="dot"></span>Агрегатор вакансий</div>
+      <h1>Вакансии в сфере <span class="accent">физической культуры и спорта</span></h1>
+      <p class="subtitle">Свежие предложения для тренеров, преподавателей, инструкторов и методистов — из проверенных источников.</p>
+    </div>
     <div class="board"><span class="num" id="count">0</span><span class="lbl">найдено</span></div>
   </div>
 </div>
@@ -209,12 +386,63 @@
     <div class="head" id="filters-head">Параметры поиска<span class="chev" aria-hidden="true">▾</span></div>
     <div class="body">
       <div class="fld">
+        <label class="f">Популярные категории</label>
+        <div class="quick" id="quick">
+          <button class="qchip active" type="button" data-cat="">
+            <svg class="qico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/></svg>
+            <span class="qlabel">Все</span><span class="qcount"></span>
+          </button>
+          <button class="qchip" type="button" data-cat="Тренер">
+            <svg class="qico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="6"/><path d="M8.5 13.5 7 22l5-3 5 3-1.5-8.5"/></svg>
+            <span class="qlabel">Тренеры</span><span class="qcount"></span>
+          </button>
+          <button class="qchip" type="button" data-cat="Учитель ФК">
+            <svg class="qico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10 12 5 2 10l10 5 10-5z"/><path d="M6 12v5c0 1.2 2.7 3 6 3s6-1.8 6-3v-5"/></svg>
+            <span class="qlabel">Учителя ФК</span><span class="qcount"></span>
+          </button>
+          <button class="qchip" type="button" data-cat="Инструктор">
+            <svg class="qico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="9" y="2" width="6" height="4" rx="1"/><path d="m9 14 2 2 4-4"/></svg>
+            <span class="qlabel">Инструкторы</span><span class="qcount"></span>
+          </button>
+          <button class="qchip" type="button" data-cat="Фитнес">
+            <svg class="qico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8v8M8 6v12M16 6v12M20 8v8M8 12h8"/></svg>
+            <span class="qlabel">Фитнес</span><span class="qcount"></span>
+          </button>
+          <button class="qchip" type="button" data-cat="Методист">
+            <svg class="qico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+            <span class="qlabel">Методисты</span><span class="qcount"></span>
+          </button>
+        </div>
+      </div>
+      <div class="fld">
         <label class="f" for="q">Поиск по названию</label>
         <input id="q" placeholder="например: тренер по плаванию">
       </div>
       <div class="fld">
         <label class="f" for="region">Город / регион</label>
-        <input id="region" placeholder="например: Казань">
+        <input id="region" list="cities" placeholder="например: Санкт-Петербург">
+        <datalist id="cities">
+          <option value="Москва"></option>
+          <option value="Санкт-Петербург"></option>
+          <option value="Новосибирск"></option>
+          <option value="Екатеринбург"></option>
+          <option value="Казань"></option>
+          <option value="Нижний Новгород"></option>
+          <option value="Челябинск"></option>
+          <option value="Самара"></option>
+          <option value="Омск"></option>
+          <option value="Ростов-на-Дону"></option>
+          <option value="Уфа"></option>
+          <option value="Красноярск"></option>
+          <option value="Воронеж"></option>
+          <option value="Пермь"></option>
+          <option value="Волгоград"></option>
+          <option value="Краснодар"></option>
+          <option value="Сочи"></option>
+          <option value="Тюмень"></option>
+          <option value="Саратов"></option>
+          <option value="Владивосток"></option>
+        </datalist>
       </div>
       <div class="fld">
         <label class="f" for="cat">Должность</label>
@@ -231,6 +459,7 @@
       <div class="fld">
         <label class="f" for="salary">Зарплата от, ₽</label>
         <input id="salary" type="number" min="0" step="5000" placeholder="0">
+        <label class="chk chk-inline"><input type="checkbox" id="onlysalary"> Только с указанной зарплатой</label>
       </div>
       <div class="fld">
         <label class="f" for="empl">Занятость</label>
@@ -242,28 +471,62 @@
         </select>
       </div>
       <div class="fld">
+        <label class="f" for="schedule">График работы</label>
+        <select id="schedule">
+          <option value="">Любой</option>
+          <option value="Полный день">Полный день</option>
+          <option value="Неполный">Неполный день</option>
+          <option value="Сменный">Сменный график</option>
+          <option value="Гибкий">Гибкий график</option>
+          <option value="Удалённо">Удалённо</option>
+          <option value="Вахта">Вахтовый метод</option>
+        </select>
+      </div>
+      <div class="fld">
+        <label class="f" for="period">Дата размещения</label>
+        <select id="period">
+          <option value="">За всё время</option>
+          <option value="1">За сутки</option>
+          <option value="3">За 3 дня</option>
+          <option value="7">За неделю</option>
+          <option value="30">За месяц</option>
+        </select>
+      </div>
+      <div class="fld">
+        <label class="f" for="sort">Сортировка</label>
+        <select id="sort">
+          <option value="">По умолчанию</option>
+          <option value="date">Сначала новые</option>
+          <option value="salary_desc">Сначала с высокой зарплатой</option>
+          <option value="salary_asc">Сначала с низкой зарплатой</option>
+        </select>
+      </div>
+      <div class="fld">
         <label class="f">Источник</label>
         <div class="sources">
           <label class="chk"><input type="checkbox" id="s-hh" checked> hh.ru</label>
           <label class="chk"><input type="checkbox" id="s-tv" checked> Работа России</label>
-          <label class="chk"><input type="checkbox" id="s-sj"> SuperJob</label>
-          <label class="chk"><input type="checkbox" id="s-jb"> Jooble</label>
+          <label class="chk"><input type="checkbox" id="s-sj" checked> SuperJob</label>
         </div>
-        <div class="src-hint">SuperJob и Jooble — после добавления ключей API на сервере.</div>
+      </div>
+      <div class="fld">
+        <label class="chk chk-fav"><input type="checkbox" id="onlyfav"> ⭐ Только избранные <span id="favcount" class="favcount"></span></label>
       </div>
       <button class="go" id="find">Найти вакансии</button>
+      <button class="reset" id="reset" type="button">Сбросить фильтры</button>
       <div class="status" id="status"></div>
     </div>
   </aside>
 
   <!-- Контент -->
   <main class="content">
-    <h2>Открытые вакансии</h2>
+    <h2>Открытые <span class="accent">вакансии</span></h2>
     <p class="note">Подбор вакансий тренеров, учителей физкультуры, инструкторов и методистов из открытых источников.</p>
     <div id="banner"></div>
     <div id="list"></div>
     <div class="more-wrap">
-      <button class="loadmore" id="more">Загрузить ещё</button>
+      <div class="spinner" id="spinner" hidden><span class="sp-ring"></span>Загрузка…</div>
+      <button class="loadmore" id="more">Показать ещё</button>
     </div>
   </main>
 </div>
@@ -272,6 +535,11 @@
   <div class="f-org">Национальный государственный университет физической культуры, спорта и здоровья имени П.Ф. Лесгафта, Санкт-Петербург · 1896–2026, 130 лет</div>
   <div>Данные: hh.ru API и «Работа России» (trudvsem.ru). Сервис подбора вакансий в сфере физической культуры и спорта.</div>
 </footer>
+
+<!-- Кнопка «Наверх» -->
+<button class="totop" id="totop" type="button" aria-label="Наверх" title="Наверх">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V6M6 12l6-6 6 6"/></svg>
+</button>
 
 <!-- Модальное окно «Подробнее» -->
 <div class="overlay" id="overlay" role="dialog" aria-modal="true" aria-labelledby="m-title">
@@ -300,21 +568,24 @@
 <script>
 // --- Демо-данные: показываются, если сервер не запущен ----------------------
 const SAMPLE = [
-  {source:'hh',title:'Тренер по плаванию (детская секция)',company:'СШОР «Дельфин»',region:'Москва',salaryFrom:60000,salaryTo:85000,employment:'Полная занятость',schedule:'Сменный график',url:'#',category:'Тренер',publishedAt:'2026-06-25T09:00:00',description:'Проведение групповых и индивидуальных тренировок по плаванию для детей 6–14 лет. Составление программ подготовки, контроль техники, участие в соревнованиях. Требования: профильное образование, опыт работы с детьми, действующая медкнижка.'},
-  {source:'trudvsem',title:'Учитель физической культуры',company:'МБОУ «Школа №42»',region:'Казань',salaryFrom:38000,salaryTo:null,employment:'Полная занятость',schedule:'Полный день',url:'#',category:'Учитель ФК',publishedAt:'2026-06-24T12:30:00',description:'Преподавание физической культуры в 1–11 классах согласно ФГОS. Организация спортивных секций и школьных соревнований. Требования: высшее педагогическое образование, отсутствие судимости.'},
-  {source:'hh',title:'Фитнес-инструктор тренажёрного зала',company:'World Class',region:'Санкт-Петербург',salaryFrom:55000,salaryTo:90000,employment:'Полная занятость',schedule:'Сменный график',url:'#',category:'Фитнес',publishedAt:'2026-06-26T08:15:00',description:'Консультирование клиентов в тренажёрном зале, составление программ тренировок, проведение вводных инструктажей. Требования: знание анатомии и техники упражнений, сертификаты приветствуются.'},
-  {source:'trudvsem',title:'Инструктор по лыжному спорту',company:'СШ «Олимпиец»',region:'Екатеринбург',salaryFrom:42000,salaryTo:50000,employment:'Частичная занятость',schedule:'Гибкий график',url:'#',category:'Инструктор',publishedAt:'2026-06-22T15:00:00',description:'Обучение основам лыжной подготовки, сопровождение групп на трассе, контроль безопасности. Сезонная занятость с возможностью продления. Требования: спортивный разряд, опыт инструктажа.'},
-  {source:'hh',title:'Тренер по фитнесу (групповые программы)',company:'Spirit Fitness',region:'Москва',salaryFrom:70000,salaryTo:120000,employment:'Полная занятость',schedule:'Сменный график',url:'#',category:'Тренер',publishedAt:'2026-06-25T18:40:00',description:'Проведение групповых занятий (силовые, функциональные, аэробные направления). Формирование лояльной аудитории, ведение расписания. Требования: опыт от 1 года, харизма, профильные сертификаты.'},
-  {source:'trudvsem',title:'Методист спортивной школы',company:'ДЮСШ №3',region:'Новосибирск',salaryFrom:35000,salaryTo:45000,employment:'Полная занятость',schedule:'Полный день',url:'#',category:'Методист',publishedAt:'2026-06-21T10:00:00',description:'Разработка учебно-тренировочных программ, методическое сопровождение тренеров, ведение документации и отчётности. Требования: высшее образование в области физкультуры, знание нормативной базы.'},
-  {source:'hh',title:'Учитель физкультуры (начальные классы)',company:'Частная школа «Лидер»',region:'Москва',salaryFrom:80000,salaryTo:null,employment:'Полная занятость',schedule:'Полный день',url:'#',category:'Учитель ФК',publishedAt:'2026-06-23T11:20:00',description:'Уроки физической культуры в начальной школе, организация подвижных игр и утренней зарядки. Современная спортивная база. Требования: педагогическое образование, любовь к детям.'},
-  {source:'trudvsem',title:'Инструктор-методист по адаптивной физкультуре',company:'Центр реабилитации',region:'Казань',salaryFrom:40000,salaryTo:55000,employment:'Полная занятость',schedule:'Полный день',url:'#',category:'Инструктор',publishedAt:'2026-06-20T09:30:00',description:'Проведение занятий адаптивной физкультурой для людей с ограниченными возможностями здоровья, разработка индивидуальных программ. Требования: профильное образование (АФК), терпение и эмпатия.'},
-  {source:'superjob',title:'Тренер тренажёрного зала',company:'Фитнес-клуб «Атлет»',region:'Нижний Новгород',salaryFrom:50000,salaryTo:75000,employment:'Полная занятость',schedule:'Сменный график',url:'#',category:'Тренер',publishedAt:'2026-06-26T10:10:00',description:'Проведение персональных тренировок, ведение клиентской базы, контроль техники выполнения упражнений. Требования: профильное образование, опыт работы от 1 года.'},
-  {source:'jooble',title:'Учитель физической культуры',company:'Лицей №7',region:'Самара',salaryFrom:41000,salaryTo:null,employment:'Полная занятость',schedule:'Полный день',url:'#',category:'Учитель ФК',publishedAt:'2026-06-24T08:00:00',description:'Преподавание физкультуры в средних и старших классах, подготовка школьников к сдаче нормативов ГТО. Требования: высшее педагогическое образование.'},
+  {source:'hh',title:'Тренер по плаванию (детская секция)',company:'СШОР «Дельфин»',region:'Москва',salaryFrom:60000,salaryTo:85000,employment:'Полная занятость',schedule:'Сменный график',url:'#',category:'Тренер',publishedAt:'2026-06-25T09:00:00',requirement:'Высшее профильное образование · опыт от 1 года',address:'Москва, ул. Спортивная, 12, бассейн «Дельфин»',description:'Проведение групповых и индивидуальных тренировок по плаванию для детей 6–14 лет. Составление программ подготовки, контроль техники, участие в соревнованиях. Требования: профильное образование, опыт работы с детьми, действующая медкнижка.'},
+  {source:'trudvsem',title:'Учитель физической культуры',company:'МБОУ «Школа №42»',region:'Казань',salaryFrom:38000,salaryTo:null,employment:'Полная занятость',schedule:'Полный день',url:'#',category:'Учитель ФК',publishedAt:'2026-06-24T12:30:00',requirement:'Высшее образование — бакалавриат · без опыта',address:'Республика Татарстан, г Казань, ул. Школьная, 42',description:'Преподавание физической культуры в 1–11 классах согласно ФГОS. Организация спортивных секций и школьных соревнований. Требования: высшее педагогическое образование, отсутствие судимости.'},
+  {source:'hh',title:'Фитнес-инструктор тренажёрного зала',company:'World Class',region:'Санкт-Петербург',salaryFrom:55000,salaryTo:90000,employment:'Полная занятость',schedule:'Сменный график',url:'#',category:'Фитнес',publishedAt:'2026-06-26T08:15:00',requirement:'Среднее профессиональное образование · опыт от 2 лет',address:'Санкт-Петербург, Невский пр., 100',description:'Консультирование клиентов в тренажёрном зале, составление программ тренировок, проведение вводных инструктажей. Требования: знание анатомии и техники упражнений, сертификаты приветствуются.'},
+  {source:'trudvsem',title:'Инструктор по лыжному спорту',company:'СШ «Олимпиец»',region:'Екатеринбург',salaryFrom:42000,salaryTo:50000,employment:'Частичная занятость',schedule:'Гибкий график',url:'#',category:'Инструктор',publishedAt:'2026-06-22T15:00:00',requirement:'Спортивный разряд · опыт от 1 года',address:'Свердловская область, г Екатеринбург, ул. Лыжная, 5',description:'Обучение основам лыжной подготовки, сопровождение групп на трассе, контроль безопасности. Сезонная занятость с возможностью продления. Требования: спортивный разряд, опыт инструктажа.'},
+  {source:'hh',title:'Тренер по фитнесу (групповые программы)',company:'Spirit Fitness',region:'Москва',salaryFrom:70000,salaryTo:120000,employment:'Полная занятость',schedule:'Сменный график',url:'#',category:'Тренер',publishedAt:'2026-06-25T18:40:00',requirement:'Профильные сертификаты · опыт от 1 года',address:'Москва, Ленинградский пр., 80',description:'Проведение групповых занятий (силовые, функциональные, аэробные направления). Формирование лояльной аудитории, ведение расписания. Требования: опыт от 1 года, харизма, профильные сертификаты.'},
+  {source:'trudvsem',title:'Методист спортивной школы',company:'ДЮСШ №3',region:'Новосибирск',salaryFrom:35000,salaryTo:45000,employment:'Полная занятость',schedule:'Полный день',url:'#',category:'Методист',publishedAt:'2026-06-21T10:00:00',requirement:'Высшее образование (физическая культура) · опыт от 3 лет',address:'Новосибирская область, г Новосибирск, ул. Кирова, 3',description:'Разработка учебно-тренировочных программ, методическое сопровождение тренеров, ведение документации и отчётности. Требования: высшее образование в области физкультуры, знание нормативной базы.'},
+  {source:'hh',title:'Учитель физкультуры (начальные классы)',company:'Частная школа «Лидер»',region:'Москва',salaryFrom:80000,salaryTo:null,employment:'Полная занятость',schedule:'Полный день',url:'#',category:'Учитель ФК',publishedAt:'2026-06-23T11:20:00',requirement:'Педагогическое образование · без опыта',address:'Москва, ул. Лидерская, 7',description:'Уроки физической культуры в начальной школе, организация подвижных игр и утренней зарядки. Современная спортивная база. Требования: педагогическое образование, любовь к детям.'},
+  {source:'trudvsem',title:'Инструктор-методист по адаптивной физкультуре',company:'Центр реабилитации',region:'Казань',salaryFrom:40000,salaryTo:55000,employment:'Полная занятость',schedule:'Полный день',url:'#',category:'Инструктор',publishedAt:'2026-06-20T09:30:00',requirement:'Профильное образование (АФК) · опыт от 2 лет',address:'Республика Татарстан, г Казань, ул. Реабилитационная, 9',description:'Проведение занятий адаптивной физкультурой для людей с ограниченными возможностями здоровья, разработка индивидуальных программ. Требования: профильное образование (АФК), терпение и эмпатия.'},
+  {source:'superjob',title:'Тренер тренажёрного зала',company:'Фитнес-клуб «Атлет»',region:'Нижний Новгород',salaryFrom:50000,salaryTo:75000,employment:'Полная занятость',schedule:'Сменный график',url:'#',category:'Тренер',publishedAt:'2026-06-26T10:10:00',requirement:'Профильное образование · опыт от 1 года',address:'Нижний Новгород, ул. Атлетов, 1',description:'Проведение персональных тренировок, ведение клиентской базы, контроль техники выполнения упражнений. Требования: профильное образование, опыт работы от 1 года.'},
 ];
 
 let DATA = [];
 let usingDemo = false;
 let currentPage = 0;
+const PAGE_SIZE = 10;        // сколько карточек показывать за раз
+let shown = PAGE_SIZE;       // сколько сейчас показано
+let serverHasMore = true;    // есть ли ещё страницы на сервере
+let loadingMore = false;     // идёт ли сейчас подгрузка (защита от повторов)
 
 const $ = (id) => document.getElementById(id);
 const fmt = (n) => n.toLocaleString('ru-RU');
@@ -324,9 +595,35 @@ const SOURCES = {
   hh:       { label: 'hh.ru',         chk: 's-hh' },
   trudvsem: { label: 'Работа России', chk: 's-tv' },
   superjob: { label: 'SuperJob',      chk: 's-sj' },
-  jooble:   { label: 'Jooble',        chk: 's-jb' },
 };
 const srcLabel = (s) => (SOURCES[s] ? SOURCES[s].label : s);
+
+// --- Избранное (сохраняется в браузере) -------------------------------------
+const FAV_KEY = 'fkis_favs';
+let favs;
+try { favs = new Set(JSON.parse(localStorage.getItem(FAV_KEY) || '[]')); }
+catch(e){ favs = new Set(); }
+const vacKey = (v) => v.id || (v.source + ':' + v.title + '|' + v.company);
+const isFav = (v) => favs.has(vacKey(v));
+function toggleFav(v){
+  const k = vacKey(v);
+  if(favs.has(k)) favs.delete(k); else favs.add(k);
+  try { localStorage.setItem(FAV_KEY, JSON.stringify([...favs])); } catch(e){}
+  updateFavCount();
+}
+function updateFavCount(){
+  const el = document.getElementById('favcount');
+  if(el) el.textContent = favs.size ? `(${favs.size})` : '';
+}
+// Бейдж источника: логотип площадки + название
+const srcBadgeHTML = (s) =>
+  `<img class="src-logo" src="logos/${s}.png" alt="" width="16" height="16" loading="lazy" onerror="this.remove()">${escapeHtml(srcLabel(s))}`;
+
+// Иконки для адреса и требований в карточке
+const ICON_PIN = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-5.2-7-11a7 7 0 0 1 14 0c0 5.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.4"/></svg>`;
+const ICON_REQ = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 5h1a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h1"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="m9 14 2 2 4-4"/></svg>`;
+const ICON_CAL = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4.5" width="18" height="16" rx="2"/><path d="M3 9.5h18M8 2.5v4M16 2.5v4"/></svg>`;
+const ICON_STAR = `<svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M12 3.5l2.6 5.27 5.82.85-4.21 4.1.99 5.79L12 17.77l-5.2 2.74.99-5.79-4.21-4.1 5.82-.85z"/></svg>`;
 
 function salaryText(v){
   if(!v.salaryFrom && !v.salaryTo) return {cls:'none',text:'з/п не указана'};
@@ -345,6 +642,17 @@ function emplGroup(s=''){
   return '';
 }
 
+function scheduleGroup(s=''){
+  s=s.toLowerCase();
+  if(/удал[её]н|дистанц/.test(s)) return 'Удалённо';
+  if(/смен/.test(s)) return 'Сменный';
+  if(/гибк/.test(s)) return 'Гибкий';
+  if(/вахт/.test(s)) return 'Вахта';
+  if(/неполн/.test(s)) return 'Неполный';   // раньше «полн», иначе «неполный» = «полный»
+  if(/полн/.test(s)) return 'Полный день';
+  return '';
+}
+
 function dateText(s){
   if(!s) return '';
   const d = new Date(s);
@@ -352,48 +660,91 @@ function dateText(s){
   return d.toLocaleDateString('ru-RU',{day:'numeric',month:'long',year:'numeric'});
 }
 
-function applyFilters(){
+function applyFilters(animate){
   const region = $('region').value.trim().toLowerCase();
   const cat = $('cat').value;
   const salary = parseInt($('salary').value,10) || 0;
   const empl = $('empl').value;
+  const schedule = $('schedule').value;
+  const period = parseInt($('period').value,10) || 0;
+  const onlySalary = $('onlysalary').checked;
+  const onlyFav = $('onlyfav').checked;
+  const sort = $('sort').value;
+  const now = Date.now();
 
-  const out = DATA.filter(v=>{
+  // Базовый список — все фильтры, КРОМЕ категории (для счётчиков на чипсах)
+  const base = DATA.filter(v=>{
     const cfg = SOURCES[v.source];
     if(cfg && !$(cfg.chk).checked) return false;
+    if(onlyFav && !isFav(v)) return false;
     if(region && !(v.region||'').toLowerCase().includes(region)) return false;
-    if(cat && v.category!==cat) return false;
     if(empl && emplGroup(v.employment)!==empl) return false;
+    if(schedule && scheduleGroup(v.schedule)!==schedule) return false;
+    if(onlySalary && !(v.salaryFrom || v.salaryTo)) return false;
     if(salary){
       const top = v.salaryFrom || v.salaryTo || 0;
       if(top < salary) return false;
     }
+    if(period){
+      const t = Date.parse(v.publishedAt);
+      if(isNaN(t) || t < now - period*86400000) return false;
+    }
     return true;
   });
+  updateQuickCounts(base);
+  // Категория применяется поверх базового списка
+  let out = cat ? base.filter(v=>v.category===cat) : base.slice();
 
-  render(out);
+  // Клиентская сортировка отфильтрованного списка
+  if(sort==='date'){
+    out.sort((a,b)=>(Date.parse(b.publishedAt)||0)-(Date.parse(a.publishedAt)||0));
+  }else if(sort==='salary_desc'){
+    out.sort((a,b)=>((b.salaryFrom||b.salaryTo||0)-(a.salaryFrom||a.salaryTo||0)));
+  }else if(sort==='salary_asc'){
+    out.sort((a,b)=>{
+      const sa=a.salaryFrom||a.salaryTo||0, sb=b.salaryFrom||b.salaryTo||0;
+      if(!sa && !sb) return 0;
+      if(!sa) return 1;   // без зарплаты — в конец
+      if(!sb) return -1;
+      return sa-sb;
+    });
+  }
+
+  render(out, animate);
 }
 
 // Текущий отфильтрованный список — чтобы модалка знала, что показывать
 let VIEW = [];
 
-function render(items){
+// Применить фильтры заново, начав показ с первых PAGE_SIZE карточек
+function refresh(animate){ shown = PAGE_SIZE; applyFilters(animate); }
+
+function render(items, animate){
   VIEW = items;
   $('count').textContent = fmt(items.length);
   const list = $('list');
   if(!items.length){
+    list.classList.remove('reveal');
+    $('more').style.display = 'none';
     list.innerHTML = '<div class="empty">Ничего не нашлось. Смягчите фильтры или измените запрос.</div>';
     return;
   }
-  list.innerHTML = items.map((v,i)=>{
+  const visible = items.slice(0, shown);
+  list.classList.toggle('reveal', !!animate);
+  list.innerHTML = visible.map((v,i)=>{
     const s = salaryText(v);
+    const d = dateText(v.publishedAt);
     return `<article class="card ${v.source}">
       <div class="ctop">
         <h3>${escapeHtml(v.title)}</h3>
-        <span class="src ${v.source}">${srcLabel(v.source)}</span>
+        <span class="src ${v.source}">${srcBadgeHTML(v.source)}</span>
       </div>
       <div class="company">${escapeHtml(v.company)} · ${escapeHtml(v.region||'регион не указан')}</div>
       <div class="salary ${s.cls}">${s.text}</div>
+      ${(v.address || v.requirement) ? `<div class="cinfo">
+        ${v.address ? `<div class="cinfo-row">${ICON_PIN}<span class="ci-text ci-addr">${escapeHtml(v.address)}</span></div>` : ''}
+        ${v.requirement ? `<div class="cinfo-row req">${ICON_REQ}<span class="ci-text ci-req"><b>Требования:</b> ${escapeHtml(v.requirement)}</span></div>` : ''}
+      </div>` : ''}
       <div class="meta">
         <span class="tag">${escapeHtml(v.category)}</span>
         ${v.employment?`<span class="tag">${escapeHtml(v.employment)}</span>`:''}
@@ -401,6 +752,8 @@ function render(items){
       </div>
       <div class="cactions">
         <button class="more" data-i="${i}">Подробнее о вакансии</button>
+        <button class="fav ${isFav(v)?'is-fav':''}" data-i="${i}" type="button" aria-label="В избранное" title="В избранное">${ICON_STAR}</button>
+        ${d ? `<span class="cdate">${ICON_CAL}Размещено ${escapeHtml(d)}</span>` : ''}
       </div>
     </article>`;
   }).join('');
@@ -408,6 +761,25 @@ function render(items){
   list.querySelectorAll('button.more').forEach(b=>{
     b.addEventListener('click',()=>openModal(VIEW[+b.dataset.i]));
   });
+
+  list.querySelectorAll('button.fav').forEach(b=>{
+    b.addEventListener('click',()=>{
+      const v = VIEW[+b.dataset.i];
+      toggleFav(v);
+      b.classList.toggle('is-fav', isFav(v));
+      // если активен фильтр «только избранные» — убираем снятую карточку
+      if($('onlyfav').checked) applyFilters();
+    });
+  });
+
+  // Кнопка «Показать ещё»: видна, пока есть что показать или подгрузить
+  const more = $('more');
+  const restLoaded = items.length - shown;
+  const hasMore = restLoaded > 0 || (!usingDemo && serverHasMore);
+  more.style.display = hasMore ? 'inline-block' : 'none';
+  more.textContent = restLoaded > 0
+    ? `Показать ещё (осталось ${fmt(restLoaded)})`
+    : 'Показать ещё';
 }
 
 function escapeHtml(s=''){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
@@ -418,7 +790,7 @@ function openModal(v){
   const s = salaryText(v);
   $('m-title').textContent = v.title || 'Вакансия';
   const srcEl = $('m-src');
-  srcEl.textContent = srcLabel(v.source);
+  srcEl.innerHTML = srcBadgeHTML(v.source);
   srcEl.className = 'src ' + v.source;
   $('m-company').textContent = `${v.company||'Компания не указана'} · ${v.region||'регион не указан'}`;
   const sal = $('m-salary');
@@ -430,6 +802,8 @@ function openModal(v){
   if(v.employment) rows.push(['Занятость', v.employment]);
   if(v.schedule) rows.push(['График', v.schedule]);
   if(v.region) rows.push(['Регион', v.region]);
+  if(v.address) rows.push(['Адрес', v.address]);
+  if(v.requirement) rows.push(['Требования', v.requirement]);
   const pub = dateText(v.publishedAt);
   if(pub) rows.push(['Опубликовано', pub]);
   rows.push(['Источник', srcLabel(v.source)]);
@@ -491,6 +865,7 @@ function mergeUnique(base, extra){
 
 async function load(){
   currentPage = 0;
+  serverHasMore = true;
   $('status').textContent = 'Загружаю…';
   $('banner').innerHTML = '';
   $('more').style.display = 'none';
@@ -502,41 +877,100 @@ async function load(){
       $('banner').innerHTML = `<div class="banner">Часть источников недоступна: ${escapeHtml(j.errors.join('; '))}</div>`;
     }
     $('status').textContent = `Загружено: ${fmt(DATA.length)} вакансий`;
-    $('more').style.display = DATA.length ? 'inline-block' : 'none';
   }catch(e){
     DATA = SAMPLE;
     usingDemo = true;
+    serverHasMore = false;
     $('banner').innerHTML = '<div class="banner">Сервер не запущен — показаны демо-данные. Запустите <b>node server.js</b>, чтобы видеть реальные вакансии с hh.ru и «Работа России».</div>';
     $('status').textContent = 'Демо-режим';
-    $('more').style.display = 'none';
   }
-  applyFilters();
+  refresh(true);
 }
 
-async function loadMore(){
-  if(usingDemo) return;
+// Подгрузка следующей страницы с сервера (в общий список DATA)
+async function fetchNextPage(){
+  if(usingDemo) return 0;
   currentPage++;
-  $('more').textContent = 'Загружаю…';
   try{
     const j = await fetchPage(currentPage);
     const added = mergeUnique(DATA, j.vacancies);
+    if(added === 0) serverHasMore = false;
     $('status').textContent = `Загружено: ${fmt(DATA.length)} вакансий`;
-    if(added === 0) $('more').style.display = 'none';
+    return added;
   }catch(e){
-    $('more').style.display = 'none';
+    serverHasMore = false;
+    return 0;
   }
-  $('more').textContent = 'Загрузить ещё';
-  applyFilters();
+}
+
+// «Показать ещё»: сначала открываем уже загруженные, потом подгружаем с сервера
+async function onMore(){
+  if(loadingMore) return;
+  loadingMore = true;
+  try{
+    if(shown < VIEW.length){
+      shown += PAGE_SIZE;
+      applyFilters();
+    }else if(!usingDemo && serverHasMore){
+      $('spinner').hidden = false;
+      $('more').style.display = 'none';
+      await fetchNextPage();
+      $('spinner').hidden = true;
+      shown += PAGE_SIZE;
+      applyFilters();
+    }
+  }finally{
+    loadingMore = false;
+  }
 }
 
 // Кнопка и Enter — перезапрашивают с сервера; остальные поля фильтруют мгновенно
 $('find').addEventListener('click', load);
-$('more').addEventListener('click', loadMore);
+$('more').addEventListener('click', onMore);
 $('q').addEventListener('keydown', e=>{ if(e.key==='Enter') load(); });
-['region','cat','salary','empl','s-hh','s-tv','s-sj','s-jb'].forEach(id=>{
-  $(id).addEventListener('input', applyFilters);
-  $(id).addEventListener('change', applyFilters);
+['region','cat','salary','empl','schedule','period','sort','onlysalary','onlyfav'].forEach(id=>{
+  $(id).addEventListener('input', ()=>refresh(false));
+  $(id).addEventListener('change', ()=>refresh(false));
 });
+
+// Смена источника требует нового запроса к серверу (а не только фильтрации)
+['s-hh','s-tv','s-sj'].forEach(id=>{
+  $(id).addEventListener('change', load);
+});
+
+// Сброс всех фильтров и повторная загрузка с сервера
+$('reset').addEventListener('click', ()=>{
+  ['q','region','salary','cat','empl','schedule','period','sort'].forEach(id=>{ $(id).value=''; });
+  $('onlysalary').checked = false;
+  $('onlyfav').checked = false;
+  $('s-hh').checked = true; $('s-tv').checked = true;
+  $('s-sj').checked = true;
+  syncQuick();
+  load();
+});
+
+// Быстрые категории: клик задаёт фильтр «Должность»
+function syncQuick(){
+  const v = $('cat').value;
+  document.querySelectorAll('.qchip').forEach(x=>x.classList.toggle('active', x.dataset.cat===v));
+}
+// Числа вакансий по категориям рядом с чипсами (по базовому списку без категории)
+function updateQuickCounts(base){
+  const counts = {};
+  for(const v of base) counts[v.category] = (counts[v.category] || 0) + 1;
+  document.querySelectorAll('.qchip').forEach(ch=>{
+    const cat = ch.dataset.cat;
+    const n = cat === '' ? base.length : (counts[cat] || 0);
+    const badge = ch.querySelector('.qcount');
+    if(badge) badge.textContent = n;
+  });
+}
+document.querySelectorAll('.qchip').forEach(b=>{
+  b.addEventListener('click', ()=>{ $('cat').value = b.dataset.cat; syncQuick(); refresh(false); });
+});
+$('cat').addEventListener('change', syncQuick);
+
+updateFavCount();
 
 // Сворачивание панели фильтров на мобильных (десктоп — всегда раскрыта)
 const _aside = document.querySelector('aside.filters');
@@ -544,6 +978,13 @@ const _isMobile = () => window.matchMedia('(max-width:860px)').matches;
 $('filters-head').addEventListener('click', ()=>{ if(_isMobile()) _aside.classList.toggle('collapsed'); });
 $('find').addEventListener('click', ()=>{ if(_isMobile()) _aside.classList.add('collapsed'); });
 if(_isMobile()) _aside.classList.add('collapsed');
+
+// Кнопка «Наверх» — появляется при прокрутке
+const _totop = $('totop');
+window.addEventListener('scroll', ()=>{
+  _totop.classList.toggle('show', window.scrollY > 500);
+}, { passive:true });
+_totop.addEventListener('click', ()=> window.scrollTo({ top:0, behavior:'smooth' }));
 
 load();
 </script>

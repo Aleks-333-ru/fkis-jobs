@@ -26,14 +26,12 @@ const FKIS_TERMS = [
 const HH_QUERY = '(тренер OR инструктор OR фитнес OR "учитель физической культуры" OR "учитель физкультуры" OR "физическая культура" OR "спортивный")';
 
 // --- Ключи API дополнительных источников -------------------------------------
-// hh.ru и «Работа России» работают без ключей. SuperJob и Jooble — по бесплатному
-// ключу. Пока ключ пустой, источник просто отключён (ошибок не будет).
+// hh.ru и «Работа России» работают без ключей. SuperJob — по бесплатному ключу.
+// Пока ключ пустой, источник просто отключён (ошибок не будет).
 //   SuperJob:  получить на  https://api.superjob.ru/register
-//   Jooble:    получить на  https://jooble.org/api/about
-// Удобнее задавать через переменные окружения, чтобы не хранить ключи в коде:
-//   SUPERJOB_KEY=... JOOBLE_KEY=... node server.js
+// Удобнее задавать через переменную окружения, чтобы не хранить ключ в коде:
+//   SUPERJOB_KEY=... node server.js
 const SUPERJOB_KEY = process.env.SUPERJOB_KEY || '';
-const JOOBLE_KEY = process.env.JOOBLE_KEY || '';
 
 // --- Категория должности по названию вакансии --------------------------------
 function categorize(title = '') {
@@ -44,6 +42,55 @@ function categorize(title = '') {
   if (/фитнес/.test(t)) return 'Фитнес';
   if (/методист/.test(t)) return 'Методист';
   return 'Другое';
+}
+
+// Профильность вакансии по названию. SuperJob ищет по широким ключевым словам
+// и отдаёт мусор («Продавец-консультант…»), поэтому требуем в названии явные
+// слова из сферы физкультуры и спорта.
+function isRelevant(title = '') {
+  const t = String(title).toLowerCase();
+  // явно непрофильный («корпоративный») контекст — сразу отсекаем
+  if (/бизнес[\s-]*трен|трен\S*\s+по\s+(продаж|обучени|персонал|сервис|рост)|корпоративн|менеджер|автомобил|автосервис|\bавто\b|вождени|продаж|сервис\S*\s+автомоб|механик|техническ\S*\s+трен|\bmajor\b|слесар|сантехник|электрик|обслуживани\S*\s+здан/.test(t)) return false;
+  // явные профильные слова
+  if (/трен[её]р|фитнес|физкультур|спорт|плавани|лыжн|гимнаст|атлет|единоборств|тренаж[её]р|оздоровит|(^|\s)гто(\s|$)|(^|\s)лфк(\s|$)|бассейн|физическ\S*\s+культ/.test(t)) return true;
+  // «инструктор/методист/преподаватель/учитель» — только в спортивном контексте
+  if (/инструктор|методист|преподавател|учител/.test(t)
+      && /физ|спорт|адаптивн|плавани|фитнес|трен|лыж|гимнаст|секци|культур/.test(t)) return true;
+  return false;
+}
+
+// Убирает html-теги и схлопывает пробелы
+function clean(s = '') {
+  return String(s).replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+}
+
+// Очищает адрес. API «Работы России» часто склеивает два варианта адреса
+// подряд, и второй начинается с повтора региона. Берём только первый полный
+// адрес — до того места, где первый сегмент (регион) встречается снова.
+function cleanAddress(s = '') {
+  const parts = String(s).split(',').map((p) => p.trim()).filter(Boolean);
+  if (!parts.length) return '';
+  const norm = (p) => p.toLowerCase().replace(/\s+/g, ' ');
+  const region = norm(parts[0]);
+  const out = [parts[0]];
+  const seen = new Set([region]);
+  for (let i = 1; i < parts.length; i++) {
+    const key = norm(parts[i]);
+    if (key === region) break;   // начался повтор адреса — обрываем
+    if (seen.has(key)) continue; // дубль сегмента внутри адреса — пропускаем
+    seen.add(key);
+    out.push(parts[i]);
+  }
+  return out.join(', ').replace(/[;,\s]+$/, '');
+}
+
+// Русское склонение слова «год» для опыта работы (1 год, 2 года, 5 лет)
+function yearsWord(n) {
+  const a = Math.abs(n) % 100, b = n % 10;
+  if (a > 10 && a < 20) return 'лет';
+  if (b === 1) return 'год';
+  if (b >= 2 && b <= 4) return 'года';
+  return 'лет';
 }
 
 // --- Запрос к hh.ru ----------------------------------------------------------
@@ -80,6 +127,9 @@ async function fetchHH(userText, page = 0) {
     publishedAt: v.published_at || '',
     description: [v.snippet?.responsibility, v.snippet?.requirement]
       .filter(Boolean).join(' ').replace(/<[^>]+>/g, ''),
+    requirement: clean(v.snippet?.requirement),
+    address: cleanAddress(v.address?.raw
+      || [v.address?.city, v.address?.street, v.address?.building].filter(Boolean).join(', ')),
     category: categorize(v.name),
   }));
 }
@@ -113,7 +163,16 @@ async function fetchTrudvsemOne(term, page = 0) {
       schedule: v.schedule || '',
       url: v.vac_url || '',
       publishedAt: v['creation-date'] || '',
-      description: (v.duty || '').replace(/<[^>]+>/g, ''),
+      description: clean(v.duty),
+      requirement: (() => {
+        const parts = [];
+        const edu = v.requirement?.education;
+        const exp = v.requirement?.experience;
+        if (edu) parts.push(edu);
+        if (exp != null) parts.push(exp > 0 ? `опыт от ${exp} ${yearsWord(exp)}` : 'без опыта');
+        return parts.join(' · ');
+      })(),
+      address: cleanAddress(v.addresses?.address?.[0]?.location || ''),
       category: categorize(v['job-name']),
     };
   });
@@ -153,8 +212,10 @@ async function fetchSuperJobOne(term, page = 0) {
     url: v.link || '',
     publishedAt: v.date_published ? new Date(v.date_published * 1000).toISOString() : '',
     description: (v.candidat || v.vacancyRichText || '').replace(/<[^>]+>/g, '').trim(),
+    requirement: clean(v.candidat),
+    address: cleanAddress(v.address || ''),
     category: categorize(v.profession),
-  }));
+  })).filter((v) => isRelevant(v.title));
 }
 
 async function fetchSuperJob(userText, page = 0) {
@@ -165,49 +226,9 @@ async function fetchSuperJob(userText, page = 0) {
   return all;
 }
 
-// --- Запрос к Jooble (агрегатор: hh, Авито, Rabota.ru и др.) ------------------
-// POST с ключом в пути URL. Зарплата приходит строкой — вытаскиваем числа.
-function parseSalary(str = '') {
-  const nums = (String(str).replace(/\s/g, '').match(/\d{4,7}/g) || []).map(Number);
-  if (nums.length >= 2) return { from: nums[0], to: nums[1] };
-  if (nums.length === 1) return /до/i.test(str) ? { from: null, to: nums[0] } : { from: nums[0], to: null };
-  return { from: null, to: null };
-}
-
-async function fetchJooble(userText, page = 0) {
-  const keywords = userText || 'тренер, инструктор, фитнес, учитель физической культуры, методист';
-  const res = await fetch('https://jooble.org/api/' + JOOBLE_KEY, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ keywords, page: String(page + 1) }),
-  });
-  if (!res.ok) throw new Error('Jooble ответил ' + res.status);
-  const data = await res.json();
-
-  return (data.jobs || []).map((v) => {
-    const s = parseSalary(v.salary || '');
-    return {
-      id: 'jb:' + (v.id || Math.random().toString(36).slice(2)),
-      source: 'jooble',
-      title: v.title || '',
-      company: v.company || 'Не указана',
-      region: v.location || '',
-      salaryFrom: s.from,
-      salaryTo: s.to,
-      currency: 'RUR',
-      employment: v.type || '',
-      schedule: '',
-      url: v.link || '',
-      publishedAt: v.updated || '',
-      description: (v.snippet || '').replace(/<[^>]+>/g, '').trim(),
-      category: categorize(v.title),
-    };
-  });
-}
-
 // --- Сборка: тянем источники, склеиваем, убираем дубли -----------------------
 async function getVacancies({ text, sources, page = 0 }) {
-  const want = sources && sources.length ? sources : ['hh', 'trudvsem', 'superjob', 'jooble'];
+  const want = sources && sources.length ? sources : ['hh', 'trudvsem', 'superjob'];
   const tasks = [];
   const errors = [];
   if (want.includes('hh')) tasks.push(fetchHH(text, page));
@@ -215,10 +236,6 @@ async function getVacancies({ text, sources, page = 0 }) {
   if (want.includes('superjob')) {
     if (SUPERJOB_KEY) tasks.push(fetchSuperJob(text, page));
     else errors.push('SuperJob отключён: не задан ключ SUPERJOB_KEY');
-  }
-  if (want.includes('jooble')) {
-    if (JOOBLE_KEY) tasks.push(fetchJooble(text, page));
-    else errors.push('Jooble отключён: не задан ключ JOOBLE_KEY');
   }
 
   const settled = await Promise.allSettled(tasks);
