@@ -69,7 +69,7 @@
     -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;}
   a{color:var(--navy-2);text-decoration:none}
   a:hover{color:var(--navy)}
-  .wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+  .wrap{max-width:1320px;margin:0 auto;padding:0 24px}
   /* Ссылка «к содержанию» — видна только при фокусе с клавиатуры */
   .skip-link{position:absolute;left:8px;top:-60px;z-index:100;
     background:var(--navy);color:#fff;padding:11px 18px;border-radius:0 0 10px 10px;
@@ -135,7 +135,7 @@
     color:var(--accent-deep);font-weight:800}
 
   /* ---- Двухколоночная сетка ---- */
-  .layout{display:grid;grid-template-columns:312px 1fr;gap:30px;
+  .layout{display:grid;grid-template-columns:300px minmax(0,1fr) 300px;gap:28px;
     align-items:start;padding:34px 0 12px}
 
   /* ---- Боковая панель фильтров ---- */
@@ -312,7 +312,7 @@
   /* ---- Подвал ---- */
   .site-footer{margin-top:48px;background:var(--navy-deep);color:#c5d4ec;
     font-size:14px;line-height:1.7}
-  .foot-grid{max-width:1180px;margin:0 auto;padding:46px 24px 38px;
+  .foot-grid{max-width:1320px;margin:0 auto;padding:46px 24px 38px;
     display:grid;grid-template-columns:1.7fr 1fr 1fr 1.2fr;gap:34px}
   .foot-brand{max-width:340px}
   .foot-logo{display:inline-block;background:#fff;border-radius:12px;padding:11px 15px;
@@ -326,7 +326,7 @@
   .foot-col a:hover{color:var(--accent-2)}
   .foot-contacts p{margin:0 0 10px;color:#9fb3d4}
   .foot-bottom{border-top:1px solid rgba(255,255,255,.1)}
-  .foot-bottom-inner{max-width:1180px;margin:0 auto;padding:18px 24px;
+  .foot-bottom-inner{max-width:1320px;margin:0 auto;padding:18px 24px;
     display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;
     font-size:12.5px;color:#8197ba}
   .foot-soc-label{margin-top:18px;font-size:11px;font-weight:700;color:#8197ba;
@@ -385,6 +385,51 @@
     border-radius:var(--r-sm);font-family:inherit;font-weight:700;font-size:15px;
     padding:13px 22px;cursor:pointer;transition:background .16s var(--ease)}
   button.mcancel:hover{background:#f3f5f9}
+
+  /* ---- Правая колонка: полезные материалы ---- */
+  aside.useful{align-self:start;display:flex;flex-direction:column;gap:13px}
+  .u-head{font-family:'Montserrat',system-ui,sans-serif;font-size:13px;font-weight:700;
+    color:var(--navy);text-transform:uppercase;letter-spacing:.07em;margin:2px 2px 4px}
+  .u-card{display:flex;gap:12px;align-items:center;text-align:left;width:100%;
+    background:var(--panel);border:1px solid var(--line);border-radius:var(--r);
+    box-shadow:var(--shadow-sm);padding:13px 14px;cursor:pointer;font-family:inherit;color:var(--ink);
+    transition:border-color .15s var(--ease),box-shadow .15s var(--ease),transform .15s var(--ease)}
+  .u-card:hover{border-color:var(--navy-bright);box-shadow:var(--shadow);transform:translateY(-2px)}
+  .u-card:focus-visible{outline:none;box-shadow:0 0 0 4px var(--ring)}
+  .u-ico{flex:0 0 40px;width:40px;height:40px;border-radius:11px;display:flex;
+    align-items:center;justify-content:center;background:var(--navy-soft);color:var(--navy-2)}
+  .u-ico svg{width:20px;height:20px}
+  .u-tx{min-width:0}
+  .u-t{display:block;font-family:'Montserrat',system-ui,sans-serif;font-size:14px;
+    font-weight:700;color:var(--navy);line-height:1.25}
+  .u-d{display:block;font-size:12px;color:var(--muted);line-height:1.4;margin-top:3px}
+
+  /* Окно полезных материалов (наполнение) */
+  .info-modal{max-width:640px}
+  .info-modal h3{margin:0 46px 0 0;font-family:'Montserrat',system-ui,sans-serif;
+    font-size:19px;line-height:1.3}
+  #i-body h4{font-family:'Montserrat',system-ui,sans-serif;font-size:15px;color:var(--navy);
+    font-weight:700;margin:18px 0 8px}
+  #i-body h4:first-child{margin-top:0}
+  #i-body p{margin:0 0 11px;font-size:14px;color:var(--ink-soft);line-height:1.6}
+  #i-body ul{margin:0 0 13px;padding-left:20px;font-size:14px;color:var(--ink-soft);line-height:1.55}
+  #i-body li{margin-bottom:6px}
+  #i-body a{color:var(--navy-2);font-weight:600}
+  #i-body pre.tpl{white-space:pre-wrap;background:var(--panel-soft);border:1px solid var(--line);
+    border-radius:var(--r-sm);padding:14px;font-family:'Open Sans',system-ui,sans-serif;
+    font-size:13px;color:var(--ink-soft);line-height:1.6;margin:0 0 6px;overflow-x:auto}
+  #i-body .tpl-copy{margin:0 0 14px;background:var(--navy-2);color:#fff;border:none;
+    border-radius:var(--r-sm);font-family:inherit;font-weight:700;font-size:13px;
+    padding:9px 16px;cursor:pointer;transition:background .15s var(--ease)}
+  #i-body .tpl-copy:hover{background:var(--navy)}
+
+  /* Планшет: правая колонка уходит вниз на всю ширину рядом карточками */
+  @media(max-width:1100px){
+    .layout{grid-template-columns:300px minmax(0,1fr)}
+    aside.useful{grid-column:1 / -1;display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(230px,1fr))}
+    .u-head{grid-column:1 / -1}
+  }
 
   @media(max-width:860px){
     .layout{grid-template-columns:1fr;padding-top:22px;gap:22px}
@@ -590,6 +635,56 @@
       <button class="loadmore" id="more">Показать ещё</button>
     </div>
   </main>
+
+  <!-- Правая колонка: полезные материалы -->
+  <aside class="useful" aria-label="В помощь соискателю">
+    <div class="u-head">В помощь соискателю</div>
+
+    <button class="u-card" type="button" data-info="resume">
+      <span class="u-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2Z"/><path d="M9 13h6M9 17h6"/></svg></span>
+      <span class="u-tx"><span class="u-t">Как составить резюме</span><span class="u-d">Структура и советы для сферы ФКиС</span></span>
+    </button>
+
+    <button class="u-card" type="button" data-info="resume_template">
+      <span class="u-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h8"/></svg></span>
+      <span class="u-tx"><span class="u-t">Образцы и шаблоны резюме</span><span class="u-d">Готовый шаблон — скопируйте и заполните</span></span>
+    </button>
+
+    <button class="u-card" type="button" data-info="professiograms">
+      <span class="u-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
+      <span class="u-tx"><span class="u-t">Профессиограммы</span><span class="u-d">Чем занимаются тренер, учитель ФК, методист</span></span>
+    </button>
+
+    <button class="u-card" type="button" data-info="testing">
+      <span class="u-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="m9 14 2 2 4-4"/></svg></span>
+      <span class="u-tx"><span class="u-t">Профессиональное тестирование</span><span class="u-d">Профориентация: где пройти и как использовать</span></span>
+    </button>
+
+    <button class="u-card" type="button" data-info="interview">
+      <span class="u-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span>
+      <span class="u-tx"><span class="u-t">Подготовка к собеседованию</span><span class="u-d">Как подготовиться и что важно для ФКиС</span></span>
+    </button>
+
+    <button class="u-card" type="button" data-info="faq">
+      <span class="u-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg></span>
+      <span class="u-tx"><span class="u-t">Частые вопросы</span><span class="u-d">Как откликнуться, нужен ли опыт и другое</span></span>
+    </button>
+
+    <button class="u-card" type="button" data-info="rights">
+      <span class="u-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg></span>
+      <span class="u-tx"><span class="u-t">Трудовые права</span><span class="u-d">Памятка молодому специалисту</span></span>
+    </button>
+
+    <button class="u-card" type="button" data-info="events">
+      <span class="u-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></span>
+      <span class="u-tx"><span class="u-t">Ярмарки вакансий и события</span><span class="u-d">Дни карьеры и встречи с работодателями</span></span>
+    </button>
+
+    <a class="u-card" href="https://lesgaft.spb.ru/ru/division/centr-innovacionnoy-politiki-molodyozhnoy-politiki-i-karery-obuchayushchihsya-vypusknikov-i" target="_blank" rel="noopener">
+      <span class="u-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg></span>
+      <span class="u-tx"><span class="u-t">Карьерные консультации</span><span class="u-d">Центр карьеры обучающихся и выпускников</span></span>
+    </a>
+  </aside>
 </div>
 
 <footer class="site-footer">
@@ -648,6 +743,17 @@
 </button>
 
 <!-- Модальное окно «Подробнее» -->
+<!-- Окно полезных материалов -->
+<div class="overlay" id="overlay2" role="dialog" aria-modal="true" aria-labelledby="i-title">
+  <div class="modal info-modal">
+    <div class="mhead">
+      <button class="mclose" id="i-close" aria-label="Закрыть">×</button>
+      <h3 id="i-title"></h3>
+    </div>
+    <div class="mbody" id="i-body"></div>
+  </div>
+</div>
+
 <div class="overlay" id="overlay" role="dialog" aria-modal="true" aria-labelledby="m-title">
   <div class="modal">
     <div class="mhead">
@@ -823,7 +929,35 @@ function applyFilters(animate){
 let VIEW = [];
 
 // Применить фильтры заново, начав показ с первых PAGE_SIZE карточек
-function refresh(animate){ shown = PAGE_SIZE; applyFilters(animate); }
+function refresh(animate){ shown = PAGE_SIZE; applyFilters(animate); writeURL(); }
+
+// --- Фильтры в адресной строке: ссылку с поиском можно отправить и перезагрузить ---
+function writeURL(){
+  const p = new URLSearchParams();
+  ['q','region','cat','salary','empl','schedule','period','sort'].forEach(id=>{
+    const v = $(id).value.trim();
+    if(v) p.set(id, v);
+  });
+  if($('onlysalary').checked) p.set('onlysalary','1');
+  if($('onlyfav').checked) p.set('onlyfav','1');
+  if(['s-hh','s-tv','s-sj'].some(id=>!$(id).checked)) p.set('src', currentSources().join(','));
+  const qs = p.toString();
+  history.replaceState(null, '', qs ? ('?'+qs) : location.pathname);
+}
+function readURL(){
+  const p = new URLSearchParams(location.search);
+  if(![...p.keys()].length) return;
+  ['q','region','cat','salary','empl','schedule','period','sort'].forEach(id=>{
+    if(p.has(id)) $(id).value = p.get(id);
+  });
+  $('onlysalary').checked = p.get('onlysalary')==='1';
+  $('onlyfav').checked = p.get('onlyfav')==='1';
+  if(p.has('src')){
+    const on = new Set(p.get('src').split(',').filter(Boolean));
+    Object.keys(SOURCES).forEach(k=>{ $(SOURCES[k].chk).checked = on.has(k); });
+  }
+  syncQuick();
+}
 
 function render(items, animate){
   VIEW = items;
@@ -1092,6 +1226,170 @@ window.addEventListener('scroll', ()=>{
 }, { passive:true });
 _totop.addEventListener('click', ()=> window.scrollTo({ top:0, behavior:'smooth' }));
 
+// --- Полезные материалы (правая колонка) ---
+const INFO = {
+  resume: { title:'Как составить резюме', html:`
+    <h4>Что включить</h4>
+    <ul>
+      <li>Контакты: телефон, e-mail, город.</li>
+      <li>Желаемую должность и направление.</li>
+      <li>Образование: учебное заведение, специальность, годы.</li>
+      <li>Опыт: работа, практика, стажировки — с задачами и результатами.</li>
+      <li>Ключевые навыки и достижения (с цифрами, если есть).</li>
+      <li>Дополнительно: спортивные разряды и звания, сертификаты, права, медкнижка.</li>
+    </ul>
+    <h4>Советы</h4>
+    <ul>
+      <li>Уместите резюме в одну страницу, пишите конкретно и по делу.</li>
+      <li>Подстраивайте резюме под конкретную вакансию.</li>
+      <li>Проверьте текст на ошибки; деловое фото — по желанию.</li>
+    </ul>
+    <h4>Для сферы ФКиС</h4>
+    <ul>
+      <li>Укажите виды спорта, разряды/звания и квалификацию.</li>
+      <li>Опыт работы с возрастными группами (дети, взрослые, спортсмены).</li>
+      <li>Готовность к сменному графику, сборам и соревнованиям.</li>
+    </ul>` },
+  professiograms: { title:'Профессиограммы', html:`
+    <p>Кратко о ключевых профессиях сферы физической культуры и спорта.</p>
+    <h4>Тренер</h4>
+    <p>Планирует и проводит тренировки, ведёт спортсменов к результату, контролирует технику и нагрузку. Нужны: лидерство, дисциплина, знание методики. Образование — в области ФК и спорта.</p>
+    <h4>Учитель физической культуры</h4>
+    <p>Ведёт уроки физкультуры в школе по ФГОС, организует секции и сдачу ГТО. Нужны: педагогические навыки, ответственность, любовь к детям. Образование — высшее педагогическое.</p>
+    <h4>Инструктор по спорту / фитнесу</h4>
+    <p>Проводит групповые и индивидуальные занятия, следит за техникой и безопасностью, мотивирует клиентов. Нужны: коммуникабельность, знание анатомии и методики.</p>
+    <h4>Инструктор-методист по адаптивной физкультуре</h4>
+    <p>Проводит занятия для людей с ограниченными возможностями здоровья по индивидуальным программам. Нужны: эмпатия, терпение, профильное образование (АФК).</p>
+    <h4>Методист</h4>
+    <p>Разрабатывает учебно-тренировочные программы, сопровождает тренеров, ведёт документацию. Нужны: системность, знание нормативной базы.</p>` },
+  testing: { title:'Профессиональное тестирование', html:`
+    <h4>Что это</h4>
+    <p>Профориентационные тесты помогают оценить склонности и сильные стороны и понять, какое направление в сфере ФКиС вам ближе.</p>
+    <h4>Где пройти</h4>
+    <ul>
+      <li>Профориентация на портале «Работа России» — <a href="https://trudvsem.ru" target="_blank" rel="noopener">trudvsem.ru</a>.</li>
+      <li>Консультация в Центре карьеры университета — <a href="https://lesgaft.spb.ru/ru/division/centr-innovacionnoy-politiki-molodyozhnoy-politiki-i-karery-obuchayushchihsya-vypusknikov-i" target="_blank" rel="noopener">страница центра</a>.</li>
+    </ul>
+    <h4>Совет</h4>
+    <p>Воспринимайте результаты как ориентир, а не окончательный вывод: они помогают выбрать направление, а решение всегда за вами.</p>` },
+  interview: { title:'Подготовка к собеседованию', html:`
+    <h4>Перед собеседованием</h4>
+    <ul>
+      <li>Изучите организацию и перечитайте вакансию.</li>
+      <li>Подготовьте короткий рассказ о себе и примеры из практики.</li>
+      <li>Продумайте вопросы работодателю.</li>
+    </ul>
+    <h4>На встрече</h4>
+    <ul>
+      <li>Приходите вовремя и опрятно.</li>
+      <li>Отвечайте конкретно, приводите примеры, будьте честны об опыте.</li>
+    </ul>
+    <h4>Для сферы ФКиС</h4>
+    <ul>
+      <li>Будьте готовы описать или провести пробное занятие.</li>
+      <li>Расскажите про работу с группами и обеспечение безопасности.</li>
+    </ul>
+    <h4>После</h4>
+    <p>Поблагодарите за встречу и уточните сроки ответа.</p>` },
+  resume_template: { title:'Образцы и шаблоны резюме', html:`
+    <p>Скопируйте шаблон и заполните своими данными.</p>
+    <button class="tpl-copy" type="button" onclick="copyTpl(this)">Скопировать шаблон</button>
+    <pre class="tpl" id="resumeTpl">ФИО
+Город · Телефон · E-mail
+
+Желаемая должность:
+
+Образование:
+— Учебное заведение, специальность, годы обучения
+
+Опыт работы / практика:
+— Организация, должность, период
+  • обязанности и результаты
+
+Ключевые навыки:
+Спортивные разряды и звания:
+Дополнительно: сертификаты, водительские права, медкнижка</pre>
+    <h4>Мини-пример</h4>
+    <p>«Тренер по плаванию. Образование: Университет им. П.Ф. Лесгафта, физическая культура и спорт, 2026. Практика: СШОР — группы 8–12 лет, подготовка к соревнованиям. Навыки: методика плавания, первая помощь. КМС по плаванию.»</p>` },
+  rights: { title:'Трудовые права молодого специалиста', html:`
+    <h4>Оформление</h4>
+    <ul>
+      <li>Работа без письменного трудового договора недопустима.</li>
+      <li>Запросите свой экземпляр договора и приказа о приёме.</li>
+    </ul>
+    <h4>Испытательный срок</h4>
+    <ul>
+      <li>Условия и срок прописываются в договоре; в этот период действуют те же права.</li>
+    </ul>
+    <h4>Рабочее время и отдых</h4>
+    <ul>
+      <li>Нормальная продолжительность — не более 40 часов в неделю.</li>
+      <li>Ежегодный оплачиваемый отпуск гарантирован.</li>
+    </ul>
+    <h4>Оплата труда</h4>
+    <ul>
+      <li>Зарплата выплачивается не реже чем каждые полмесяца.</li>
+      <li>При полной норме — не ниже МРОТ.</li>
+    </ul>
+    <h4>Если права нарушают</h4>
+    <ul>
+      <li>Обратитесь в государственную инспекцию труда или за консультацией в Центр карьеры.</li>
+    </ul>
+    <p style="font-size:12.5px;color:var(--muted)">Это краткая памятка. Точные нормы — в Трудовом кодексе РФ.</p>` },
+  events: { title:'Ярмарки вакансий и события', html:`
+    <h4>Что проводит Центр карьеры</h4>
+    <ul>
+      <li>Ярмарки вакансий и дни карьеры с работодателями сферы ФКиС.</li>
+      <li>Встречи с работодателями, мастер-классы и консультации.</li>
+      <li>Помощь с резюме и подготовкой к собеседованию.</li>
+    </ul>
+    <h4>Расписание и анонсы</h4>
+    <p>Актуальные даты публикуются в каналах Центра карьеры:</p>
+    <ul>
+      <li><a href="https://vk.com/lesgaft_career_youth" target="_blank" rel="noopener">ВКонтакте</a></li>
+      <li><a href="https://lesgaft.spb.ru/ru/division/centr-innovacionnoy-politiki-molodyozhnoy-politiki-i-karery-obuchayushchihsya-vypusknikov-i" target="_blank" rel="noopener">Страница центра на сайте университета</a></li>
+    </ul>` },
+  faq: { title:'Частые вопросы', html:`
+    <h4>Нужен ли опыт?</h4>
+    <p>Не всегда. Многие вакансии (учитель, инструктор, тренер детских секций) открыты для начинающих — важны образование, разряды и желание работать.</p>
+    <h4>Как откликнуться на вакансию?</h4>
+    <p>Нажмите «Подробнее» в карточке, затем «Перейти к вакансии на площадку» — отклик оформляется на сайте-источнике (hh.ru, «Работа России», SuperJob).</p>
+    <h4>Откуда вакансии?</h4>
+    <p>Сервис собирает их из открытых источников и обновляет автоматически; дубликаты убираются.</p>
+    <h4>Как искать эффективнее?</h4>
+    <p>Используйте фильтры (город, должность, зарплата) и сохраняйте поиск — ссылку с фильтрами можно отправить или открыть позже.</p>
+    <h4>Нет подходящих вакансий?</h4>
+    <p>Смягчите фильтры, проверьте другой регион или зайдите позже — список обновляется. За помощью обратитесь в Центр карьеры.</p>` },
+};
+function openInfo(key){
+  const d = INFO[key]; if(!d) return;
+  $('i-title').textContent = d.title;
+  $('i-body').innerHTML = d.html;
+  $('overlay2').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  $('i-close').focus();
+}
+function closeInfo(){
+  $('overlay2').classList.remove('open');
+  if(!$('overlay').classList.contains('open')) document.body.style.overflow = '';
+}
+function copyTpl(btn){
+  const pre = document.getElementById('resumeTpl');
+  if(!pre || !navigator.clipboard) return;
+  navigator.clipboard.writeText(pre.textContent.trim()).then(()=>{
+    const t = btn.textContent;
+    btn.textContent = 'Скопировано ✓';
+    setTimeout(()=>{ btn.textContent = t; }, 1500);
+  }).catch(()=>{});
+}
+$('i-close').addEventListener('click', closeInfo);
+$('overlay2').addEventListener('click', e=>{ if(e.target === $('overlay2')) closeInfo(); });
+document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeInfo(); });
+document.querySelectorAll('.u-card[data-info]').forEach(b=>{
+  b.addEventListener('click', ()=> openInfo(b.dataset.info));
+});
+
+readURL();
 load();
 </script>
 </body>
