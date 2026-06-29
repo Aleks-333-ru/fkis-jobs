@@ -4,8 +4,29 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Вакансии ФКиС — физическая культура и спорт</title>
-<link rel="icon" type="image/svg+xml" href="favicon.svg">
-<link rel="alternate icon" type="image/png" href="logo.png">
+<link rel="icon" type="image/png" href="favicon.png?v=2">
+<link rel="apple-touch-icon" href="favicon.png?v=2">
+<meta name="description" content="Агрегатор вакансий в сфере физической культуры и спорта: тренеры, преподаватели, инструкторы, методисты. Свежие предложения из hh.ru, «Работы России» и SuperJob — в одном месте.">
+<meta name="theme-color" content="#173f7d">
+<meta name="color-scheme" content="light">
+<meta name="author" content="Университет имени П.Ф. Лесгафта">
+<link rel="canonical" href="https://fkis-jobs.onrender.com/">
+<!-- Open Graph (превью при отправке ссылки) -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Вакансии ФКиС · Университет имени П.Ф. Лесгафта">
+<meta property="og:locale" content="ru_RU">
+<meta property="og:title" content="Вакансии в сфере физической культуры и спорта">
+<meta property="og:description" content="Свежие вакансии для тренеров, преподавателей, инструкторов и методистов — из проверенных источников в одном месте.">
+<meta property="og:url" content="https://fkis-jobs.onrender.com/">
+<meta property="og:image" content="https://fkis-jobs.onrender.com/favicon.png">
+<meta property="og:image:width" content="1024">
+<meta property="og:image:height" content="1024">
+<meta property="og:image:alt" content="Вакансии ФКиС — сервис подбора вакансий">
+<!-- Twitter -->
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Вакансии в сфере физической культуры и спорта">
+<meta name="twitter:description" content="Свежие вакансии для тренеров, преподавателей, инструкторов и методистов — в одном месте.">
+<meta name="twitter:image" content="https://fkis-jobs.onrender.com/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&family=Open+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -49,6 +70,13 @@
   a{color:var(--navy-2);text-decoration:none}
   a:hover{color:var(--navy)}
   .wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+  /* Ссылка «к содержанию» — видна только при фокусе с клавиатуры */
+  .skip-link{position:absolute;left:8px;top:-60px;z-index:100;
+    background:var(--navy);color:#fff;padding:11px 18px;border-radius:0 0 10px 10px;
+    font-family:'Montserrat',system-ui,sans-serif;font-weight:700;font-size:14px;
+    transition:top .18s var(--ease)}
+  .skip-link:focus{top:0;outline:3px solid var(--accent-2);outline-offset:2px}
+  main.content:focus{outline:none}
 
   /* ---- Шапка: чистая белая полоса с логотипом ---- */
   header.top{background:rgba(255,255,255,.82);backdrop-filter:saturate(160%) blur(10px);
@@ -250,6 +278,8 @@
   #list.reveal .card:nth-child(9){animation-delay:.40s}
   #list.reveal .card:nth-child(n+10){animation-delay:.45s}
   @media(prefers-reduced-motion:reduce){
+    *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;
+      transition-duration:.001ms!important;scroll-behavior:auto!important}
     #list.reveal .card{animation:none}
   }
 
@@ -389,6 +419,7 @@
 </style>
 </head>
 <body>
+<a class="skip-link" href="#content">Перейти к содержанию</a>
 
 <header class="top">
   <div class="wrap top-inner">
@@ -406,7 +437,7 @@
       <h1>Вакансии в сфере <span class="accent">физической культуры и спорта</span></h1>
       <p class="subtitle">Свежие предложения для тренеров, преподавателей, инструкторов и методистов — из проверенных источников.</p>
     </div>
-    <div class="board"><span class="num" id="count">0</span><span class="lbl">найдено</span></div>
+    <div class="board" role="status" aria-live="polite"><span class="num" id="count">0</span><span class="lbl">найдено</span></div>
   </div>
 </div>
 
@@ -549,7 +580,7 @@
   </aside>
 
   <!-- Контент -->
-  <main class="content">
+  <main class="content" id="content" tabindex="-1">
     <h2>Открытые <span class="accent">вакансии</span></h2>
     <p class="note">Подбор вакансий тренеров, учителей физкультуры, инструкторов и методистов из открытых источников.</p>
     <div id="banner"></div>
