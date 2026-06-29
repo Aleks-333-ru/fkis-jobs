@@ -279,10 +279,40 @@
   .totop svg{width:22px;height:22px}
   @media(max-width:560px){.totop{right:16px;bottom:16px;width:44px;height:44px}}
 
-  footer{color:var(--muted);font-size:12.5px;text-align:center;padding:36px 0 46px;
-    border-top:1px solid var(--line);margin-top:26px;line-height:1.7}
-  footer .f-org{font-family:'Montserrat',system-ui,sans-serif;color:var(--navy);font-weight:600;
-    font-size:14px;margin-bottom:8px}
+  /* ---- Подвал ---- */
+  .site-footer{margin-top:48px;background:var(--navy-deep);color:#c5d4ec;
+    font-size:14px;line-height:1.7}
+  .foot-grid{max-width:1180px;margin:0 auto;padding:46px 24px 38px;
+    display:grid;grid-template-columns:1.7fr 1fr 1fr 1.2fr;gap:34px}
+  .foot-brand{max-width:340px}
+  .foot-logo{display:inline-block;background:#fff;border-radius:12px;padding:11px 15px;
+    box-shadow:0 6px 18px rgba(0,0,0,.18)}
+  .foot-logo img{height:46px;width:auto;display:block}
+  .foot-desc{margin:16px 0 0;color:#9fb3d4}
+  .foot-col h4{font-family:'Montserrat',system-ui,sans-serif;color:#fff;font-size:12.5px;
+    font-weight:700;text-transform:uppercase;letter-spacing:.09em;margin:2px 0 15px}
+  .foot-col ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+  .foot-col a{color:#c5d4ec;transition:color .15s var(--ease)}
+  .foot-col a:hover{color:var(--accent-2)}
+  .foot-contacts p{margin:0 0 10px;color:#9fb3d4}
+  .foot-bottom{border-top:1px solid rgba(255,255,255,.1)}
+  .foot-bottom-inner{max-width:1180px;margin:0 auto;padding:18px 24px;
+    display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;
+    font-size:12.5px;color:#8197ba}
+  .foot-soc-label{margin-top:18px;font-size:11px;font-weight:700;color:#8197ba;
+    text-transform:uppercase;letter-spacing:.09em}
+  .foot-social{display:flex;flex-wrap:wrap;gap:9px;margin-top:11px}
+  .soc{display:inline-flex;align-items:center;gap:8px;
+    background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);
+    color:#c5d4ec;border-radius:999px;padding:8px 14px;font-size:13px;font-weight:600;
+    transition:background .15s var(--ease),border-color .15s var(--ease),color .15s var(--ease)}
+  .soc .soc-ic{width:18px;height:18px;flex:0 0 auto;border-radius:5px;display:block}
+  .soc:hover{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.3);color:#fff}
+  @media(max-width:860px){.foot-grid{grid-template-columns:1fr 1fr;gap:28px}}
+  @media(max-width:560px){
+    .foot-grid{grid-template-columns:1fr;gap:26px;padding:34px 16px 28px}
+    .foot-bottom-inner{padding:16px;flex-direction:column;align-items:flex-start}
+  }
 
   /* ---- Модальное окно «Подробнее» ---- */
   .overlay{position:fixed;inset:0;background:rgba(12,26,46,.5);
@@ -531,9 +561,54 @@
   </main>
 </div>
 
-<footer class="wrap">
-  <div class="f-org">Национальный государственный университет физической культуры, спорта и здоровья имени П.Ф. Лесгафта, Санкт-Петербург · 1896–2026, 130 лет</div>
-  <div>Данные: hh.ru API и «Работа России» (trudvsem.ru). Сервис подбора вакансий в сфере физической культуры и спорта.</div>
+<footer class="site-footer">
+  <div class="foot-grid">
+    <div class="foot-brand">
+      <span class="foot-logo"><img src="logo.png" alt="Университет имени П.Ф. Лесгафта — 130 лет"></span>
+      <p class="foot-desc">Сервис подбора вакансий в сфере физической культуры и спорта. Собирает актуальные предложения работы из открытых источников и показывает их в одном месте.</p>
+    </div>
+
+    <nav class="foot-col">
+      <h4>Источники вакансий</h4>
+      <ul>
+        <li><a href="https://hh.ru" target="_blank" rel="noopener">hh.ru</a></li>
+        <li><a href="https://trudvsem.ru" target="_blank" rel="noopener">Работа России</a></li>
+        <li><a href="https://www.superjob.ru" target="_blank" rel="noopener">SuperJob</a></li>
+      </ul>
+    </nav>
+
+    <nav class="foot-col">
+      <h4>Университет</h4>
+      <ul>
+        <li><a href="https://lesgaft.spb.ru/" target="_blank" rel="noopener">Официальный сайт</a></li>
+        <li><a href="https://lesgaft.spb.ru/ru/division/centr-innovacionnoy-politiki-molodyozhnoy-politiki-i-karery-obuchayushchihsya-vypusknikov-i" target="_blank" rel="noopener">Центр карьеры обучающихся и выпускников</a></li>
+        <li><a href="https://lesgaft.spb.ru/ru/commission/priyomnaya-komissiya" target="_blank" rel="noopener">Приёмная комиссия</a></li>
+      </ul>
+    </nav>
+
+    <div class="foot-col foot-contacts">
+      <h4>Контакты</h4>
+      <p>190121, Санкт-Петербург,<br>ул. Декабристов, д. 35</p>
+      <p><a href="https://lesgaft.spb.ru/" target="_blank" rel="noopener">lesgaft.spb.ru</a></p>
+      <div class="foot-soc-label">Центр карьеры в соцсетях</div>
+      <div class="foot-social">
+        <a class="soc" href="https://vk.com/lesgaft_career_youth" target="_blank" rel="noopener" aria-label="ВКонтакте">
+          <img class="soc-ic" src="logos/vk.png" alt="" width="18" height="18">
+          <span>ВКонтакте</span>
+        </a>
+        <a class="soc" href="https://max.ru/join/dGYpWkqbcOER9HAzqs5PrMsGExOrkHVvg41w9bKNpxs" target="_blank" rel="noopener" aria-label="MAX">
+          <img class="soc-ic" src="logos/max.png" alt="" width="18" height="18">
+          <span>MAX</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="foot-bottom">
+    <div class="foot-bottom-inner">
+      <span>© 2026 Национальный государственный университет физической культуры, спорта и здоровья имени П.Ф. Лесгафта, Санкт-Петербург</span>
+    </div>
+  </div>
 </footer>
 
 <!-- Кнопка «Наверх» -->
