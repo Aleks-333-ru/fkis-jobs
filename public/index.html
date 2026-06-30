@@ -490,6 +490,30 @@
   .match-box li.ok::before{content:"\2714";color:#1d9e75}
   .match-box li.no::before{content:"\2013";color:var(--muted)}
 
+  /* Аналитика рынка (внутри окна материалов) */
+  #i-body .an-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:8px 0 20px}
+  #i-body .an-card{background:var(--navy-soft);border-radius:var(--r-sm);padding:12px;text-align:center}
+  #i-body .an-num{font-family:'Open Sans';font-weight:800;font-size:22px;color:var(--navy);
+    font-variant-numeric:tabular-nums}
+  #i-body .an-cap{font-size:10.5px;color:var(--accent-deep);text-transform:uppercase;
+    letter-spacing:.06em;font-weight:700;margin-top:3px}
+  #i-body .an-row{margin:0 0 11px}
+  #i-body .an-top{display:flex;justify-content:space-between;gap:10px;font-size:13px;margin-bottom:5px}
+  #i-body .an-lbl{color:var(--ink);font-weight:600}
+  #i-body .an-val{color:var(--muted);white-space:nowrap}
+  #i-body .an-track{height:8px;background:#eef2f7;border-radius:6px;overflow:hidden}
+  #i-body .an-bar{height:100%;background:var(--navy-2);border-radius:6px}
+
+  /* Карьерный маршрут (лестница) */
+  #i-body .ladder{list-style:none;margin:8px 0 0;padding:0}
+  #i-body .ladder li{position:relative;padding:0 0 18px 28px;border-left:2px solid var(--line)}
+  #i-body .ladder li:last-child{border-left-color:transparent;padding-bottom:0}
+  #i-body .ladder li::before{content:"";position:absolute;left:-7px;top:2px;width:12px;height:12px;
+    border-radius:50%;background:var(--navy-2);box-shadow:0 0 0 3px #fff,0 0 0 4px var(--navy-2)}
+  #i-body .ladder .lad-role{font-family:'Montserrat',system-ui,sans-serif;font-weight:700;
+    color:var(--navy);font-size:14.5px}
+  #i-body .ladder .lad-note{font-size:13px;color:var(--muted);margin-top:2px;line-height:1.45}
+
   /* Планшет: правая колонка уходит вниз на всю ширину рядом карточками */
   @media(max-width:1100px){
     .layout{grid-template-columns:300px minmax(0,1fr)}
@@ -762,7 +786,19 @@
 
   <!-- Правая колонка: полезные материалы -->
   <aside class="useful" aria-label="В помощь соискателю">
-    <div class="u-head">В помощь соискателю</div>
+    <div class="u-head">Аналитика и карьера</div>
+
+    <button class="u-card" id="card-analytics" type="button">
+      <span class="u-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 15v2M12 10v7M17 6v11"/></svg></span>
+      <span class="u-tx"><span class="u-t">Аналитика рынка</span><span class="u-d">Зарплаты, спрос, топ направлений и регионов</span></span>
+    </button>
+
+    <button class="u-card" type="button" data-info="career">
+      <span class="u-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l6-6 4 4 8-8"/><path d="M17 7h4v4"/></svg></span>
+      <span class="u-tx"><span class="u-t">Карьерный маршрут</span><span class="u-d">Инструктор → тренер → … → директор</span></span>
+    </button>
+
+    <div class="u-head" style="margin-top:8px">В помощь соискателю</div>
 
     <button class="u-card" type="button" data-info="resume">
       <span class="u-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2Z"/><path d="M9 13h6M9 17h6"/></svg></span>
@@ -1537,14 +1573,48 @@ const INFO = {
     <p>Используйте фильтры (город, должность, зарплата) и сохраняйте поиск — ссылку с фильтрами можно отправить или открыть позже.</p>
     <h4>Нет подходящих вакансий?</h4>
     <p>Смягчите фильтры, проверьте другой регион или зайдите позже — список обновляется. За помощью обратитесь в Центр карьеры.</p>` },
+  career: { title:'Карьерный маршрут', html:`
+    <p>Типичные ступени профессионального роста в сфере физической культуры и спорта.</p>
+    <ul class="ladder">
+      <li><div class="lad-role">Инструктор</div><div class="lad-note">Старт: проведение занятий, базовая работа с группами.</div></li>
+      <li><div class="lad-role">Тренер</div><div class="lad-note">Самостоятельная подготовка спортсменов, ведение тренировочного процесса.</div></li>
+      <li><div class="lad-role">Старший тренер</div><div class="lad-note">Руководство тренерским составом направления, планирование подготовки.</div></li>
+      <li><div class="lad-role">Методист</div><div class="lad-note">Разработка программ, методическое сопровождение, контроль качества.</div></li>
+      <li><div class="lad-role">Директор спортивной школы</div><div class="lad-note">Управление организацией: кадры, финансы, развитие.</div></li>
+    </ul>
+    <p style="color:var(--muted);font-size:12.5px">Маршрут ориентировочный — переходы зависят от образования, опыта и направления.</p>` },
 };
-function openInfo(key){
-  const d = INFO[key]; if(!d) return;
-  $('i-title').textContent = d.title;
-  $('i-body').innerHTML = d.html;
+function openInfoHTML(title, html){
+  $('i-title').textContent = title;
+  $('i-body').innerHTML = html;
   $('overlay2').classList.add('open');
   document.body.style.overflow = 'hidden';
   $('i-close').focus();
+}
+function openInfo(key){ const d = INFO[key]; if(d) openInfoHTML(d.title, d.html); }
+
+// --- Аналитика рынка: считаем из загруженных вакансий ---
+function openAnalytics(){
+  const data = DATA.slice();
+  const n = data.length;
+  if(!n){ openInfoHTML('Аналитика рынка', '<p>Данные ещё не загружены. Попробуйте позже.</p>'); return; }
+  const rub = x => x ? x.toLocaleString('ru-RU') + ' ₽' : '—';
+  const withSal = data.filter(v=>v.salaryFrom||v.salaryTo);
+  const avg = withSal.length ? Math.round(withSal.reduce((s,v)=>s+(v.salaryFrom||v.salaryTo),0)/withSal.length) : 0;
+  const weekAgo = Date.now()-7*86400000;
+  const week = data.filter(v=>{const t=Date.parse(v.publishedAt);return !isNaN(t)&&t>=weekAgo;}).length;
+  const group = (keyFn)=>{ const m={}; data.forEach(v=>{ const k=keyFn(v)||'—'; (m[k]=m[k]||{n:0,sal:0,salN:0}); m[k].n++; const s=v.salaryFrom||v.salaryTo; if(s){m[k].sal+=s;m[k].salN++;} }); return Object.entries(m).map(([k,o])=>({k,n:o.n,avg:o.salN?Math.round(o.sal/o.salN):0})).sort((a,b)=>b.n-a.n); };
+  const cats = group(v=>v.category);
+  const regs = group(v=>v.region).slice(0,8);
+  const maxCat = Math.max(...cats.map(c=>c.n),1);
+  const maxReg = Math.max(...regs.map(r=>r.n),1);
+  const bar = (label,val,max,extra)=>`<div class="an-row"><div class="an-top"><span class="an-lbl">${escapeHtml(label)}</span><span class="an-val">${val}${extra?' · '+extra:''}</span></div><div class="an-track"><div class="an-bar" style="width:${Math.max(4,Math.round(val/max*100))}%"></div></div></div>`;
+  let html = `<p style="color:var(--muted);font-size:13px;margin:0 0 4px">По ${fmt(n)} загруженным вакансиям${week?`, из них ${fmt(week)} за последнюю неделю`:''}.</p>`;
+  html += `<div class="an-cards"><div class="an-card"><div class="an-num">${fmt(n)}</div><div class="an-cap">вакансий</div></div><div class="an-card"><div class="an-num">+${fmt(week)}</div><div class="an-cap">за неделю</div></div><div class="an-card"><div class="an-num">${avg?fmt(avg):'—'}</div><div class="an-cap">средняя з/п, ₽</div></div></div>`;
+  html += `<h4>Самые востребованные направления</h4>` + cats.map(c=>bar(c.k,c.n,maxCat,c.avg?'ср. '+rub(c.avg):'')).join('');
+  html += `<h4>Топ регионов по числу вакансий</h4>` + regs.map(r=>bar(r.k,r.n,maxReg,r.avg?'ср. '+rub(r.avg):'')).join('');
+  html += `<p style="color:var(--muted);font-size:12px;margin-top:14px">Расчёт по открытым данным источников; зарплата усреднена по вакансиям, где она указана.</p>`;
+  openInfoHTML('Аналитика рынка', html);
 }
 function closeInfo(){
   $('overlay2').classList.remove('open');
@@ -1565,6 +1635,7 @@ document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeInfo(); });
 document.querySelectorAll('.u-card[data-info]').forEach(b=>{
   b.addEventListener('click', ()=> openInfo(b.dataset.info));
 });
+$('card-analytics').addEventListener('click', openAnalytics);
 
 // --- Умный подбор: обработчики ---
 function readProfileInputs(){
