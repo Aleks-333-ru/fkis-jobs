@@ -124,15 +124,20 @@
   .qchip.active .qico{opacity:1}
   .qchip.active .qcount{background:rgba(255,255,255,.22);color:#fff}
   /* Счётчик найденных — лёгкая карточка с акцентом сверху */
-  .board{position:relative;flex:0 0 auto;display:flex;flex-direction:column;align-items:center;
-    gap:2px;padding:18px 30px;border-radius:var(--r);overflow:hidden;
-    background:#fff;border:1px solid var(--line);box-shadow:var(--shadow)}
-  .board::before{content:"";position:absolute;left:0;right:0;top:0;height:4px;background:var(--grad-accent)}
-  .board .num{font-family:'Open Sans';font-weight:800;
-    font-size:clamp(36px,5.5vw,52px);line-height:1;color:var(--navy);
-    font-variant-numeric:tabular-nums;letter-spacing:-.02em}
-  .board .lbl{font-size:11px;text-transform:uppercase;letter-spacing:.18em;
-    color:var(--accent-deep);font-weight:800}
+  .board{position:relative;flex:0 0 auto;display:flex;align-items:stretch;overflow:hidden;
+    border-radius:var(--r);background:var(--navy-deep);border:1px solid rgba(255,255,255,.12);
+    box-shadow:var(--shadow)}
+  .board .stat{display:flex;flex-direction:column;align-items:center;justify-content:center;
+    gap:4px;padding:16px 26px;text-align:center}
+  .board .stat-week{border-left:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.05)}
+  .board .num{font-family:'Open Sans';font-weight:800;font-size:clamp(36px,5vw,52px);line-height:1;
+    color:#fff;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+  .board .lbl{font-size:11px;text-transform:uppercase;letter-spacing:.15em;
+    color:#fff;font-weight:800}
+  .board .wnum{font-family:'Open Sans';font-weight:800;font-size:clamp(22px,3vw,30px);line-height:1;
+    color:#9fb3d4;font-variant-numeric:tabular-nums}
+  .board .wlbl{font-size:10.5px;text-transform:uppercase;letter-spacing:.12em;
+    color:#9fb3d4;font-weight:700}
 
   /* ---- Двухколоночная сетка ---- */
   .layout{display:grid;grid-template-columns:300px minmax(0,1fr) 300px;gap:28px;
@@ -447,8 +452,10 @@
     .top-inner{gap:14px;padding:13px 0}
     .titlebar-inner{padding:20px 0;gap:16px}
     .titlebar .eyebrow{margin-bottom:9px}
-    .board{flex-direction:row;align-items:baseline;gap:10px;padding:12px 18px}
-    .board .num{font-size:34px}
+    .board{width:100%}
+    .board .stat{flex:1;padding:12px 14px}
+    .board .num{font-size:30px}
+    .board .wnum{font-size:20px}
     .content h2{font-size:22px}
     .card{padding:18px 18px 16px 20px}
     button.more{width:100%}
@@ -482,7 +489,16 @@
       <h1>Вакансии в сфере <span class="accent">физической культуры и спорта</span></h1>
       <p class="subtitle">Свежие предложения для тренеров, преподавателей, инструкторов и методистов — из проверенных источников.</p>
     </div>
-    <div class="board" role="status" aria-live="polite"><span class="num" id="count">0</span><span class="lbl">найдено</span></div>
+    <div class="board" role="status" aria-live="polite">
+      <div class="stat stat-main">
+        <span class="num" id="count">0</span>
+        <span class="lbl">найдено всего</span>
+      </div>
+      <div class="stat stat-week">
+        <span class="wnum" id="weekcount">0</span>
+        <span class="wlbl">за неделю</span>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -627,7 +643,7 @@
   <!-- Контент -->
   <main class="content" id="content" tabindex="-1">
     <h2>Открытые <span class="accent">вакансии</span></h2>
-    <p class="note">Подбор вакансий тренеров, учителей физкультуры, инструкторов и методистов из открытых источников.</p>
+    <p class="note">Подбор вакансий тренеров, учителей физической культуры, инструкторов и методистов из открытых источников.</p>
     <div id="banner"></div>
     <div id="list"></div>
     <div class="more-wrap">
@@ -785,9 +801,9 @@ const SAMPLE = [
   {source:'hh',title:'Фитнес-инструктор тренажёрного зала',company:'World Class',region:'Санкт-Петербург',salaryFrom:55000,salaryTo:90000,employment:'Полная занятость',schedule:'Сменный график',url:'#',category:'Фитнес',publishedAt:'2026-06-26T08:15:00',requirement:'Среднее профессиональное образование · опыт от 2 лет',address:'Санкт-Петербург, Невский пр., 100',description:'Консультирование клиентов в тренажёрном зале, составление программ тренировок, проведение вводных инструктажей. Требования: знание анатомии и техники упражнений, сертификаты приветствуются.'},
   {source:'trudvsem',title:'Инструктор по лыжному спорту',company:'СШ «Олимпиец»',region:'Екатеринбург',salaryFrom:42000,salaryTo:50000,employment:'Частичная занятость',schedule:'Гибкий график',url:'#',category:'Инструктор',publishedAt:'2026-06-22T15:00:00',requirement:'Спортивный разряд · опыт от 1 года',address:'Свердловская область, г Екатеринбург, ул. Лыжная, 5',description:'Обучение основам лыжной подготовки, сопровождение групп на трассе, контроль безопасности. Сезонная занятость с возможностью продления. Требования: спортивный разряд, опыт инструктажа.'},
   {source:'hh',title:'Тренер по фитнесу (групповые программы)',company:'Spirit Fitness',region:'Москва',salaryFrom:70000,salaryTo:120000,employment:'Полная занятость',schedule:'Сменный график',url:'#',category:'Тренер',publishedAt:'2026-06-25T18:40:00',requirement:'Профильные сертификаты · опыт от 1 года',address:'Москва, Ленинградский пр., 80',description:'Проведение групповых занятий (силовые, функциональные, аэробные направления). Формирование лояльной аудитории, ведение расписания. Требования: опыт от 1 года, харизма, профильные сертификаты.'},
-  {source:'trudvsem',title:'Методист спортивной школы',company:'ДЮСШ №3',region:'Новосибирск',salaryFrom:35000,salaryTo:45000,employment:'Полная занятость',schedule:'Полный день',url:'#',category:'Методист',publishedAt:'2026-06-21T10:00:00',requirement:'Высшее образование (физическая культура) · опыт от 3 лет',address:'Новосибирская область, г Новосибирск, ул. Кирова, 3',description:'Разработка учебно-тренировочных программ, методическое сопровождение тренеров, ведение документации и отчётности. Требования: высшее образование в области физкультуры, знание нормативной базы.'},
-  {source:'hh',title:'Учитель физкультуры (начальные классы)',company:'Частная школа «Лидер»',region:'Москва',salaryFrom:80000,salaryTo:null,employment:'Полная занятость',schedule:'Полный день',url:'#',category:'Учитель ФК',publishedAt:'2026-06-23T11:20:00',requirement:'Педагогическое образование · без опыта',address:'Москва, ул. Лидерская, 7',description:'Уроки физической культуры в начальной школе, организация подвижных игр и утренней зарядки. Современная спортивная база. Требования: педагогическое образование, любовь к детям.'},
-  {source:'trudvsem',title:'Инструктор-методист по адаптивной физкультуре',company:'Центр реабилитации',region:'Казань',salaryFrom:40000,salaryTo:55000,employment:'Полная занятость',schedule:'Полный день',url:'#',category:'Инструктор',publishedAt:'2026-06-20T09:30:00',requirement:'Профильное образование (АФК) · опыт от 2 лет',address:'Республика Татарстан, г Казань, ул. Реабилитационная, 9',description:'Проведение занятий адаптивной физкультурой для людей с ограниченными возможностями здоровья, разработка индивидуальных программ. Требования: профильное образование (АФК), терпение и эмпатия.'},
+  {source:'trudvsem',title:'Методист спортивной школы',company:'ДЮСШ №3',region:'Новосибирск',salaryFrom:35000,salaryTo:45000,employment:'Полная занятость',schedule:'Полный день',url:'#',category:'Методист',publishedAt:'2026-06-21T10:00:00',requirement:'Высшее образование (физическая культура) · опыт от 3 лет',address:'Новосибирская область, г Новосибирск, ул. Кирова, 3',description:'Разработка учебно-тренировочных программ, методическое сопровождение тренеров, ведение документации и отчётности. Требования: высшее образование в области физической культуры, знание нормативной базы.'},
+  {source:'hh',title:'Учитель физической культуры (начальные классы)',company:'Частная школа «Лидер»',region:'Москва',salaryFrom:80000,salaryTo:null,employment:'Полная занятость',schedule:'Полный день',url:'#',category:'Учитель ФК',publishedAt:'2026-06-23T11:20:00',requirement:'Педагогическое образование · без опыта',address:'Москва, ул. Лидерская, 7',description:'Уроки физической культуры в начальной школе, организация подвижных игр и утренней зарядки. Современная спортивная база. Требования: педагогическое образование, любовь к детям.'},
+  {source:'trudvsem',title:'Инструктор-методист по адаптивной физической культуре',company:'Центр реабилитации',region:'Казань',salaryFrom:40000,salaryTo:55000,employment:'Полная занятость',schedule:'Полный день',url:'#',category:'Инструктор',publishedAt:'2026-06-20T09:30:00',requirement:'Профильное образование (АФК) · опыт от 2 лет',address:'Республика Татарстан, г Казань, ул. Реабилитационная, 9',description:'Проведение занятий адаптивной физической культурой для людей с ограниченными возможностями здоровья, разработка индивидуальных программ. Требования: профильное образование (АФК), терпение и эмпатия.'},
   {source:'superjob',title:'Тренер тренажёрного зала',company:'Фитнес-клуб «Атлет»',region:'Нижний Новгород',salaryFrom:50000,salaryTo:75000,employment:'Полная занятость',schedule:'Сменный график',url:'#',category:'Тренер',publishedAt:'2026-06-26T10:10:00',requirement:'Профильное образование · опыт от 1 года',address:'Нижний Новгород, ул. Атлетов, 1',description:'Проведение персональных тренировок, ведение клиентской базы, контроль техники выполнения упражнений. Требования: профильное образование, опыт работы от 1 года.'},
 ];
 
@@ -962,6 +978,9 @@ function readURL(){
 function render(items, animate){
   VIEW = items;
   $('count').textContent = fmt(items.length);
+  const weekAgo = Date.now() - 7*86400000;
+  const newWeek = items.filter(v=>{ const t = Date.parse(v.publishedAt); return !isNaN(t) && t >= weekAgo; }).length;
+  $('weekcount').textContent = '+' + fmt(newWeek);
   const list = $('list');
   if(!items.length){
     list.classList.remove('reveal');
@@ -1255,10 +1274,10 @@ const INFO = {
     <h4>Тренер</h4>
     <p>Планирует и проводит тренировки, ведёт спортсменов к результату, контролирует технику и нагрузку. Нужны: лидерство, дисциплина, знание методики. Образование — в области ФК и спорта.</p>
     <h4>Учитель физической культуры</h4>
-    <p>Ведёт уроки физкультуры в школе по ФГОС, организует секции и сдачу ГТО. Нужны: педагогические навыки, ответственность, любовь к детям. Образование — высшее педагогическое.</p>
+    <p>Ведёт уроки физической культуры в школе по ФГОС, организует секции и сдачу ГТО. Нужны: педагогические навыки, ответственность, любовь к детям. Образование — высшее педагогическое.</p>
     <h4>Инструктор по спорту / фитнесу</h4>
     <p>Проводит групповые и индивидуальные занятия, следит за техникой и безопасностью, мотивирует клиентов. Нужны: коммуникабельность, знание анатомии и методики.</p>
-    <h4>Инструктор-методист по адаптивной физкультуре</h4>
+    <h4>Инструктор-методист по адаптивной физической культуре</h4>
     <p>Проводит занятия для людей с ограниченными возможностями здоровья по индивидуальным программам. Нужны: эмпатия, терпение, профильное образование (АФК).</p>
     <h4>Методист</h4>
     <p>Разрабатывает учебно-тренировочные программы, сопровождает тренеров, ведёт документацию. Нужны: системность, знание нормативной базы.</p>` },
