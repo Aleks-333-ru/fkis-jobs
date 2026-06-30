@@ -428,6 +428,68 @@
     padding:9px 16px;cursor:pointer;transition:background .15s var(--ease)}
   #i-body .tpl-copy:hover{background:var(--navy)}
 
+  /* ---- Умный подбор ---- */
+  .smart{background:var(--panel);border:1px solid var(--line);border-radius:var(--r-lg);
+    box-shadow:var(--shadow-sm);margin-bottom:20px;overflow:hidden}
+  .smart-head{display:flex;justify-content:space-between;align-items:center;gap:12px;
+    padding:14px 18px;background:var(--navy-soft)}
+  .smart-title{font-family:'Montserrat',system-ui,sans-serif;font-weight:700;color:var(--navy);
+    font-size:15px;display:flex;align-items:center;gap:8px}
+  .smart-title .st-star{color:var(--accent)}
+  .smart-toggle{background:var(--navy-2);color:#fff;border:none;border-radius:var(--r-sm);
+    font-family:inherit;font-weight:700;font-size:13px;padding:8px 16px;cursor:pointer}
+  .smart-toggle:hover{background:var(--navy)}
+  .smart.active .smart-head{background:var(--navy)}
+  .smart.active .smart-title{color:#fff}
+  .smart-body{padding:16px 18px}
+  .smart-hint{margin:0 0 14px;font-size:13px;color:var(--muted)}
+  .smart-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px 14px}
+  .smart-grid label.f{margin-bottom:6px}
+  .smart-actions{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap}
+  .smart-apply{background:var(--accent);color:#fff;border:none;border-radius:var(--r-sm);
+    font-family:inherit;font-weight:700;font-size:14px;padding:11px 22px;cursor:pointer}
+  .smart-apply:hover{background:var(--accent-deep)}
+  .smart-clear{background:#fff;color:var(--ink-soft);border:1.5px solid var(--line);
+    border-radius:var(--r-sm);font-family:inherit;font-weight:700;font-size:14px;padding:11px 18px;cursor:pointer}
+  .smart-clear:hover{background:#f3f5f9}
+
+  /* Бейдж совпадения на карточке */
+  .match-badge{display:inline-flex;align-items:baseline;gap:5px;border-radius:999px;
+    padding:4px 11px;font-size:12px;font-weight:800;margin-top:10px;font-variant-numeric:tabular-nums}
+  .match-badge .mb-pct{font-size:13px}
+  .match-badge.hi{background:#e1f5ee;color:#0f6e56}
+  .match-badge.mid{background:#fbeede;color:var(--accent-deep)}
+  .match-badge.low{background:#eef2f7;color:var(--muted)}
+
+  /* Окно: обязанности списком, требования чек-листом */
+  .mbody .m-section{margin-top:20px}
+  .mbody .m-section h4{font-family:'Montserrat',system-ui,sans-serif;font-size:15px;
+    color:var(--navy);font-weight:700;margin:0 0 11px}
+  .m-list,.m-check{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:9px}
+  .m-list li{position:relative;padding-left:20px;font-size:14px;color:var(--ink-soft);line-height:1.55}
+  .m-list li::before{content:"";position:absolute;left:3px;top:9px;width:6px;height:6px;
+    border-radius:50%;background:var(--navy-bright)}
+  .m-list li.muted{color:var(--muted)}
+  .m-list li.muted::before{display:none}
+  .m-check li{position:relative;padding-left:27px;font-size:14px;color:var(--ink-soft);line-height:1.55}
+  .m-check li::before{content:"\2714";position:absolute;left:0;top:1px;color:#1d9e75;font-weight:700}
+
+  /* Окно: блок совпадения «почему» */
+  .match-box{background:var(--navy-soft);border:1px solid #d5e3f4;border-radius:var(--r);
+    padding:14px 16px;margin-top:16px}
+  .match-box .mx-top{display:flex;align-items:baseline;gap:8px;margin-bottom:10px}
+  .match-box .mx-pct{font-family:'Open Sans';font-weight:800;font-size:26px;color:var(--navy);
+    font-variant-numeric:tabular-nums}
+  .match-box .mx-lbl{font-size:12px;text-transform:uppercase;letter-spacing:.07em;
+    color:var(--accent-deep);font-weight:800}
+  .match-box ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px}
+  .match-box li{position:relative;padding-left:24px;font-size:13.5px;line-height:1.5}
+  .match-box li.ok{color:var(--ink-soft)}
+  .match-box li.no{color:var(--muted)}
+  .match-box li::before{position:absolute;left:0;top:0;font-weight:700}
+  .match-box li.ok::before{content:"\2714";color:#1d9e75}
+  .match-box li.no::before{content:"\2013";color:var(--muted)}
+
   /* Планшет: правая колонка уходит вниз на всю ширину рядом карточками */
   @media(max-width:1100px){
     .layout{grid-template-columns:300px minmax(0,1fr)}
@@ -618,6 +680,7 @@
         <label class="f" for="sort">Сортировка</label>
         <select id="sort">
           <option value="">По умолчанию</option>
+          <option value="match">По совпадению</option>
           <option value="date">Сначала новые</option>
           <option value="salary_desc">Сначала с высокой зарплатой</option>
           <option value="salary_asc">Сначала с низкой зарплатой</option>
@@ -642,6 +705,51 @@
 
   <!-- Контент -->
   <main class="content" id="content" tabindex="-1">
+    <section class="smart" id="smart">
+      <div class="smart-head">
+        <div class="smart-title"><span class="st-star">★</span> Умный подбор</div>
+        <button class="smart-toggle" id="smart-toggle" type="button" aria-expanded="false">Настроить</button>
+      </div>
+      <div class="smart-body" id="smart-body" hidden>
+        <p class="smart-hint">Заполните анкету — подберём вакансии по совпадению компетенций и объясним, почему они подходят.</p>
+        <div class="smart-grid">
+          <div><label class="f" for="p-city">Ваш город</label><input id="p-city" placeholder="например: Казань"></div>
+          <div><label class="f" for="p-cat">Направление</label>
+            <select id="p-cat">
+              <option value="">Любое</option>
+              <option>Тренер</option>
+              <option>Учитель ФК</option>
+              <option>Инструктор</option>
+              <option>Фитнес</option>
+              <option>Методист</option>
+            </select>
+          </div>
+          <div><label class="f" for="p-sport">Вид спорта / специализация</label><input id="p-sport" placeholder="например: плавание"></div>
+          <div><label class="f" for="p-edu">Образование</label>
+            <select id="p-edu">
+              <option value="">Не указано</option>
+              <option value="prof">Среднее профессиональное</option>
+              <option value="higher">Высшее</option>
+              <option value="higher_prof">Высшее профильное</option>
+            </select>
+          </div>
+          <div><label class="f" for="p-exp">Опыт работы</label>
+            <select id="p-exp">
+              <option value="">Не указано</option>
+              <option value="0">Без опыта</option>
+              <option value="1">До 1 года</option>
+              <option value="3">1–3 года</option>
+              <option value="6">Более 3 лет</option>
+            </select>
+          </div>
+          <div><label class="f" for="p-salary">Желаемая зарплата, ₽</label><input id="p-salary" type="number" min="0" step="5000" placeholder="например: 50000"></div>
+        </div>
+        <div class="smart-actions">
+          <button class="smart-apply" id="smart-apply" type="button">Подобрать</button>
+          <button class="smart-clear" id="smart-clear" type="button">Сбросить</button>
+        </div>
+      </div>
+    </section>
     <h2>Открытые <span class="accent">вакансии</span></h2>
     <p class="note">Подбор вакансий тренеров, учителей физической культуры, инструкторов и методистов из открытых источников.</p>
     <div id="banner"></div>
@@ -780,10 +888,15 @@
     <div class="mbody">
       <div class="mcompany" id="m-company"></div>
       <div class="msalary" id="m-salary"></div>
+      <div id="m-match"></div>
       <dl class="dl" id="m-dl"></dl>
-      <div class="desc">
-        <h4>Описание вакансии</h4>
-        <div id="m-desc"></div>
+      <div class="m-section" id="m-duties-wrap">
+        <h4>Обязанности</h4>
+        <ul class="m-list" id="m-duties"></ul>
+      </div>
+      <div class="m-section" id="m-req-wrap">
+        <h4>Требования</h4>
+        <ul class="m-check" id="m-req"></ul>
       </div>
     </div>
     <div class="mfoot">
@@ -852,6 +965,41 @@ const ICON_PIN = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" str
 const ICON_REQ = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 5h1a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h1"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="m9 14 2 2 4-4"/></svg>`;
 const ICON_CAL = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4.5" width="18" height="16" rx="2"/><path d="M3 9.5h18M8 2.5v4M16 2.5v4"/></svg>`;
 const ICON_STAR = `<svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M12 3.5l2.6 5.27 5.82.85-4.21 4.1.99 5.79L12 17.77l-5.2 2.74.99-5.79-4.21-4.1 5.82-.85z"/></svg>`;
+
+// --- Умный подбор: профиль соискателя и расчёт совпадения ---
+const PROFILE_KEY = 'fkis_profile';
+let profile = {};
+let profileActive = false;
+const EDU_RANK = { prof:1, higher:2, higher_prof:3 };
+
+function yearsWordJS(n){ const a=Math.abs(n)%100,b=n%10; if(a>10&&a<20)return'лет'; if(b===1)return'год'; if(b>=2&&b<=4)return'года'; return'лет'; }
+function reqEduLevel(req){ const t=(req||'').toLowerCase(); if(/профильн/.test(t))return 3; if(/высш/.test(t))return 2; if(/средн|колледж|техникум/.test(t))return 1; return 0; }
+function reqExpYears(req){ const t=(req||'').toLowerCase(); if(/без опыта/.test(t))return 0; const m=t.match(/опыт[^\d]*(\d+)/); return m?parseInt(m[1],10):0; }
+
+function matchScore(v){
+  if(!profileActive) return null;
+  let earned=0, total=0; const reasons=[];
+  const add=(w,ok,okText,noText)=>{ total+=w; if(ok)earned+=w; reasons.push({ok, text: ok?okText:noText}); };
+  if(profile.cat){ add(25, v.category===profile.cat, 'подходит направление', 'другое направление'); }
+  if(profile.sport){ const s=profile.sport.toLowerCase(); const ok=((v.title||'')+' '+(v.description||'')).toLowerCase().includes(s); add(25, ok, `нужен именно «${profile.sport}»`, `не про «${profile.sport}»`); }
+  if(profile.edu){ const need=reqEduLevel(v.requirement); add(15, EDU_RANK[profile.edu]>=need, 'подходит образование', 'требуется более высокое образование'); }
+  if(profile.exp!=='' && profile.exp!=null){ const need=reqExpYears(v.requirement); add(15, Number(profile.exp)>=need, 'подходит опыт', `нужен опыт от ${need} ${yearsWordJS(need)}`); }
+  if(profile.salary){ const top=v.salaryFrom||v.salaryTo||0; add(12, top>=profile.salary, 'зарплата соответствует ожиданиям', top?'зарплата ниже ожиданий':'зарплата не указана'); }
+  if(profile.city){ const ok=(v.region||'').toLowerCase().includes(profile.city.toLowerCase()); add(8, ok, 'ваш город', 'другой регион'); }
+  if(total===0) return null;
+  return { score: Math.round(earned/total*100), reasons };
+}
+
+// Текст обязанностей → пункты списка; требования → пункты чек-листа
+function toBullets(text){
+  if(!text) return [];
+  let t = String(text).trim().replace(/\bТребовани[ея][:\s].*$/i, '').trim();
+  return t.split(/(?<=[.!?])\s+|\s*[;•]\s*/).map(s=>s.replace(/^[—\-\s]+/,'').trim()).filter(s=>s.length>3).slice(0,8);
+}
+function toChecklist(req){
+  if(!req) return [];
+  return String(req).split(/\s*[·;,]\s*/).map(s=>s.trim()).filter(Boolean).slice(0,8);
+}
 
 function salaryText(v){
   if(!v.salaryFrom && !v.salaryTo) return {cls:'none',text:'з/п не указана'};
@@ -924,7 +1072,9 @@ function applyFilters(animate){
   let out = cat ? base.filter(v=>v.category===cat) : base.slice();
 
   // Клиентская сортировка отфильтрованного списка
-  if(sort==='date'){
+  if(sort==='match' || (profileActive && sort==='')){
+    out.sort((a,b)=>((matchScore(b)?.score||0)-(matchScore(a)?.score||0)));
+  }else if(sort==='date'){
     out.sort((a,b)=>(Date.parse(b.publishedAt)||0)-(Date.parse(a.publishedAt)||0));
   }else if(sort==='salary_desc'){
     out.sort((a,b)=>((b.salaryFrom||b.salaryTo||0)-(a.salaryFrom||a.salaryTo||0)));
@@ -1000,6 +1150,7 @@ function render(items, animate){
       </div>
       <div class="company">${escapeHtml(v.company)} · ${escapeHtml(v.region||'регион не указан')}</div>
       <div class="salary ${s.cls}">${s.text}</div>
+      ${(()=>{ const m=matchScore(v); return m?`<div class="match-badge ${m.score>=80?'hi':m.score>=60?'mid':'low'}"><span class="mb-pct">${m.score}%</span> совпадение</div>`:''; })()}
       ${(v.address || v.requirement) ? `<div class="cinfo">
         ${v.address ? `<div class="cinfo-row">${ICON_PIN}<span class="ci-text ci-addr">${escapeHtml(v.address)}</span></div>` : ''}
         ${v.requirement ? `<div class="cinfo-row req">${ICON_REQ}<span class="ci-text ci-req"><b>Требования:</b> ${escapeHtml(v.requirement)}</span></div>` : ''}
@@ -1062,16 +1213,23 @@ function openModal(v){
   if(v.schedule) rows.push(['График', v.schedule]);
   if(v.region) rows.push(['Регион', v.region]);
   if(v.address) rows.push(['Адрес', v.address]);
-  if(v.requirement) rows.push(['Требования', v.requirement]);
   const pub = dateText(v.publishedAt);
   if(pub) rows.push(['Опубликовано', pub]);
   rows.push(['Источник', srcLabel(v.source)]);
   $('m-dl').innerHTML = rows.map(([k,val])=>
     `<dt>${escapeHtml(k)}</dt><dd>${escapeHtml(val)}</dd>`).join('');
 
-  $('m-desc').textContent = v.description && v.description.trim()
-    ? v.description.trim()
-    : 'Подробное описание не предоставлено источником. Полная информация — на странице вакансии.';
+  const duties = toBullets(v.description);
+  $('m-duties').innerHTML = duties.length
+    ? duties.map(d=>`<li>${escapeHtml(d)}</li>`).join('')
+    : '<li class="muted">Описание не предоставлено источником — смотрите на странице вакансии.</li>';
+  const reqs = toChecklist(v.requirement);
+  $('m-req-wrap').style.display = reqs.length ? '' : 'none';
+  $('m-req').innerHTML = reqs.map(r=>`<li>${escapeHtml(r)}</li>`).join('');
+  const mm = matchScore(v);
+  $('m-match').innerHTML = mm
+    ? `<div class="match-box"><div class="mx-top"><span class="mx-pct">${mm.score}%</span><span class="mx-lbl">совпадение по вашей анкете</span></div><ul>${mm.reasons.map(r=>`<li class="${r.ok?'ok':'no'}">${escapeHtml(r.text)}</li>`).join('')}</ul></div>`
+    : '';
 
   const goto = $('m-goto');
   if(v.url && v.url !== '#'){
@@ -1407,6 +1565,59 @@ document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeInfo(); });
 document.querySelectorAll('.u-card[data-info]').forEach(b=>{
   b.addEventListener('click', ()=> openInfo(b.dataset.info));
 });
+
+// --- Умный подбор: обработчики ---
+function readProfileInputs(){
+  return {
+    city: $('p-city').value.trim(),
+    cat: $('p-cat').value,
+    sport: $('p-sport').value.trim(),
+    edu: $('p-edu').value,
+    exp: $('p-exp').value,
+    salary: parseInt($('p-salary').value,10) || 0,
+  };
+}
+function applyProfile(){
+  profile = readProfileInputs();
+  profileActive = Object.values(profile).some(v=>v!=='' && v!==0 && v!=null);
+  $('smart').classList.toggle('active', profileActive);
+  try{ localStorage.setItem(PROFILE_KEY, JSON.stringify({active:profileActive, profile})); }catch(e){}
+  if(profileActive) $('sort').value = 'match';
+  refresh(true);
+}
+$('smart-toggle').addEventListener('click', ()=>{
+  const body = $('smart-body'); const willOpen = body.hidden;
+  body.hidden = !willOpen;
+  $('smart-toggle').setAttribute('aria-expanded', String(willOpen));
+  $('smart-toggle').textContent = willOpen ? 'Свернуть' : 'Настроить';
+});
+$('smart-apply').addEventListener('click', applyProfile);
+$('smart-clear').addEventListener('click', ()=>{
+  ['p-city','p-cat','p-sport','p-edu','p-exp','p-salary'].forEach(id=>{ $(id).value=''; });
+  profileActive = false; profile = {};
+  $('smart').classList.remove('active');
+  try{ localStorage.removeItem(PROFILE_KEY); }catch(e){}
+  if($('sort').value==='match') $('sort').value='';
+  refresh(true);
+});
+(function restoreProfile(){
+  try{
+    const saved = JSON.parse(localStorage.getItem(PROFILE_KEY) || 'null');
+    if(saved && saved.profile){
+      const p = saved.profile;
+      $('p-city').value=p.city||''; $('p-cat').value=p.cat||''; $('p-sport').value=p.sport||'';
+      $('p-edu').value=p.edu||''; $('p-exp').value=(p.exp??''); $('p-salary').value=p.salary||'';
+      if(saved.active){
+        profile=p; profileActive=true;
+        $('smart').classList.add('active');
+        $('smart-body').hidden=false;
+        $('smart-toggle').textContent='Свернуть';
+        $('smart-toggle').setAttribute('aria-expanded','true');
+        $('sort').value='match';
+      }
+    }
+  }catch(e){}
+})();
 
 readURL();
 load();
