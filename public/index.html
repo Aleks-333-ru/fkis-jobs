@@ -30,6 +30,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&family=Open+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <style>
   :root{
     /* Поверхности */
@@ -411,6 +413,8 @@
 
   /* Окно полезных материалов (наполнение) */
   .info-modal{max-width:640px}
+  .info-modal.map-modal{max-width:920px}
+  #i-body .leaflet-container{font-family:'Open Sans',system-ui,sans-serif}
   .info-modal h3{margin:0 46px 0 0;font-family:'Montserrat',system-ui,sans-serif;
     font-size:19px;line-height:1.3}
   #i-body h4{font-family:'Montserrat',system-ui,sans-serif;font-size:15px;color:var(--navy);
@@ -786,16 +790,16 @@
 
   <!-- Правая колонка: полезные материалы -->
   <aside class="useful" aria-label="В помощь соискателю">
-    <div class="u-head">Аналитика и карьера</div>
+    <div class="u-head">Аналитика и карта</div>
 
     <button class="u-card" id="card-analytics" type="button">
       <span class="u-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 15v2M12 10v7M17 6v11"/></svg></span>
       <span class="u-tx"><span class="u-t">Аналитика рынка</span><span class="u-d">Зарплаты, спрос, топ направлений и регионов</span></span>
     </button>
 
-    <button class="u-card" type="button" data-info="career">
-      <span class="u-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l6-6 4 4 8-8"/><path d="M17 7h4v4"/></svg></span>
-      <span class="u-tx"><span class="u-t">Карьерный маршрут</span><span class="u-d">Инструктор → тренер → … → директор</span></span>
+    <button class="u-card" id="card-map" type="button">
+      <span class="u-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l-6 3V6l6-3 6 3 6-3v15l-6 3-6-3z"/><path d="M9 3v15M15 6v15"/></svg></span>
+      <span class="u-tx"><span class="u-t">Карта вакансий</span><span class="u-d">Где есть вакансии по вашему запросу</span></span>
     </button>
 
     <div class="u-head" style="margin-top:8px">В помощь соискателю</div>
@@ -1027,9 +1031,11 @@ function matchScore(v){
 }
 
 // Текст обязанностей → пункты списка; требования → пункты чек-листа
-function toBullets(text){
+function toBullets(text, req){
   if(!text) return [];
-  let t = String(text).trim().replace(/\bТребовани[ея][:\s].*$/i, '').trim();
+  let t = String(text).trim();
+  if(req){ const i = t.indexOf(req); if(i > 0) t = t.slice(0, i).trim(); }
+  t = t.replace(/\bТребовани[ея][:\s].*$/i, '').trim();
   return t.split(/(?<=[.!?])\s+|\s*[;•]\s*/).map(s=>s.replace(/^[—\-\s]+/,'').trim()).filter(s=>s.length>3).slice(0,8);
 }
 function toChecklist(req){
@@ -1255,7 +1261,7 @@ function openModal(v){
   $('m-dl').innerHTML = rows.map(([k,val])=>
     `<dt>${escapeHtml(k)}</dt><dd>${escapeHtml(val)}</dd>`).join('');
 
-  const duties = toBullets(v.description);
+  const duties = toBullets(v.description, v.requirement);
   $('m-duties').innerHTML = duties.length
     ? duties.map(d=>`<li>${escapeHtml(d)}</li>`).join('')
     : '<li class="muted">Описание не предоставлено источником — смотрите на странице вакансии.</li>';
@@ -1573,18 +1579,10 @@ const INFO = {
     <p>Используйте фильтры (город, должность, зарплата) и сохраняйте поиск — ссылку с фильтрами можно отправить или открыть позже.</p>
     <h4>Нет подходящих вакансий?</h4>
     <p>Смягчите фильтры, проверьте другой регион или зайдите позже — список обновляется. За помощью обратитесь в Центр карьеры.</p>` },
-  career: { title:'Карьерный маршрут', html:`
-    <p>Типичные ступени профессионального роста в сфере физической культуры и спорта.</p>
-    <ul class="ladder">
-      <li><div class="lad-role">Инструктор</div><div class="lad-note">Старт: проведение занятий, базовая работа с группами.</div></li>
-      <li><div class="lad-role">Тренер</div><div class="lad-note">Самостоятельная подготовка спортсменов, ведение тренировочного процесса.</div></li>
-      <li><div class="lad-role">Старший тренер</div><div class="lad-note">Руководство тренерским составом направления, планирование подготовки.</div></li>
-      <li><div class="lad-role">Методист</div><div class="lad-note">Разработка программ, методическое сопровождение, контроль качества.</div></li>
-      <li><div class="lad-role">Директор спортивной школы</div><div class="lad-note">Управление организацией: кадры, финансы, развитие.</div></li>
-    </ul>
-    <p style="color:var(--muted);font-size:12.5px">Маршрут ориентировочный — переходы зависят от образования, опыта и направления.</p>` },
 };
-function openInfoHTML(title, html){
+function openInfoHTML(title, html, wide){
+  const modal = document.querySelector('#overlay2 .modal');
+  if(modal) modal.classList.toggle('map-modal', !!wide);
   $('i-title').textContent = title;
   $('i-body').innerHTML = html;
   $('overlay2').classList.add('open');
@@ -1616,6 +1614,90 @@ function openAnalytics(){
   html += `<p style="color:var(--muted);font-size:12px;margin-top:14px">Расчёт по открытым данным источников; зарплата усреднена по вакансиям, где она указана.</p>`;
   openInfoHTML('Аналитика рынка', html);
 }
+
+// --- Карта вакансий: координаты регионов и отрисовка ---
+const REGION_COORDS = {
+  'москва':[55.75,37.62],'московск':[55.5,37.4],'санкт-петербург':[59.94,30.31],'ленинградск':[59.7,30.8],
+  'новосибирск':[55.03,82.92],'свердловск':[56.84,60.61],'екатеринбург':[56.84,60.61],
+  'татарстан':[55.79,49.12],'казан':[55.79,49.12],'нижегородск':[56.30,43.94],'нижний новгород':[56.30,43.94],
+  'челябинск':[55.16,61.40],'омск':[54.99,73.37],'самар':[53.20,50.15],'ростов':[47.24,39.71],
+  'башкортостан':[54.74,55.97],'башкорт':[54.74,55.97],'уфа':[54.74,55.97],'красноярск':[56.01,92.85],
+  'воронеж':[51.66,39.20],'перм':[58.01,56.23],'волгоград':[48.71,44.51],'краснодар':[45.04,38.97],
+  'саратов':[51.53,46.03],'тюмен':[57.15,65.53],'удмурт':[56.85,53.20],'ижевск':[56.85,53.20],
+  'алтайский край':[53.35,83.78],'барнаул':[53.35,83.78],'ульяновск':[54.31,48.40],'иркутск':[52.29,104.30],
+  'хабаровск':[48.48,135.08],'ярославск':[57.63,39.87],'ярославль':[57.63,39.87],'приморск':[43.12,131.89],
+  'владивосток':[43.12,131.89],'дагестан':[42.98,47.50],'махачкала':[42.98,47.50],'томск':[56.49,84.95],
+  'оренбург':[51.77,55.10],'кемеров':[55.35,86.09],'кузбасс':[55.35,86.09],'рязанск':[54.62,39.74],'рязань':[54.62,39.74],
+  'пенз':[53.20,45.00],'липецк':[52.60,39.57],'тульск':[54.19,37.62],'тула':[54.19,37.62],
+  'кировск':[58.60,49.66],'киров':[58.60,49.66],'чуваш':[56.15,47.25],'чебоксар':[56.15,47.25],
+  'калининград':[54.71,20.45],'курск':[51.73,36.19],'бурят':[51.83,107.58],'улан-удэ':[51.83,107.58],
+  'ставропольск':[45.04,41.97],'ставрополь':[45.04,41.97],'тверск':[56.86,35.92],'тверь':[56.86,35.92],
+  'ивановск':[57.00,40.97],'брянск':[53.24,34.36],'белгород':[50.60,36.59],'ханты-мансийск':[61.00,69.00],
+  'югра':[61.00,69.00],'сургут':[61.25,73.40],'владимирск':[56.13,40.41],'владимир':[56.13,40.41],
+  'архангельск':[64.54,40.52],'забайкальск':[52.03,113.50],'чита':[52.03,113.50],'калужск':[54.51,36.27],
+  'калуга':[54.51,36.27],'смоленск':[54.78,32.05],'саха':[62.03,129.73],'якути':[62.03,129.73],'якутск':[62.03,129.73],
+  'мордови':[54.18,45.18],'саранск':[54.18,45.18],'вологодск':[59.22,39.89],'вологда':[59.22,39.89],
+  'курганск':[55.44,65.34],'курган':[55.44,65.34],'орловск':[52.97,36.07],'орёл':[52.97,36.07],'орел':[52.97,36.07],
+  'мурманск':[68.97,33.07],'тамбов':[52.72,41.45],'чечен':[43.32,45.69],'чечн':[43.32,45.69],'грозн':[43.32,45.69],
+  'карели':[61.79,34.39],'петрозаводск':[61.79,34.39],'костромск':[57.77,40.93],'кострома':[57.77,40.93],
+  'кабардино':[43.48,43.61],'нальчик':[43.48,43.61],'псков':[57.82,28.33],'марий эл':[56.63,47.89],'йошкар':[56.63,47.89],
+  'сахалин':[46.96,142.74],'хакаси':[53.72,91.44],'абакан':[53.72,91.44],'амурск':[50.29,127.54],'благовещенск':[50.29,127.54],
+  'великий новгород':[58.52,31.27],'новгородск':[58.52,31.27],'осети':[43.02,44.68],'владикавказ':[43.02,44.68],
+  'калмыки':[46.31,44.27],'элиста':[46.31,44.27],'тыва':[51.72,94.45],'тува':[51.72,94.45],'кызыл':[51.72,94.45],
+  'республика алтай':[51.96,85.96],'горно-алтайск':[51.96,85.96],'адыге':[44.61,40.10],'майкоп':[44.61,40.10],
+  'ямал':[66.53,66.61],'салехард':[66.53,66.61],'ненецк':[67.64,53.01],'еврейск':[48.79,132.92],'биробиджан':[48.79,132.92],
+  'магадан':[59.56,150.80],'чукот':[64.73,177.51],'анадырь':[64.73,177.51],'камчат':[53.04,158.65],
+  'севастополь':[44.62,33.53],'крым':[44.95,34.10],'симферополь':[44.95,34.10],'ингушет':[43.17,44.81],
+  'карачаево':[44.23,42.05],'черкесск':[44.23,42.05],
+};
+const REGION_KEYS = Object.keys(REGION_COORDS).sort((a,b)=>b.length-a.length);
+function findRegionCoords(region){
+  if(!region) return null;
+  const r = region.toLowerCase();
+  for(const k of REGION_KEYS){ if(r.includes(k)) return REGION_COORDS[k]; }
+  return null;
+}
+
+let _vacMap = null;
+function openMap(){
+  const items = (VIEW && VIEW.length) ? VIEW : DATA;
+  const groups = {};
+  let unmapped = 0;
+  items.forEach(v=>{
+    const c = findRegionCoords(v.region);
+    if(!c){ unmapped++; return; }
+    const key = v.region || '—';
+    if(!groups[key]) groups[key] = {n:0, sal:0, salN:0, coords:c, name:key};
+    groups[key].n++; const s = v.salaryFrom||v.salaryTo; if(s){ groups[key].sal+=s; groups[key].salN++; }
+  });
+  const regionsCount = Object.keys(groups).length;
+  const html = `<p style="color:var(--muted);font-size:13px;margin:0 0 12px">${fmt(items.length)} вакансий в ${fmt(regionsCount)} регионах${unmapped?`. Не размещено на карте: ${fmt(unmapped)}`:''}. Карта отражает текущие фильтры и поиск — обновится при повторном открытии.</p>
+    <div id="vac-map" style="height:62vh;min-height:380px;border-radius:var(--r);overflow:hidden;border:1px solid var(--line)"></div>`;
+  openInfoHTML('Карта вакансий', html, true);
+  setTimeout(()=>{
+    const el = document.getElementById('vac-map');
+    if(!el) return;
+    if(typeof L === 'undefined'){ el.innerHTML = '<div style="padding:20px;color:var(--muted)">Карта не загрузилась — нет соединения с картографическим сервисом.</div>'; return; }
+    if(_vacMap){ try{ _vacMap.remove(); }catch(e){} _vacMap = null; }
+    const map = L.map('vac-map', {scrollWheelZoom:false}).setView([62, 94], 3);
+    _vacMap = map;
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom:12, attribution:'© OpenStreetMap'}).addTo(map);
+    const list = Object.values(groups);
+    const maxN = Math.max(...list.map(g=>g.n), 1);
+    const bounds = [];
+    list.forEach(g=>{
+      const r = 8 + Math.round(20 * Math.sqrt(g.n) / Math.sqrt(maxN));
+      const avg = g.salN ? Math.round(g.sal/g.salN) : 0;
+      const m = L.circleMarker(g.coords, {radius:r, color:'#1d4f9c', weight:1.5, fillColor:'#e0852b', fillOpacity:.6});
+      m.bindPopup(`<b>${escapeHtml(g.name)}</b><br>Вакансий: ${fmt(g.n)}${avg?`<br>Средняя з/п: ${avg.toLocaleString('ru-RU')} ₽`:''}`);
+      m.bindTooltip(`${escapeHtml(g.name)}: ${fmt(g.n)}`);
+      m.addTo(map);
+      bounds.push(g.coords);
+    });
+    if(bounds.length){ try{ map.fitBounds(bounds, {padding:[30,30], maxZoom:7}); }catch(e){} }
+    setTimeout(()=>{ try{ map.invalidateSize(); }catch(e){} }, 120);
+  }, 70);
+}
 function closeInfo(){
   $('overlay2').classList.remove('open');
   if(!$('overlay').classList.contains('open')) document.body.style.overflow = '';
@@ -1636,6 +1718,7 @@ document.querySelectorAll('.u-card[data-info]').forEach(b=>{
   b.addEventListener('click', ()=> openInfo(b.dataset.info));
 });
 $('card-analytics').addEventListener('click', openAnalytics);
+$('card-map').addEventListener('click', openMap);
 
 // --- Умный подбор: обработчики ---
 function readProfileInputs(){
