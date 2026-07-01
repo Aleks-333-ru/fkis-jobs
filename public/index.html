@@ -1729,47 +1729,6 @@ function openMap(){
         circles.push(circle);
       });
       try{ map.setBounds(map.geoObjects.getBounds(), { checkZoomRange:true, zoomMargin:30 }); }catch(e){}
-
-      // При приближении (зум ≥ 7) показываем конкретные адреса вакансий
-      const ADDR_ZOOM = 7;
-      const addrLayer = new ymaps.GeoObjectCollection();
-      map.geoObjects.add(addrLayer);
-      const geoCache = {};
-      let addrMode = false;
-      const within = (c,b)=> c[0]>=Math.min(b[0][0],b[1][0]) && c[0]<=Math.max(b[0][0],b[1][0]) && c[1]>=Math.min(b[0][1],b[1][1]) && c[1]<=Math.max(b[0][1],b[1][1]);
-      function drawAddresses(){
-        addrLayer.removeAll();
-        const b = map.getBounds();
-        const visRegions = new Set(list.filter(g=>within(g.coords,b)).map(g=>g.name));
-        const cands = items.filter(v=> v.address && visRegions.has(v.region||'—')).slice(0,60);
-        cands.forEach(v=>{
-          const put = (coords)=>{
-            addrLayer.add(new ymaps.Placemark(coords, {
-              hintContent: v.title,
-              balloonContentHeader: escapeHtml(v.title),
-              balloonContentBody: `${escapeHtml(v.company||'')}<br>${escapeHtml(v.address)}${(v.salaryFrom||v.salaryTo)?'<br><b>'+salaryText(v).text+'</b>':''}`,
-            }, { preset:'islands#orangeDotIcon' }));
-          };
-          const key = v.address;
-          if(Array.isArray(geoCache[key])){ put(geoCache[key]); return; }
-          if(geoCache[key] === 'pending' || geoCache[key] === null) return;
-          geoCache[key] = 'pending';
-          ymaps.geocode((v.region ? v.region+', ' : '') + v.address, { results:1 }).then(res=>{
-            const obj = res.geoObjects.get(0);
-            if(obj){ const c = obj.geometry.getCoordinates(); geoCache[key] = c; if(addrMode) put(c); }
-            else geoCache[key] = null;
-          }).catch(()=>{ geoCache[key] = null; });
-        });
-      }
-      map.events.add('boundschange', ()=>{
-        const z = map.getZoom();
-        if(z >= ADDR_ZOOM){
-          if(!addrMode){ addrMode = true; circles.forEach(c=>c.options.set('visible', false)); }
-          drawAddresses();
-        }else if(addrMode){
-          addrMode = false; addrLayer.removeAll(); circles.forEach(c=>c.options.set('visible', true));
-        }
-      });
     });
   }).catch(()=>{
     const el = document.getElementById('vac-map');
