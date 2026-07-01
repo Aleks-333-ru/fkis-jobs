@@ -293,6 +293,36 @@ function serveStatic(req, res) {
   });
 }
 
+// --- Геокодер (адрес → координаты) через HTTP API Яндекса --------------------
+// Отдельный ключ «Геокодер». Браузер не может ходить туда напрямую (CORS),
+// поэтому геокодируем на сервере и кешируем результаты в памяти.
+const GEOCODER_KEY = process.env.YANDEX_GEOCODER_KEY || 'f3ff0d4d-4dac-40fa-b2ea-e2d2d8d927cb';
+const geoCache = new Map();
+async function geocodeAddress(q) {
+  q = (q || '').trim();
+  if (!q) return null;
+  if (geoCache.has(q)) return geoCache.get(q);
+  try {
+    const url = new URL('https://geocode-maps.yandex.ru/1.x/');
+    url.searchParams.set('apikey', GEOCODER_KEY);
+    url.searchParams.set('geocode', q);
+    url.searchParams.set('format', 'json');
+    url.searchParams.set('results', '1');
+    url.searchParams.set('lang', 'ru_RU');
+    const res = await fetch(url);
+    if (!res.ok) throw new Error('geocoder ' + res.status);
+    const data = await res.json();
+    const pos = data?.response?.GeoObjectCollection?.featureMember?.[0]?.GeoObject?.Point?.pos;
+    let coords = null;
+    if (pos) { const [lng, lat] = pos.split(' ').map(Number); coords = [lat, lng]; }
+    geoCache.set(q, coords);
+    return coords;
+  } catch (e) {
+    geoCache.set(q, null);
+    return null;
+  }
+}
+
 // --- Сервер ------------------------------------------------------------------
 const server = http.createServer(async (req, res) => {
   const u = new URL(req.url, 'http://x');
@@ -309,6 +339,14 @@ const server = http.createServer(async (req, res) => {
       res.writeHead(500, { 'Content-Type': 'application/json; charset=utf-8' });
       res.end(JSON.stringify({ vacancies: [], errors: [String(e.message || e)] }));
     }
+    return;
+  }
+
+  if (u.pathname === '/api/geocode') {
+    const q = (u.searchParams.get('q') || '').trim();
+    const coords = await geocodeAddress(q);
+    res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+    res.end(JSON.stringify({ coords }));
     return;
   }
 
