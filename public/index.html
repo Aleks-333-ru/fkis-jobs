@@ -30,8 +30,6 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&family=Open+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <style>
   :root{
     /* Поверхности */
@@ -1658,6 +1656,24 @@ function findRegionCoords(region){
   return null;
 }
 
+// Ключ Яндекс.Карт (JS API). Получить бесплатно в кабинете разработчика Яндекса
+// (developer.tech.yandex.ru → «JavaScript API и HTTP Геокодер»). Впишите сюда.
+const YANDEX_MAPS_KEY = '';
+let _ymapsLoading = null;
+function loadYmaps(){
+  if(typeof ymaps !== 'undefined') return Promise.resolve();
+  if(_ymapsLoading) return _ymapsLoading;
+  if(!YANDEX_MAPS_KEY) return Promise.reject(new Error('no-key'));
+  _ymapsLoading = new Promise((resolve, reject)=>{
+    const s = document.createElement('script');
+    s.src = `https://api-maps.yandex.ru/2.1/?apikey=${encodeURIComponent(YANDEX_MAPS_KEY)}&lang=ru_RU`;
+    s.onload = ()=>resolve();
+    s.onerror = ()=>reject(new Error('load-failed'));
+    document.head.appendChild(s);
+  });
+  return _ymapsLoading;
+}
+
 let _vacMap = null;
 function openMap(){
   const items = (VIEW && VIEW.length) ? VIEW : DATA;
@@ -1671,32 +1687,45 @@ function openMap(){
     groups[key].n++; const s = v.salaryFrom||v.salaryTo; if(s){ groups[key].sal+=s; groups[key].salN++; }
   });
   const regionsCount = Object.keys(groups).length;
-  const html = `<p style="color:var(--muted);font-size:13px;margin:0 0 12px">${fmt(items.length)} вакансий в ${fmt(regionsCount)} регионах${unmapped?`. Не размещено на карте: ${fmt(unmapped)}`:''}. Карта отражает текущие фильтры и поиск — обновится при повторном открытии.</p>
-    <div id="vac-map" style="height:62vh;min-height:380px;border-radius:var(--r);overflow:hidden;border:1px solid var(--line)"></div>`;
-  openInfoHTML('Карта вакансий', html, true);
-  setTimeout(()=>{
-    const el = document.getElementById('vac-map');
-    if(!el) return;
-    if(typeof L === 'undefined'){ el.innerHTML = '<div style="padding:20px;color:var(--muted)">Карта не загрузилась — нет соединения с картографическим сервисом.</div>'; return; }
-    if(_vacMap){ try{ _vacMap.remove(); }catch(e){} _vacMap = null; }
-    const map = L.map('vac-map', {scrollWheelZoom:false}).setView([62, 94], 3);
-    _vacMap = map;
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom:12, attribution:'© OpenStreetMap'}).addTo(map);
-    const list = Object.values(groups);
-    const maxN = Math.max(...list.map(g=>g.n), 1);
-    const bounds = [];
-    list.forEach(g=>{
-      const r = 8 + Math.round(20 * Math.sqrt(g.n) / Math.sqrt(maxN));
-      const avg = g.salN ? Math.round(g.sal/g.salN) : 0;
-      const m = L.circleMarker(g.coords, {radius:r, color:'#1d4f9c', weight:1.5, fillColor:'#e0852b', fillOpacity:.6});
-      m.bindPopup(`<b>${escapeHtml(g.name)}</b><br>Вакансий: ${fmt(g.n)}${avg?`<br>Средняя з/п: ${avg.toLocaleString('ru-RU')} ₽`:''}`);
-      m.bindTooltip(`${escapeHtml(g.name)}: ${fmt(g.n)}`);
-      m.addTo(map);
-      bounds.push(g.coords);
+  const intro = `<p style="color:var(--muted);font-size:13px;margin:0 0 12px">${fmt(items.length)} вакансий в ${fmt(regionsCount)} регионах${unmapped?`. Не размещено на карте: ${fmt(unmapped)}`:''}. Карта отражает текущие фильтры и поиск.</p>`;
+
+  if(!YANDEX_MAPS_KEY){
+    openInfoHTML('Карта вакансий', intro + `<div style="background:var(--navy-soft);border:1px solid #d5e3f4;border-radius:var(--r);padding:16px 18px;font-size:14px;color:var(--ink-soft)">
+      <b>Для карты нужен бесплатный ключ Яндекс.Карт.</b>
+      <ol style="margin:10px 0 0;padding-left:20px;line-height:1.65">
+        <li>Откройте <a href="https://developer.tech.yandex.ru/services/" target="_blank" rel="noopener">кабинет разработчика Яндекса</a>.</li>
+        <li>Подключите сервис «JavaScript API и HTTP Геокодер» — получите API-ключ.</li>
+        <li>Пришлите ключ — впишем его в сайт, и карта России с точками по регионам заработает.</li>
+      </ol></div>`, true);
+    return;
+  }
+
+  openInfoHTML('Карта вакансий', intro + `<div id="vac-map" style="height:62vh;min-height:380px;border-radius:var(--r);overflow:hidden;border:1px solid var(--line)"></div>`, true);
+  loadYmaps().then(()=>{
+    ymaps.ready(()=>{
+      const el = document.getElementById('vac-map');
+      if(!el) return;
+      if(_vacMap){ try{ _vacMap.destroy(); }catch(e){} _vacMap = null; }
+      const map = new ymaps.Map('vac-map', { center:[64, 96], zoom:2, controls:['zoomControl','fullscreenControl'] }, { suppressMapOpenBlock:true });
+      _vacMap = map;
+      const list = Object.values(groups);
+      const maxN = Math.max(...list.map(g=>g.n), 1);
+      list.forEach(g=>{
+        const avg = g.salN ? Math.round(g.sal/g.salN) : 0;
+        const radius = 40000 + Math.round(230000 * Math.sqrt(g.n) / Math.sqrt(maxN));
+        const circle = new ymaps.Circle([[g.coords[0], g.coords[1]], radius], {
+          hintContent: `${g.name}: ${fmt(g.n)}`,
+          balloonContentHeader: g.name,
+          balloonContentBody: `Вакансий: <b>${fmt(g.n)}</b>${avg?`<br>Средняя з/п: ${avg.toLocaleString('ru-RU')} ₽`:''}`,
+        }, { fillColor:'#e0852b', fillOpacity:0.55, strokeColor:'#1d4f9c', strokeWidth:1.5 });
+        map.geoObjects.add(circle);
+      });
+      try{ map.setBounds(map.geoObjects.getBounds(), { checkZoomRange:true, zoomMargin:30 }); }catch(e){}
     });
-    if(bounds.length){ try{ map.fitBounds(bounds, {padding:[30,30], maxZoom:7}); }catch(e){} }
-    setTimeout(()=>{ try{ map.invalidateSize(); }catch(e){} }, 120);
-  }, 70);
+  }).catch(()=>{
+    const el = document.getElementById('vac-map');
+    if(el) el.innerHTML = '<div style="padding:20px;color:var(--muted)">Не удалось загрузить Яндекс.Карты — проверьте ключ и соединение.</div>';
+  });
 }
 function closeInfo(){
   $('overlay2').classList.remove('open');
