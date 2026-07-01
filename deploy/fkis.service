@@ -1,0 +1,18 @@
+[Unit]
+Description=FKiS vacancies site (Node.js)
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/var/www/fkis
+ExecStart=/usr/bin/node server.js
+Environment=PORT=3000
+# Ключ SuperJob (по желанию) — раскомментируйте и впишите:
+# Environment=SUPERJOB_KEY=ваш_ключ
+Restart=always
+RestartSec=3
+User=www-data
+Group=www-data
+
+[Install]
+WantedBy=multi-user.target
