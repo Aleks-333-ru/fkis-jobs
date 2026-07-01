@@ -1681,10 +1681,6 @@ function mapFilterRegion(region){
   refresh(true);
   const c = document.getElementById('content'); if(c) c.scrollIntoView({behavior:'smooth', block:'start'});
 }
-function mapOpenVac(id){
-  const v = (Array.isArray(DATA)?DATA:[]).find(x=>x.id===id) || (Array.isArray(VIEW)?VIEW:[]).find(x=>x.id===id);
-  if(v){ closeInfo(); openModal(v); }
-}
 
 let _vacMap = null;
 function openMap(){
@@ -1733,48 +1729,6 @@ function openMap(){
         circles.push(circle);
       });
       try{ map.setBounds(map.geoObjects.getBounds(), { checkZoomRange:true, zoomMargin:30 }); }catch(e){}
-
-      // При приближении (зум ≥ 7) показываем отдельные вакансии с адресами
-      const ADDR_ZOOM = 7;
-      const addrLayer = new ymaps.GeoObjectCollection();
-      map.geoObjects.add(addrLayer);
-      let addrMode = false;
-      const within = (c,b)=> c[0]>=Math.min(b[0][0],b[1][0]) && c[0]<=Math.max(b[0][0],b[1][0]) && c[1]>=Math.min(b[0][1],b[1][1]) && c[1]<=Math.max(b[0][1],b[1][1]);
-      const geoCache = {};
-      function drawAddresses(){
-        addrLayer.removeAll();
-        const b = map.getBounds();
-        const vis = new Set(list.filter(g=>within(g.coords,b)).map(g=>g.name));
-        const cands = items.filter(v=> v.address && vis.has(v.region||'—')).slice(0,80);
-        const idx = {};
-        cands.forEach(v=>{
-          const base = findRegionCoords(v.region);
-          const rn = v.region||'—'; const i = (idx[rn]||0); idx[rn] = i+1;
-          let fallback = base;
-          if(base){ const ang = i*2.399963, rad = 0.05 + 0.03*Math.sqrt(i); fallback = [base[0]+rad*Math.cos(ang), base[1]+rad*1.7*Math.sin(ang)]; }
-          const q = (v.region ? v.region+', ' : '') + v.address;
-          const body = `${escapeHtml(v.company||'')}<br>${escapeHtml(v.address)}${(v.salaryFrom||v.salaryTo)?'<br><b>'+salaryText(v).text+'</b>':''}<br><a href="#" onclick="mapOpenVac('${v.id}');return false;">Подробнее</a>`;
-          const coords = Array.isArray(geoCache[q]) ? geoCache[q] : fallback;
-          if(coords && addrMode){
-            addrLayer.add(new ymaps.Placemark(coords, { hintContent:v.title, balloonContentHeader:escapeHtml(v.title), balloonContentBody:body }, { preset:'islands#orangeDotIcon' }));
-          }
-          if(geoCache[q] === undefined){
-            geoCache[q] = 'pending';
-            fetch('/api/geocode?q=' + encodeURIComponent(q)).then(r=>r.json()).then(j=>{
-              geoCache[q] = (j && Array.isArray(j.coords)) ? j.coords : fallback;
-            }).catch(()=>{ geoCache[q] = fallback; });
-          }
-        });
-      }
-      map.events.add('boundschange', ()=>{
-        const z = map.getZoom();
-        if(z >= ADDR_ZOOM){
-          if(!addrMode){ addrMode = true; circles.forEach(c=>c.options.set('visible', false)); }
-          drawAddresses();
-        }else if(addrMode){
-          addrMode = false; addrLayer.removeAll(); circles.forEach(c=>c.options.set('visible', true));
-        }
-      });
     });
   }).catch(()=>{
     const el = document.getElementById('vac-map');
