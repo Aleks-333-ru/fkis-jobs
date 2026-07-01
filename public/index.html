@@ -4,8 +4,29 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Вакансии ФКиС — физическая культура и спорт</title>
-<link rel="icon" type="image/svg+xml" href="favicon.svg">
-<link rel="alternate icon" type="image/png" href="logo.png">
+<link rel="icon" type="image/png" href="favicon.png?v=2">
+<link rel="apple-touch-icon" href="favicon.png?v=2">
+<meta name="description" content="Агрегатор вакансий в сфере физической культуры и спорта: тренеры, преподаватели, инструкторы, методисты. Свежие предложения из hh.ru, «Работы России» и SuperJob — в одном месте.">
+<meta name="theme-color" content="#173f7d">
+<meta name="color-scheme" content="light">
+<meta name="author" content="Университет имени П.Ф. Лесгафта">
+<link rel="canonical" href="https://fkis-jobs.onrender.com/">
+<!-- Open Graph (превью при отправке ссылки) -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Вакансии ФКиС · Университет имени П.Ф. Лесгафта">
+<meta property="og:locale" content="ru_RU">
+<meta property="og:title" content="Вакансии в сфере физической культуры и спорта">
+<meta property="og:description" content="Свежие вакансии для тренеров, преподавателей, инструкторов и методистов — из проверенных источников в одном месте.">
+<meta property="og:url" content="https://fkis-jobs.onrender.com/">
+<meta property="og:image" content="https://fkis-jobs.onrender.com/favicon.png">
+<meta property="og:image:width" content="1024">
+<meta property="og:image:height" content="1024">
+<meta property="og:image:alt" content="Вакансии ФКиС — сервис подбора вакансий">
+<!-- Twitter -->
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Вакансии в сфере физической культуры и спорта">
+<meta name="twitter:description" content="Свежие вакансии для тренеров, преподавателей, инструкторов и методистов — в одном месте.">
+<meta name="twitter:image" content="https://fkis-jobs.onrender.com/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&family=Open+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -48,7 +69,14 @@
     -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;}
   a{color:var(--navy-2);text-decoration:none}
   a:hover{color:var(--navy)}
-  .wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+  .wrap{max-width:1320px;margin:0 auto;padding:0 24px}
+  /* Ссылка «к содержанию» — видна только при фокусе с клавиатуры */
+  .skip-link{position:absolute;left:8px;top:-60px;z-index:100;
+    background:var(--navy);color:#fff;padding:11px 18px;border-radius:0 0 10px 10px;
+    font-family:'Montserrat',system-ui,sans-serif;font-weight:700;font-size:14px;
+    transition:top .18s var(--ease)}
+  .skip-link:focus{top:0;outline:3px solid var(--accent-2);outline-offset:2px}
+  main.content:focus{outline:none}
 
   /* ---- Шапка: чистая белая полоса с логотипом ---- */
   header.top{background:rgba(255,255,255,.82);backdrop-filter:saturate(160%) blur(10px);
@@ -96,18 +124,23 @@
   .qchip.active .qico{opacity:1}
   .qchip.active .qcount{background:rgba(255,255,255,.22);color:#fff}
   /* Счётчик найденных — лёгкая карточка с акцентом сверху */
-  .board{position:relative;flex:0 0 auto;display:flex;flex-direction:column;align-items:center;
-    gap:2px;padding:18px 30px;border-radius:var(--r);overflow:hidden;
-    background:#fff;border:1px solid var(--line);box-shadow:var(--shadow)}
-  .board::before{content:"";position:absolute;left:0;right:0;top:0;height:4px;background:var(--grad-accent)}
-  .board .num{font-family:'Open Sans';font-weight:800;
-    font-size:clamp(36px,5.5vw,52px);line-height:1;color:var(--navy);
-    font-variant-numeric:tabular-nums;letter-spacing:-.02em}
-  .board .lbl{font-size:11px;text-transform:uppercase;letter-spacing:.18em;
-    color:var(--accent-deep);font-weight:800}
+  .board{position:relative;flex:0 0 auto;display:flex;align-items:stretch;overflow:hidden;
+    border-radius:var(--r);background:var(--navy-deep);border:1px solid rgba(255,255,255,.12);
+    box-shadow:var(--shadow)}
+  .board .stat{display:flex;flex-direction:column;align-items:center;justify-content:center;
+    gap:4px;padding:16px 26px;text-align:center}
+  .board .stat-week{border-left:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.05)}
+  .board .num{font-family:'Open Sans';font-weight:800;font-size:clamp(36px,5vw,52px);line-height:1;
+    color:#fff;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+  .board .lbl{font-size:11px;text-transform:uppercase;letter-spacing:.15em;
+    color:#fff;font-weight:800}
+  .board .wnum{font-family:'Open Sans';font-weight:800;font-size:clamp(22px,3vw,30px);line-height:1;
+    color:#9fb3d4;font-variant-numeric:tabular-nums}
+  .board .wlbl{font-size:10.5px;text-transform:uppercase;letter-spacing:.12em;
+    color:#9fb3d4;font-weight:700}
 
   /* ---- Двухколоночная сетка ---- */
-  .layout{display:grid;grid-template-columns:312px 1fr;gap:30px;
+  .layout{display:grid;grid-template-columns:300px minmax(0,1fr) 300px;gap:28px;
     align-items:start;padding:34px 0 12px}
 
   /* ---- Боковая панель фильтров ---- */
@@ -250,6 +283,8 @@
   #list.reveal .card:nth-child(9){animation-delay:.40s}
   #list.reveal .card:nth-child(n+10){animation-delay:.45s}
   @media(prefers-reduced-motion:reduce){
+    *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;
+      transition-duration:.001ms!important;scroll-behavior:auto!important}
     #list.reveal .card{animation:none}
   }
 
@@ -279,10 +314,40 @@
   .totop svg{width:22px;height:22px}
   @media(max-width:560px){.totop{right:16px;bottom:16px;width:44px;height:44px}}
 
-  footer{color:var(--muted);font-size:12.5px;text-align:center;padding:36px 0 46px;
-    border-top:1px solid var(--line);margin-top:26px;line-height:1.7}
-  footer .f-org{font-family:'Montserrat',system-ui,sans-serif;color:var(--navy);font-weight:600;
-    font-size:14px;margin-bottom:8px}
+  /* ---- Подвал ---- */
+  .site-footer{margin-top:48px;background:var(--navy-deep);color:#c5d4ec;
+    font-size:14px;line-height:1.7}
+  .foot-grid{max-width:1320px;margin:0 auto;padding:46px 24px 38px;
+    display:grid;grid-template-columns:1.7fr 1fr 1fr 1.2fr;gap:34px}
+  .foot-brand{max-width:340px}
+  .foot-logo{display:inline-block;background:#fff;border-radius:12px;padding:11px 15px;
+    box-shadow:0 6px 18px rgba(0,0,0,.18)}
+  .foot-logo img{height:46px;width:auto;display:block}
+  .foot-desc{margin:16px 0 0;color:#9fb3d4}
+  .foot-col h4{font-family:'Montserrat',system-ui,sans-serif;color:#fff;font-size:12.5px;
+    font-weight:700;text-transform:uppercase;letter-spacing:.09em;margin:2px 0 15px}
+  .foot-col ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+  .foot-col a{color:#c5d4ec;transition:color .15s var(--ease)}
+  .foot-col a:hover{color:var(--accent-2)}
+  .foot-contacts p{margin:0 0 10px;color:#9fb3d4}
+  .foot-bottom{border-top:1px solid rgba(255,255,255,.1)}
+  .foot-bottom-inner{max-width:1320px;margin:0 auto;padding:18px 24px;
+    display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;
+    font-size:12.5px;color:#8197ba}
+  .foot-soc-label{margin-top:18px;font-size:11px;font-weight:700;color:#8197ba;
+    text-transform:uppercase;letter-spacing:.09em}
+  .foot-social{display:flex;flex-wrap:wrap;gap:9px;margin-top:11px}
+  .soc{display:inline-flex;align-items:center;gap:8px;
+    background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);
+    color:#c5d4ec;border-radius:999px;padding:8px 14px;font-size:13px;font-weight:600;
+    transition:background .15s var(--ease),border-color .15s var(--ease),color .15s var(--ease)}
+  .soc .soc-ic{width:18px;height:18px;flex:0 0 auto;border-radius:5px;display:block}
+  .soc:hover{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.3);color:#fff}
+  @media(max-width:860px){.foot-grid{grid-template-columns:1fr 1fr;gap:28px}}
+  @media(max-width:560px){
+    .foot-grid{grid-template-columns:1fr;gap:26px;padding:34px 16px 28px}
+    .foot-bottom-inner{padding:16px;flex-direction:column;align-items:flex-start}
+  }
 
   /* ---- Модальное окно «Подробнее» ---- */
   .overlay{position:fixed;inset:0;background:rgba(12,26,46,.5);
@@ -326,6 +391,139 @@
     padding:13px 22px;cursor:pointer;transition:background .16s var(--ease)}
   button.mcancel:hover{background:#f3f5f9}
 
+  /* ---- Правая колонка: полезные материалы ---- */
+  aside.useful{align-self:start;display:flex;flex-direction:column;gap:13px}
+  .u-head{font-family:'Montserrat',system-ui,sans-serif;font-size:13px;font-weight:700;
+    color:var(--navy);text-transform:uppercase;letter-spacing:.07em;margin:2px 2px 4px}
+  .u-card{display:flex;gap:12px;align-items:center;text-align:left;width:100%;
+    background:var(--panel);border:1px solid var(--line);border-radius:var(--r);
+    box-shadow:var(--shadow-sm);padding:13px 14px;cursor:pointer;font-family:inherit;color:var(--ink);
+    transition:border-color .15s var(--ease),box-shadow .15s var(--ease),transform .15s var(--ease)}
+  .u-card:hover{border-color:var(--navy-bright);box-shadow:var(--shadow);transform:translateY(-2px)}
+  .u-card:focus-visible{outline:none;box-shadow:0 0 0 4px var(--ring)}
+  .u-ico{flex:0 0 40px;width:40px;height:40px;border-radius:11px;display:flex;
+    align-items:center;justify-content:center;background:var(--navy-soft);color:var(--navy-2)}
+  .u-ico svg{width:20px;height:20px}
+  .u-tx{min-width:0}
+  .u-t{display:block;font-family:'Montserrat',system-ui,sans-serif;font-size:14px;
+    font-weight:700;color:var(--navy);line-height:1.25}
+  .u-d{display:block;font-size:12px;color:var(--muted);line-height:1.4;margin-top:3px}
+
+  /* Окно полезных материалов (наполнение) */
+  .info-modal{max-width:640px}
+  .info-modal.map-modal{max-width:920px}
+  #i-body .leaflet-container{font-family:'Open Sans',system-ui,sans-serif}
+  .info-modal h3{margin:0 46px 0 0;font-family:'Montserrat',system-ui,sans-serif;
+    font-size:19px;line-height:1.3}
+  #i-body h4{font-family:'Montserrat',system-ui,sans-serif;font-size:15px;color:var(--navy);
+    font-weight:700;margin:18px 0 8px}
+  #i-body h4:first-child{margin-top:0}
+  #i-body p{margin:0 0 11px;font-size:14px;color:var(--ink-soft);line-height:1.6}
+  #i-body ul{margin:0 0 13px;padding-left:20px;font-size:14px;color:var(--ink-soft);line-height:1.55}
+  #i-body li{margin-bottom:6px}
+  #i-body a{color:var(--navy-2);font-weight:600}
+  #i-body pre.tpl{white-space:pre-wrap;background:var(--panel-soft);border:1px solid var(--line);
+    border-radius:var(--r-sm);padding:14px;font-family:'Open Sans',system-ui,sans-serif;
+    font-size:13px;color:var(--ink-soft);line-height:1.6;margin:0 0 6px;overflow-x:auto}
+  #i-body .tpl-copy{margin:0 0 14px;background:var(--navy-2);color:#fff;border:none;
+    border-radius:var(--r-sm);font-family:inherit;font-weight:700;font-size:13px;
+    padding:9px 16px;cursor:pointer;transition:background .15s var(--ease)}
+  #i-body .tpl-copy:hover{background:var(--navy)}
+
+  /* ---- Умный подбор ---- */
+  .smart{background:var(--panel);border:1px solid var(--line);border-radius:var(--r-lg);
+    box-shadow:var(--shadow-sm);margin-bottom:20px;overflow:hidden}
+  .smart-head{display:flex;justify-content:space-between;align-items:center;gap:12px;
+    padding:14px 18px;background:var(--navy-soft)}
+  .smart-title{font-family:'Montserrat',system-ui,sans-serif;font-weight:700;color:var(--navy);
+    font-size:15px;display:flex;align-items:center;gap:8px}
+  .smart-title .st-star{color:var(--accent)}
+  .smart-toggle{background:var(--navy-2);color:#fff;border:none;border-radius:var(--r-sm);
+    font-family:inherit;font-weight:700;font-size:13px;padding:8px 16px;cursor:pointer}
+  .smart-toggle:hover{background:var(--navy)}
+  .smart.active .smart-head{background:var(--navy)}
+  .smart.active .smart-title{color:#fff}
+  .smart-body{padding:16px 18px}
+  .smart-hint{margin:0 0 14px;font-size:13px;color:var(--muted)}
+  .smart-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px 14px}
+  .smart-grid label.f{margin-bottom:6px}
+  .smart-actions{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap}
+  .smart-apply{background:var(--accent);color:#fff;border:none;border-radius:var(--r-sm);
+    font-family:inherit;font-weight:700;font-size:14px;padding:11px 22px;cursor:pointer}
+  .smart-apply:hover{background:var(--accent-deep)}
+  .smart-clear{background:#fff;color:var(--ink-soft);border:1.5px solid var(--line);
+    border-radius:var(--r-sm);font-family:inherit;font-weight:700;font-size:14px;padding:11px 18px;cursor:pointer}
+  .smart-clear:hover{background:#f3f5f9}
+
+  /* Бейдж совпадения на карточке */
+  .match-badge{display:inline-flex;align-items:baseline;gap:5px;border-radius:999px;
+    padding:4px 11px;font-size:12px;font-weight:800;margin-top:10px;font-variant-numeric:tabular-nums}
+  .match-badge .mb-pct{font-size:13px}
+  .match-badge.hi{background:#e1f5ee;color:#0f6e56}
+  .match-badge.mid{background:#fbeede;color:var(--accent-deep)}
+  .match-badge.low{background:#eef2f7;color:var(--muted)}
+
+  /* Окно: обязанности списком, требования чек-листом */
+  .mbody .m-section{margin-top:20px}
+  .mbody .m-section h4{font-family:'Montserrat',system-ui,sans-serif;font-size:15px;
+    color:var(--navy);font-weight:700;margin:0 0 11px}
+  .m-list,.m-check{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:9px}
+  .m-list li{position:relative;padding-left:20px;font-size:14px;color:var(--ink-soft);line-height:1.55}
+  .m-list li::before{content:"";position:absolute;left:3px;top:9px;width:6px;height:6px;
+    border-radius:50%;background:var(--navy-bright)}
+  .m-list li.muted{color:var(--muted)}
+  .m-list li.muted::before{display:none}
+  .m-check li{position:relative;padding-left:27px;font-size:14px;color:var(--ink-soft);line-height:1.55}
+  .m-check li::before{content:"\2714";position:absolute;left:0;top:1px;color:#1d9e75;font-weight:700}
+
+  /* Окно: блок совпадения «почему» */
+  .match-box{background:var(--navy-soft);border:1px solid #d5e3f4;border-radius:var(--r);
+    padding:14px 16px;margin-top:16px}
+  .match-box .mx-top{display:flex;align-items:baseline;gap:8px;margin-bottom:10px}
+  .match-box .mx-pct{font-family:'Open Sans';font-weight:800;font-size:26px;color:var(--navy);
+    font-variant-numeric:tabular-nums}
+  .match-box .mx-lbl{font-size:12px;text-transform:uppercase;letter-spacing:.07em;
+    color:var(--accent-deep);font-weight:800}
+  .match-box ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px}
+  .match-box li{position:relative;padding-left:24px;font-size:13.5px;line-height:1.5}
+  .match-box li.ok{color:var(--ink-soft)}
+  .match-box li.no{color:var(--muted)}
+  .match-box li::before{position:absolute;left:0;top:0;font-weight:700}
+  .match-box li.ok::before{content:"\2714";color:#1d9e75}
+  .match-box li.no::before{content:"\2013";color:var(--muted)}
+
+  /* Аналитика рынка (внутри окна материалов) */
+  #i-body .an-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:8px 0 20px}
+  #i-body .an-card{background:var(--navy-soft);border-radius:var(--r-sm);padding:12px;text-align:center}
+  #i-body .an-num{font-family:'Open Sans';font-weight:800;font-size:22px;color:var(--navy);
+    font-variant-numeric:tabular-nums}
+  #i-body .an-cap{font-size:10.5px;color:var(--accent-deep);text-transform:uppercase;
+    letter-spacing:.06em;font-weight:700;margin-top:3px}
+  #i-body .an-row{margin:0 0 11px}
+  #i-body .an-top{display:flex;justify-content:space-between;gap:10px;font-size:13px;margin-bottom:5px}
+  #i-body .an-lbl{color:var(--ink);font-weight:600}
+  #i-body .an-val{color:var(--muted);white-space:nowrap}
+  #i-body .an-track{height:8px;background:#eef2f7;border-radius:6px;overflow:hidden}
+  #i-body .an-bar{height:100%;background:var(--navy-2);border-radius:6px}
+
+  /* Карьерный маршрут (лестница) */
+  #i-body .ladder{list-style:none;margin:8px 0 0;padding:0}
+  #i-body .ladder li{position:relative;padding:0 0 18px 28px;border-left:2px solid var(--line)}
+  #i-body .ladder li:last-child{border-left-color:transparent;padding-bottom:0}
+  #i-body .ladder li::before{content:"";position:absolute;left:-7px;top:2px;width:12px;height:12px;
+    border-radius:50%;background:var(--navy-2);box-shadow:0 0 0 3px #fff,0 0 0 4px var(--navy-2)}
+  #i-body .ladder .lad-role{font-family:'Montserrat',system-ui,sans-serif;font-weight:700;
+    color:var(--navy);font-size:14.5px}
+  #i-body .ladder .lad-note{font-size:13px;color:var(--muted);margin-top:2px;line-height:1.45}
+
+  /* Планшет: правая колонка уходит вниз на всю ширину рядом карточками */
+  @media(max-width:1100px){
+    .layout{grid-template-columns:300px minmax(0,1fr)}
+    aside.useful{grid-column:1 / -1;display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(230px,1fr))}
+    .u-head{grid-column:1 / -1}
+  }
+
   @media(max-width:860px){
     .layout{grid-template-columns:1fr;padding-top:22px;gap:22px}
     aside.filters{position:static;max-height:none}
@@ -342,8 +540,10 @@
     .top-inner{gap:14px;padding:13px 0}
     .titlebar-inner{padding:20px 0;gap:16px}
     .titlebar .eyebrow{margin-bottom:9px}
-    .board{flex-direction:row;align-items:baseline;gap:10px;padding:12px 18px}
-    .board .num{font-size:34px}
+    .board{width:100%}
+    .board .stat{flex:1;padding:12px 14px}
+    .board .num{font-size:30px}
+    .board .wnum{font-size:20px}
     .content h2{font-size:22px}
     .card{padding:18px 18px 16px 20px}
     button.more{width:100%}
@@ -359,6 +559,7 @@
 </style>
 </head>
 <body>
+<a class="skip-link" href="#content">Перейти к содержанию</a>
 
 <header class="top">
   <div class="wrap top-inner">
@@ -376,7 +577,16 @@
       <h1>Вакансии в сфере <span class="accent">физической культуры и спорта</span></h1>
       <p class="subtitle">Свежие предложения для тренеров, преподавателей, инструкторов и методистов — из проверенных источников.</p>
     </div>
-    <div class="board"><span class="num" id="count">0</span><span class="lbl">найдено</span></div>
+    <div class="board" role="status" aria-live="polite">
+      <div class="stat stat-main">
+        <span class="num" id="count">0</span>
+        <span class="lbl">найдено всего</span>
+      </div>
+      <div class="stat stat-week">
+        <span class="wnum" id="weekcount">0</span>
+        <span class="wlbl">за неделю</span>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -496,6 +706,7 @@
         <label class="f" for="sort">Сортировка</label>
         <select id="sort">
           <option value="">По умолчанию</option>
+          <option value="match">По совпадению</option>
           <option value="date">Сначала новые</option>
           <option value="salary_desc">Сначала с высокой зарплатой</option>
           <option value="salary_asc">Сначала с низкой зарплатой</option>
@@ -519,9 +730,54 @@
   </aside>
 
   <!-- Контент -->
-  <main class="content">
+  <main class="content" id="content" tabindex="-1">
+    <section class="smart" id="smart">
+      <div class="smart-head">
+        <div class="smart-title"><span class="st-star">★</span> Умный подбор</div>
+        <button class="smart-toggle" id="smart-toggle" type="button" aria-expanded="false">Настроить</button>
+      </div>
+      <div class="smart-body" id="smart-body" hidden>
+        <p class="smart-hint">Заполните анкету — подберём вакансии по совпадению компетенций и объясним, почему они подходят.</p>
+        <div class="smart-grid">
+          <div><label class="f" for="p-city">Ваш город</label><input id="p-city" placeholder="например: Казань"></div>
+          <div><label class="f" for="p-cat">Направление</label>
+            <select id="p-cat">
+              <option value="">Любое</option>
+              <option>Тренер</option>
+              <option>Учитель ФК</option>
+              <option>Инструктор</option>
+              <option>Фитнес</option>
+              <option>Методист</option>
+            </select>
+          </div>
+          <div><label class="f" for="p-sport">Вид спорта / специализация</label><input id="p-sport" placeholder="например: плавание"></div>
+          <div><label class="f" for="p-edu">Образование</label>
+            <select id="p-edu">
+              <option value="">Не указано</option>
+              <option value="prof">Среднее профессиональное</option>
+              <option value="higher">Высшее</option>
+              <option value="higher_prof">Высшее профильное</option>
+            </select>
+          </div>
+          <div><label class="f" for="p-exp">Опыт работы</label>
+            <select id="p-exp">
+              <option value="">Не указано</option>
+              <option value="0">Без опыта</option>
+              <option value="1">До 1 года</option>
+              <option value="3">1–3 года</option>
+              <option value="6">Более 3 лет</option>
+            </select>
+          </div>
+          <div><label class="f" for="p-salary">Желаемая зарплата, ₽</label><input id="p-salary" type="number" min="0" step="5000" placeholder="например: 50000"></div>
+        </div>
+        <div class="smart-actions">
+          <button class="smart-apply" id="smart-apply" type="button">Подобрать</button>
+          <button class="smart-clear" id="smart-clear" type="button">Сбросить</button>
+        </div>
+      </div>
+    </section>
     <h2>Открытые <span class="accent">вакансии</span></h2>
-    <p class="note">Подбор вакансий тренеров, учителей физкультуры, инструкторов и методистов из открытых источников.</p>
+    <p class="note">Подбор вакансий тренеров, учителей физической культуры, инструкторов и методистов из открытых источников.</p>
     <div id="banner"></div>
     <div id="list"></div>
     <div class="more-wrap">
@@ -529,11 +785,118 @@
       <button class="loadmore" id="more">Показать ещё</button>
     </div>
   </main>
+
+  <!-- Правая колонка: полезные материалы -->
+  <aside class="useful" aria-label="В помощь соискателю">
+    <div class="u-head">Аналитика и карта</div>
+
+    <button class="u-card" id="card-analytics" type="button">
+      <span class="u-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 15v2M12 10v7M17 6v11"/></svg></span>
+      <span class="u-tx"><span class="u-t">Аналитика рынка</span><span class="u-d">Зарплаты, спрос, топ направлений и регионов</span></span>
+    </button>
+
+    <button class="u-card" id="card-map" type="button">
+      <span class="u-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l-6 3V6l6-3 6 3 6-3v15l-6 3-6-3z"/><path d="M9 3v15M15 6v15"/></svg></span>
+      <span class="u-tx"><span class="u-t">Карта вакансий</span><span class="u-d">Где есть вакансии по вашему запросу</span></span>
+    </button>
+
+    <div class="u-head" style="margin-top:8px">В помощь соискателю</div>
+
+    <button class="u-card" type="button" data-info="resume">
+      <span class="u-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2Z"/><path d="M9 13h6M9 17h6"/></svg></span>
+      <span class="u-tx"><span class="u-t">Как составить резюме</span><span class="u-d">Структура и советы для сферы ФКиС</span></span>
+    </button>
+
+    <button class="u-card" type="button" data-info="resume_template">
+      <span class="u-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h8"/></svg></span>
+      <span class="u-tx"><span class="u-t">Образцы и шаблоны резюме</span><span class="u-d">Готовый шаблон — скопируйте и заполните</span></span>
+    </button>
+
+    <button class="u-card" type="button" data-info="professiograms">
+      <span class="u-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
+      <span class="u-tx"><span class="u-t">Профессиограммы</span><span class="u-d">Чем занимаются тренер, учитель ФК, методист</span></span>
+    </button>
+
+    <button class="u-card" type="button" data-info="testing">
+      <span class="u-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="m9 14 2 2 4-4"/></svg></span>
+      <span class="u-tx"><span class="u-t">Профессиональное тестирование</span><span class="u-d">Профориентация: где пройти и как использовать</span></span>
+    </button>
+
+    <button class="u-card" type="button" data-info="interview">
+      <span class="u-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span>
+      <span class="u-tx"><span class="u-t">Подготовка к собеседованию</span><span class="u-d">Как подготовиться и что важно для ФКиС</span></span>
+    </button>
+
+    <button class="u-card" type="button" data-info="faq">
+      <span class="u-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg></span>
+      <span class="u-tx"><span class="u-t">Частые вопросы</span><span class="u-d">Как откликнуться, нужен ли опыт и другое</span></span>
+    </button>
+
+    <button class="u-card" type="button" data-info="rights">
+      <span class="u-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg></span>
+      <span class="u-tx"><span class="u-t">Трудовые права</span><span class="u-d">Памятка молодому специалисту</span></span>
+    </button>
+
+    <button class="u-card" type="button" data-info="events">
+      <span class="u-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></span>
+      <span class="u-tx"><span class="u-t">Ярмарки вакансий и события</span><span class="u-d">Дни карьеры и встречи с работодателями</span></span>
+    </button>
+
+    <a class="u-card" href="https://lesgaft.spb.ru/ru/division/centr-innovacionnoy-politiki-molodyozhnoy-politiki-i-karery-obuchayushchihsya-vypusknikov-i" target="_blank" rel="noopener">
+      <span class="u-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg></span>
+      <span class="u-tx"><span class="u-t">Карьерные консультации</span><span class="u-d">Центр карьеры обучающихся и выпускников</span></span>
+    </a>
+  </aside>
 </div>
 
-<footer class="wrap">
-  <div class="f-org">Национальный государственный университет физической культуры, спорта и здоровья имени П.Ф. Лесгафта, Санкт-Петербург · 1896–2026, 130 лет</div>
-  <div>Данные: hh.ru API и «Работа России» (trudvsem.ru). Сервис подбора вакансий в сфере физической культуры и спорта.</div>
+<footer class="site-footer">
+  <div class="foot-grid">
+    <div class="foot-brand">
+      <span class="foot-logo"><img src="logo.png" alt="Университет имени П.Ф. Лесгафта — 130 лет"></span>
+      <p class="foot-desc">Сервис подбора вакансий в сфере физической культуры и спорта. Собирает актуальные предложения работы из открытых источников и показывает их в одном месте.</p>
+    </div>
+
+    <nav class="foot-col">
+      <h4>Источники вакансий</h4>
+      <ul>
+        <li><a href="https://hh.ru" target="_blank" rel="noopener">hh.ru</a></li>
+        <li><a href="https://trudvsem.ru" target="_blank" rel="noopener">Работа России</a></li>
+        <li><a href="https://www.superjob.ru" target="_blank" rel="noopener">SuperJob</a></li>
+      </ul>
+    </nav>
+
+    <nav class="foot-col">
+      <h4>Университет</h4>
+      <ul>
+        <li><a href="https://lesgaft.spb.ru/" target="_blank" rel="noopener">Официальный сайт</a></li>
+        <li><a href="https://lesgaft.spb.ru/ru/division/centr-innovacionnoy-politiki-molodyozhnoy-politiki-i-karery-obuchayushchihsya-vypusknikov-i" target="_blank" rel="noopener">Центр карьеры обучающихся и выпускников</a></li>
+        <li><a href="https://lesgaft.spb.ru/ru/commission/priyomnaya-komissiya" target="_blank" rel="noopener">Приёмная комиссия</a></li>
+      </ul>
+    </nav>
+
+    <div class="foot-col foot-contacts">
+      <h4>Контакты</h4>
+      <p>190121, Санкт-Петербург,<br>ул. Декабристов, д. 35</p>
+      <p><a href="https://lesgaft.spb.ru/" target="_blank" rel="noopener">lesgaft.spb.ru</a></p>
+      <div class="foot-soc-label">Центр карьеры в соцсетях</div>
+      <div class="foot-social">
+        <a class="soc" href="https://vk.com/lesgaft_career_youth" target="_blank" rel="noopener" aria-label="ВКонтакте">
+          <img class="soc-ic" src="logos/vk.png" alt="" width="18" height="18">
+          <span>ВКонтакте</span>
+        </a>
+        <a class="soc" href="https://max.ru/join/dGYpWkqbcOER9HAzqs5PrMsGExOrkHVvg41w9bKNpxs" target="_blank" rel="noopener" aria-label="MAX">
+          <img class="soc-ic" src="logos/max.png" alt="" width="18" height="18">
+          <span>MAX</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="foot-bottom">
+    <div class="foot-bottom-inner">
+      <span>© 2026 Национальный государственный университет физической культуры, спорта и здоровья имени П.Ф. Лесгафта, Санкт-Петербург</span>
+    </div>
+  </div>
 </footer>
 
 <!-- Кнопка «Наверх» -->
@@ -542,6 +905,17 @@
 </button>
 
 <!-- Модальное окно «Подробнее» -->
+<!-- Окно полезных материалов -->
+<div class="overlay" id="overlay2" role="dialog" aria-modal="true" aria-labelledby="i-title">
+  <div class="modal info-modal">
+    <div class="mhead">
+      <button class="mclose" id="i-close" aria-label="Закрыть">×</button>
+      <h3 id="i-title"></h3>
+    </div>
+    <div class="mbody" id="i-body"></div>
+  </div>
+</div>
+
 <div class="overlay" id="overlay" role="dialog" aria-modal="true" aria-labelledby="m-title">
   <div class="modal">
     <div class="mhead">
@@ -552,10 +926,15 @@
     <div class="mbody">
       <div class="mcompany" id="m-company"></div>
       <div class="msalary" id="m-salary"></div>
+      <div id="m-match"></div>
       <dl class="dl" id="m-dl"></dl>
-      <div class="desc">
-        <h4>Описание вакансии</h4>
-        <div id="m-desc"></div>
+      <div class="m-section" id="m-duties-wrap">
+        <h4>Обязанности</h4>
+        <ul class="m-list" id="m-duties"></ul>
+      </div>
+      <div class="m-section" id="m-req-wrap">
+        <h4>Требования</h4>
+        <ul class="m-check" id="m-req"></ul>
       </div>
     </div>
     <div class="mfoot">
@@ -573,9 +952,9 @@ const SAMPLE = [
   {source:'hh',title:'Фитнес-инструктор тренажёрного зала',company:'World Class',region:'Санкт-Петербург',salaryFrom:55000,salaryTo:90000,employment:'Полная занятость',schedule:'Сменный график',url:'#',category:'Фитнес',publishedAt:'2026-06-26T08:15:00',requirement:'Среднее профессиональное образование · опыт от 2 лет',address:'Санкт-Петербург, Невский пр., 100',description:'Консультирование клиентов в тренажёрном зале, составление программ тренировок, проведение вводных инструктажей. Требования: знание анатомии и техники упражнений, сертификаты приветствуются.'},
   {source:'trudvsem',title:'Инструктор по лыжному спорту',company:'СШ «Олимпиец»',region:'Екатеринбург',salaryFrom:42000,salaryTo:50000,employment:'Частичная занятость',schedule:'Гибкий график',url:'#',category:'Инструктор',publishedAt:'2026-06-22T15:00:00',requirement:'Спортивный разряд · опыт от 1 года',address:'Свердловская область, г Екатеринбург, ул. Лыжная, 5',description:'Обучение основам лыжной подготовки, сопровождение групп на трассе, контроль безопасности. Сезонная занятость с возможностью продления. Требования: спортивный разряд, опыт инструктажа.'},
   {source:'hh',title:'Тренер по фитнесу (групповые программы)',company:'Spirit Fitness',region:'Москва',salaryFrom:70000,salaryTo:120000,employment:'Полная занятость',schedule:'Сменный график',url:'#',category:'Тренер',publishedAt:'2026-06-25T18:40:00',requirement:'Профильные сертификаты · опыт от 1 года',address:'Москва, Ленинградский пр., 80',description:'Проведение групповых занятий (силовые, функциональные, аэробные направления). Формирование лояльной аудитории, ведение расписания. Требования: опыт от 1 года, харизма, профильные сертификаты.'},
-  {source:'trudvsem',title:'Методист спортивной школы',company:'ДЮСШ №3',region:'Новосибирск',salaryFrom:35000,salaryTo:45000,employment:'Полная занятость',schedule:'Полный день',url:'#',category:'Методист',publishedAt:'2026-06-21T10:00:00',requirement:'Высшее образование (физическая культура) · опыт от 3 лет',address:'Новосибирская область, г Новосибирск, ул. Кирова, 3',description:'Разработка учебно-тренировочных программ, методическое сопровождение тренеров, ведение документации и отчётности. Требования: высшее образование в области физкультуры, знание нормативной базы.'},
-  {source:'hh',title:'Учитель физкультуры (начальные классы)',company:'Частная школа «Лидер»',region:'Москва',salaryFrom:80000,salaryTo:null,employment:'Полная занятость',schedule:'Полный день',url:'#',category:'Учитель ФК',publishedAt:'2026-06-23T11:20:00',requirement:'Педагогическое образование · без опыта',address:'Москва, ул. Лидерская, 7',description:'Уроки физической культуры в начальной школе, организация подвижных игр и утренней зарядки. Современная спортивная база. Требования: педагогическое образование, любовь к детям.'},
-  {source:'trudvsem',title:'Инструктор-методист по адаптивной физкультуре',company:'Центр реабилитации',region:'Казань',salaryFrom:40000,salaryTo:55000,employment:'Полная занятость',schedule:'Полный день',url:'#',category:'Инструктор',publishedAt:'2026-06-20T09:30:00',requirement:'Профильное образование (АФК) · опыт от 2 лет',address:'Республика Татарстан, г Казань, ул. Реабилитационная, 9',description:'Проведение занятий адаптивной физкультурой для людей с ограниченными возможностями здоровья, разработка индивидуальных программ. Требования: профильное образование (АФК), терпение и эмпатия.'},
+  {source:'trudvsem',title:'Методист спортивной школы',company:'ДЮСШ №3',region:'Новосибирск',salaryFrom:35000,salaryTo:45000,employment:'Полная занятость',schedule:'Полный день',url:'#',category:'Методист',publishedAt:'2026-06-21T10:00:00',requirement:'Высшее образование (физическая культура) · опыт от 3 лет',address:'Новосибирская область, г Новосибирск, ул. Кирова, 3',description:'Разработка учебно-тренировочных программ, методическое сопровождение тренеров, ведение документации и отчётности. Требования: высшее образование в области физической культуры, знание нормативной базы.'},
+  {source:'hh',title:'Учитель физической культуры (начальные классы)',company:'Частная школа «Лидер»',region:'Москва',salaryFrom:80000,salaryTo:null,employment:'Полная занятость',schedule:'Полный день',url:'#',category:'Учитель ФК',publishedAt:'2026-06-23T11:20:00',requirement:'Педагогическое образование · без опыта',address:'Москва, ул. Лидерская, 7',description:'Уроки физической культуры в начальной школе, организация подвижных игр и утренней зарядки. Современная спортивная база. Требования: педагогическое образование, любовь к детям.'},
+  {source:'trudvsem',title:'Инструктор-методист по адаптивной физической культуре',company:'Центр реабилитации',region:'Казань',salaryFrom:40000,salaryTo:55000,employment:'Полная занятость',schedule:'Полный день',url:'#',category:'Инструктор',publishedAt:'2026-06-20T09:30:00',requirement:'Профильное образование (АФК) · опыт от 2 лет',address:'Республика Татарстан, г Казань, ул. Реабилитационная, 9',description:'Проведение занятий адаптивной физической культурой для людей с ограниченными возможностями здоровья, разработка индивидуальных программ. Требования: профильное образование (АФК), терпение и эмпатия.'},
   {source:'superjob',title:'Тренер тренажёрного зала',company:'Фитнес-клуб «Атлет»',region:'Нижний Новгород',salaryFrom:50000,salaryTo:75000,employment:'Полная занятость',schedule:'Сменный график',url:'#',category:'Тренер',publishedAt:'2026-06-26T10:10:00',requirement:'Профильное образование · опыт от 1 года',address:'Нижний Новгород, ул. Атлетов, 1',description:'Проведение персональных тренировок, ведение клиентской базы, контроль техники выполнения упражнений. Требования: профильное образование, опыт работы от 1 года.'},
 ];
 
@@ -624,6 +1003,43 @@ const ICON_PIN = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" str
 const ICON_REQ = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 5h1a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h1"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="m9 14 2 2 4-4"/></svg>`;
 const ICON_CAL = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4.5" width="18" height="16" rx="2"/><path d="M3 9.5h18M8 2.5v4M16 2.5v4"/></svg>`;
 const ICON_STAR = `<svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M12 3.5l2.6 5.27 5.82.85-4.21 4.1.99 5.79L12 17.77l-5.2 2.74.99-5.79-4.21-4.1 5.82-.85z"/></svg>`;
+
+// --- Умный подбор: профиль соискателя и расчёт совпадения ---
+const PROFILE_KEY = 'fkis_profile';
+let profile = {};
+let profileActive = false;
+const EDU_RANK = { prof:1, higher:2, higher_prof:3 };
+
+function yearsWordJS(n){ const a=Math.abs(n)%100,b=n%10; if(a>10&&a<20)return'лет'; if(b===1)return'год'; if(b>=2&&b<=4)return'года'; return'лет'; }
+function reqEduLevel(req){ const t=(req||'').toLowerCase(); if(/профильн/.test(t))return 3; if(/высш/.test(t))return 2; if(/средн|колледж|техникум/.test(t))return 1; return 0; }
+function reqExpYears(req){ const t=(req||'').toLowerCase(); if(/без опыта/.test(t))return 0; const m=t.match(/опыт[^\d]*(\d+)/); return m?parseInt(m[1],10):0; }
+
+function matchScore(v){
+  if(!profileActive) return null;
+  let earned=0, total=0; const reasons=[];
+  const add=(w,ok,okText,noText)=>{ total+=w; if(ok)earned+=w; reasons.push({ok, text: ok?okText:noText}); };
+  if(profile.cat){ add(25, v.category===profile.cat, 'подходит направление', 'другое направление'); }
+  if(profile.sport){ const s=profile.sport.toLowerCase(); const ok=((v.title||'')+' '+(v.description||'')).toLowerCase().includes(s); add(25, ok, `нужен именно «${profile.sport}»`, `не про «${profile.sport}»`); }
+  if(profile.edu){ const need=reqEduLevel(v.requirement); add(15, EDU_RANK[profile.edu]>=need, 'подходит образование', 'требуется более высокое образование'); }
+  if(profile.exp!=='' && profile.exp!=null){ const need=reqExpYears(v.requirement); add(15, Number(profile.exp)>=need, 'подходит опыт', `нужен опыт от ${need} ${yearsWordJS(need)}`); }
+  if(profile.salary){ const top=v.salaryFrom||v.salaryTo||0; add(12, top>=profile.salary, 'зарплата соответствует ожиданиям', top?'зарплата ниже ожиданий':'зарплата не указана'); }
+  if(profile.city){ const ok=(v.region||'').toLowerCase().includes(profile.city.toLowerCase()); add(8, ok, 'ваш город', 'другой регион'); }
+  if(total===0) return null;
+  return { score: Math.round(earned/total*100), reasons };
+}
+
+// Текст обязанностей → пункты списка; требования → пункты чек-листа
+function toBullets(text, req){
+  if(!text) return [];
+  let t = String(text).trim();
+  if(req){ const i = t.indexOf(req); if(i > 0) t = t.slice(0, i).trim(); }
+  t = t.replace(/\bТребовани[ея][:\s].*$/i, '').trim();
+  return t.split(/(?<=[.!?])\s+|\s*[;•]\s*/).map(s=>s.replace(/^[—\-\s]+/,'').trim()).filter(s=>s.length>3).slice(0,8);
+}
+function toChecklist(req){
+  if(!req) return [];
+  return String(req).split(/\s*[·;,]\s*/).map(s=>s.trim()).filter(Boolean).slice(0,8);
+}
 
 function salaryText(v){
   if(!v.salaryFrom && !v.salaryTo) return {cls:'none',text:'з/п не указана'};
@@ -696,7 +1112,9 @@ function applyFilters(animate){
   let out = cat ? base.filter(v=>v.category===cat) : base.slice();
 
   // Клиентская сортировка отфильтрованного списка
-  if(sort==='date'){
+  if(sort==='match' || (profileActive && sort==='')){
+    out.sort((a,b)=>((matchScore(b)?.score||0)-(matchScore(a)?.score||0)));
+  }else if(sort==='date'){
     out.sort((a,b)=>(Date.parse(b.publishedAt)||0)-(Date.parse(a.publishedAt)||0));
   }else if(sort==='salary_desc'){
     out.sort((a,b)=>((b.salaryFrom||b.salaryTo||0)-(a.salaryFrom||a.salaryTo||0)));
@@ -717,11 +1135,42 @@ function applyFilters(animate){
 let VIEW = [];
 
 // Применить фильтры заново, начав показ с первых PAGE_SIZE карточек
-function refresh(animate){ shown = PAGE_SIZE; applyFilters(animate); }
+function refresh(animate){ shown = PAGE_SIZE; applyFilters(animate); writeURL(); }
+
+// --- Фильтры в адресной строке: ссылку с поиском можно отправить и перезагрузить ---
+function writeURL(){
+  const p = new URLSearchParams();
+  ['q','region','cat','salary','empl','schedule','period','sort'].forEach(id=>{
+    const v = $(id).value.trim();
+    if(v) p.set(id, v);
+  });
+  if($('onlysalary').checked) p.set('onlysalary','1');
+  if($('onlyfav').checked) p.set('onlyfav','1');
+  if(['s-hh','s-tv','s-sj'].some(id=>!$(id).checked)) p.set('src', currentSources().join(','));
+  const qs = p.toString();
+  history.replaceState(null, '', qs ? ('?'+qs) : location.pathname);
+}
+function readURL(){
+  const p = new URLSearchParams(location.search);
+  if(![...p.keys()].length) return;
+  ['q','region','cat','salary','empl','schedule','period','sort'].forEach(id=>{
+    if(p.has(id)) $(id).value = p.get(id);
+  });
+  $('onlysalary').checked = p.get('onlysalary')==='1';
+  $('onlyfav').checked = p.get('onlyfav')==='1';
+  if(p.has('src')){
+    const on = new Set(p.get('src').split(',').filter(Boolean));
+    Object.keys(SOURCES).forEach(k=>{ $(SOURCES[k].chk).checked = on.has(k); });
+  }
+  syncQuick();
+}
 
 function render(items, animate){
   VIEW = items;
   $('count').textContent = fmt(items.length);
+  const weekAgo = Date.now() - 7*86400000;
+  const newWeek = items.filter(v=>{ const t = Date.parse(v.publishedAt); return !isNaN(t) && t >= weekAgo; }).length;
+  $('weekcount').textContent = '+' + fmt(newWeek);
   const list = $('list');
   if(!items.length){
     list.classList.remove('reveal');
@@ -741,6 +1190,7 @@ function render(items, animate){
       </div>
       <div class="company">${escapeHtml(v.company)} · ${escapeHtml(v.region||'регион не указан')}</div>
       <div class="salary ${s.cls}">${s.text}</div>
+      ${(()=>{ const m=matchScore(v); return m?`<div class="match-badge ${m.score>=80?'hi':m.score>=60?'mid':'low'}"><span class="mb-pct">${m.score}%</span> совпадение</div>`:''; })()}
       ${(v.address || v.requirement) ? `<div class="cinfo">
         ${v.address ? `<div class="cinfo-row">${ICON_PIN}<span class="ci-text ci-addr">${escapeHtml(v.address)}</span></div>` : ''}
         ${v.requirement ? `<div class="cinfo-row req">${ICON_REQ}<span class="ci-text ci-req"><b>Требования:</b> ${escapeHtml(v.requirement)}</span></div>` : ''}
@@ -803,16 +1253,23 @@ function openModal(v){
   if(v.schedule) rows.push(['График', v.schedule]);
   if(v.region) rows.push(['Регион', v.region]);
   if(v.address) rows.push(['Адрес', v.address]);
-  if(v.requirement) rows.push(['Требования', v.requirement]);
   const pub = dateText(v.publishedAt);
   if(pub) rows.push(['Опубликовано', pub]);
   rows.push(['Источник', srcLabel(v.source)]);
   $('m-dl').innerHTML = rows.map(([k,val])=>
     `<dt>${escapeHtml(k)}</dt><dd>${escapeHtml(val)}</dd>`).join('');
 
-  $('m-desc').textContent = v.description && v.description.trim()
-    ? v.description.trim()
-    : 'Подробное описание не предоставлено источником. Полная информация — на странице вакансии.';
+  const duties = toBullets(v.description, v.requirement);
+  $('m-duties').innerHTML = duties.length
+    ? duties.map(d=>`<li>${escapeHtml(d)}</li>`).join('')
+    : '<li class="muted">Описание не предоставлено источником — смотрите на странице вакансии.</li>';
+  const reqs = toChecklist(v.requirement);
+  $('m-req-wrap').style.display = reqs.length ? '' : 'none';
+  $('m-req').innerHTML = reqs.map(r=>`<li>${escapeHtml(r)}</li>`).join('');
+  const mm = matchScore(v);
+  $('m-match').innerHTML = mm
+    ? `<div class="match-box"><div class="mx-top"><span class="mx-pct">${mm.score}%</span><span class="mx-lbl">совпадение по вашей анкете</span></div><ul>${mm.reasons.map(r=>`<li class="${r.ok?'ok':'no'}">${escapeHtml(r.text)}</li>`).join('')}</ul></div>`
+    : '';
 
   const goto = $('m-goto');
   if(v.url && v.url !== '#'){
@@ -986,6 +1443,415 @@ window.addEventListener('scroll', ()=>{
 }, { passive:true });
 _totop.addEventListener('click', ()=> window.scrollTo({ top:0, behavior:'smooth' }));
 
+// --- Полезные материалы (правая колонка) ---
+const INFO = {
+  resume: { title:'Как составить резюме', html:`
+    <h4>Что включить</h4>
+    <ul>
+      <li>Контакты: телефон, e-mail, город.</li>
+      <li>Желаемую должность и направление.</li>
+      <li>Образование: учебное заведение, специальность, годы.</li>
+      <li>Опыт: работа, практика, стажировки — с задачами и результатами.</li>
+      <li>Ключевые навыки и достижения (с цифрами, если есть).</li>
+      <li>Дополнительно: спортивные разряды и звания, сертификаты, права, медкнижка.</li>
+    </ul>
+    <h4>Советы</h4>
+    <ul>
+      <li>Уместите резюме в одну страницу, пишите конкретно и по делу.</li>
+      <li>Подстраивайте резюме под конкретную вакансию.</li>
+      <li>Проверьте текст на ошибки; деловое фото — по желанию.</li>
+    </ul>
+    <h4>Для сферы ФКиС</h4>
+    <ul>
+      <li>Укажите виды спорта, разряды/звания и квалификацию.</li>
+      <li>Опыт работы с возрастными группами (дети, взрослые, спортсмены).</li>
+      <li>Готовность к сменному графику, сборам и соревнованиям.</li>
+    </ul>` },
+  professiograms: { title:'Профессиограммы', html:`
+    <p>Кратко о ключевых профессиях сферы физической культуры и спорта.</p>
+    <h4>Тренер</h4>
+    <p>Планирует и проводит тренировки, ведёт спортсменов к результату, контролирует технику и нагрузку. Нужны: лидерство, дисциплина, знание методики. Образование — в области ФК и спорта.</p>
+    <h4>Учитель физической культуры</h4>
+    <p>Ведёт уроки физической культуры в школе по ФГОС, организует секции и сдачу ГТО. Нужны: педагогические навыки, ответственность, любовь к детям. Образование — высшее педагогическое.</p>
+    <h4>Инструктор по спорту / фитнесу</h4>
+    <p>Проводит групповые и индивидуальные занятия, следит за техникой и безопасностью, мотивирует клиентов. Нужны: коммуникабельность, знание анатомии и методики.</p>
+    <h4>Инструктор-методист по адаптивной физической культуре</h4>
+    <p>Проводит занятия для людей с ограниченными возможностями здоровья по индивидуальным программам. Нужны: эмпатия, терпение, профильное образование (АФК).</p>
+    <h4>Методист</h4>
+    <p>Разрабатывает учебно-тренировочные программы, сопровождает тренеров, ведёт документацию. Нужны: системность, знание нормативной базы.</p>` },
+  testing: { title:'Профессиональное тестирование', html:`
+    <h4>Что это</h4>
+    <p>Профориентационные тесты помогают оценить склонности и сильные стороны и понять, какое направление в сфере ФКиС вам ближе.</p>
+    <h4>Где пройти</h4>
+    <ul>
+      <li>Профориентация на портале «Работа России» — <a href="https://trudvsem.ru" target="_blank" rel="noopener">trudvsem.ru</a>.</li>
+      <li>Консультация в Центре карьеры университета — <a href="https://lesgaft.spb.ru/ru/division/centr-innovacionnoy-politiki-molodyozhnoy-politiki-i-karery-obuchayushchihsya-vypusknikov-i" target="_blank" rel="noopener">страница центра</a>.</li>
+    </ul>
+    <h4>Совет</h4>
+    <p>Воспринимайте результаты как ориентир, а не окончательный вывод: они помогают выбрать направление, а решение всегда за вами.</p>` },
+  interview: { title:'Подготовка к собеседованию', html:`
+    <h4>Перед собеседованием</h4>
+    <ul>
+      <li>Изучите организацию и перечитайте вакансию.</li>
+      <li>Подготовьте короткий рассказ о себе и примеры из практики.</li>
+      <li>Продумайте вопросы работодателю.</li>
+    </ul>
+    <h4>На встрече</h4>
+    <ul>
+      <li>Приходите вовремя и опрятно.</li>
+      <li>Отвечайте конкретно, приводите примеры, будьте честны об опыте.</li>
+    </ul>
+    <h4>Для сферы ФКиС</h4>
+    <ul>
+      <li>Будьте готовы описать или провести пробное занятие.</li>
+      <li>Расскажите про работу с группами и обеспечение безопасности.</li>
+    </ul>
+    <h4>После</h4>
+    <p>Поблагодарите за встречу и уточните сроки ответа.</p>` },
+  resume_template: { title:'Образцы и шаблоны резюме', html:`
+    <p>Скопируйте шаблон и заполните своими данными.</p>
+    <button class="tpl-copy" type="button" onclick="copyTpl(this)">Скопировать шаблон</button>
+    <pre class="tpl" id="resumeTpl">ФИО
+Город · Телефон · E-mail
+
+Желаемая должность:
+
+Образование:
+— Учебное заведение, специальность, годы обучения
+
+Опыт работы / практика:
+— Организация, должность, период
+  • обязанности и результаты
+
+Ключевые навыки:
+Спортивные разряды и звания:
+Дополнительно: сертификаты, водительские права, медкнижка</pre>
+    <h4>Мини-пример</h4>
+    <p>«Тренер по плаванию. Образование: Университет им. П.Ф. Лесгафта, физическая культура и спорт, 2026. Практика: СШОР — группы 8–12 лет, подготовка к соревнованиям. Навыки: методика плавания, первая помощь. КМС по плаванию.»</p>` },
+  rights: { title:'Трудовые права молодого специалиста', html:`
+    <h4>Оформление</h4>
+    <ul>
+      <li>Работа без письменного трудового договора недопустима.</li>
+      <li>Запросите свой экземпляр договора и приказа о приёме.</li>
+    </ul>
+    <h4>Испытательный срок</h4>
+    <ul>
+      <li>Условия и срок прописываются в договоре; в этот период действуют те же права.</li>
+    </ul>
+    <h4>Рабочее время и отдых</h4>
+    <ul>
+      <li>Нормальная продолжительность — не более 40 часов в неделю.</li>
+      <li>Ежегодный оплачиваемый отпуск гарантирован.</li>
+    </ul>
+    <h4>Оплата труда</h4>
+    <ul>
+      <li>Зарплата выплачивается не реже чем каждые полмесяца.</li>
+      <li>При полной норме — не ниже МРОТ.</li>
+    </ul>
+    <h4>Если права нарушают</h4>
+    <ul>
+      <li>Обратитесь в государственную инспекцию труда или за консультацией в Центр карьеры.</li>
+    </ul>
+    <p style="font-size:12.5px;color:var(--muted)">Это краткая памятка. Точные нормы — в Трудовом кодексе РФ.</p>` },
+  events: { title:'Ярмарки вакансий и события', html:`
+    <h4>Что проводит Центр карьеры</h4>
+    <ul>
+      <li>Ярмарки вакансий и дни карьеры с работодателями сферы ФКиС.</li>
+      <li>Встречи с работодателями, мастер-классы и консультации.</li>
+      <li>Помощь с резюме и подготовкой к собеседованию.</li>
+    </ul>
+    <h4>Расписание и анонсы</h4>
+    <p>Актуальные даты публикуются в каналах Центра карьеры:</p>
+    <ul>
+      <li><a href="https://vk.com/lesgaft_career_youth" target="_blank" rel="noopener">ВКонтакте</a></li>
+      <li><a href="https://lesgaft.spb.ru/ru/division/centr-innovacionnoy-politiki-molodyozhnoy-politiki-i-karery-obuchayushchihsya-vypusknikov-i" target="_blank" rel="noopener">Страница центра на сайте университета</a></li>
+    </ul>` },
+  faq: { title:'Частые вопросы', html:`
+    <h4>Нужен ли опыт?</h4>
+    <p>Не всегда. Многие вакансии (учитель, инструктор, тренер детских секций) открыты для начинающих — важны образование, разряды и желание работать.</p>
+    <h4>Как откликнуться на вакансию?</h4>
+    <p>Нажмите «Подробнее» в карточке, затем «Перейти к вакансии на площадку» — отклик оформляется на сайте-источнике (hh.ru, «Работа России», SuperJob).</p>
+    <h4>Откуда вакансии?</h4>
+    <p>Сервис собирает их из открытых источников и обновляет автоматически; дубликаты убираются.</p>
+    <h4>Как искать эффективнее?</h4>
+    <p>Используйте фильтры (город, должность, зарплата) и сохраняйте поиск — ссылку с фильтрами можно отправить или открыть позже.</p>
+    <h4>Нет подходящих вакансий?</h4>
+    <p>Смягчите фильтры, проверьте другой регион или зайдите позже — список обновляется. За помощью обратитесь в Центр карьеры.</p>` },
+};
+function openInfoHTML(title, html, wide){
+  const modal = document.querySelector('#overlay2 .modal');
+  if(modal) modal.classList.toggle('map-modal', !!wide);
+  $('i-title').textContent = title;
+  $('i-body').innerHTML = html;
+  $('overlay2').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  $('i-close').focus();
+}
+function openInfo(key){ const d = INFO[key]; if(d) openInfoHTML(d.title, d.html); }
+
+// --- Аналитика рынка: считаем из загруженных вакансий ---
+function openAnalytics(){
+  const data = DATA.slice();
+  const n = data.length;
+  if(!n){ openInfoHTML('Аналитика рынка', '<p>Данные ещё не загружены. Попробуйте позже.</p>'); return; }
+  const rub = x => x ? x.toLocaleString('ru-RU') + ' ₽' : '—';
+  const withSal = data.filter(v=>v.salaryFrom||v.salaryTo);
+  const avg = withSal.length ? Math.round(withSal.reduce((s,v)=>s+(v.salaryFrom||v.salaryTo),0)/withSal.length) : 0;
+  const weekAgo = Date.now()-7*86400000;
+  const week = data.filter(v=>{const t=Date.parse(v.publishedAt);return !isNaN(t)&&t>=weekAgo;}).length;
+  const group = (keyFn)=>{ const m={}; data.forEach(v=>{ const k=keyFn(v)||'—'; (m[k]=m[k]||{n:0,sal:0,salN:0}); m[k].n++; const s=v.salaryFrom||v.salaryTo; if(s){m[k].sal+=s;m[k].salN++;} }); return Object.entries(m).map(([k,o])=>({k,n:o.n,avg:o.salN?Math.round(o.sal/o.salN):0})).sort((a,b)=>b.n-a.n); };
+  const cats = group(v=>v.category);
+  const regs = group(v=>v.region).slice(0,8);
+  const maxCat = Math.max(...cats.map(c=>c.n),1);
+  const maxReg = Math.max(...regs.map(r=>r.n),1);
+  const bar = (label,val,max,extra)=>`<div class="an-row"><div class="an-top"><span class="an-lbl">${escapeHtml(label)}</span><span class="an-val">${val}${extra?' · '+extra:''}</span></div><div class="an-track"><div class="an-bar" style="width:${Math.max(4,Math.round(val/max*100))}%"></div></div></div>`;
+  let html = `<p style="color:var(--muted);font-size:13px;margin:0 0 4px">По ${fmt(n)} загруженным вакансиям${week?`, из них ${fmt(week)} за последнюю неделю`:''}.</p>`;
+  html += `<div class="an-cards"><div class="an-card"><div class="an-num">${fmt(n)}</div><div class="an-cap">вакансий</div></div><div class="an-card"><div class="an-num">+${fmt(week)}</div><div class="an-cap">за неделю</div></div><div class="an-card"><div class="an-num">${avg?fmt(avg):'—'}</div><div class="an-cap">средняя з/п, ₽</div></div></div>`;
+  html += `<h4>Самые востребованные направления</h4>` + cats.map(c=>bar(c.k,c.n,maxCat,c.avg?'ср. '+rub(c.avg):'')).join('');
+  html += `<h4>Топ регионов по числу вакансий</h4>` + regs.map(r=>bar(r.k,r.n,maxReg,r.avg?'ср. '+rub(r.avg):'')).join('');
+  html += `<p style="color:var(--muted);font-size:12px;margin-top:14px">Расчёт по открытым данным источников; зарплата усреднена по вакансиям, где она указана.</p>`;
+  openInfoHTML('Аналитика рынка', html);
+}
+
+// --- Карта вакансий: координаты регионов и отрисовка ---
+const REGION_COORDS = {
+  'москва':[55.75,37.62],'московск':[55.5,37.4],'санкт-петербург':[59.94,30.31],'ленинградск':[59.7,30.8],
+  'новосибирск':[55.03,82.92],'свердловск':[56.84,60.61],'екатеринбург':[56.84,60.61],
+  'татарстан':[55.79,49.12],'казан':[55.79,49.12],'нижегородск':[56.30,43.94],'нижний новгород':[56.30,43.94],
+  'челябинск':[55.16,61.40],'омск':[54.99,73.37],'самар':[53.20,50.15],'ростов':[47.24,39.71],
+  'башкортостан':[54.74,55.97],'башкорт':[54.74,55.97],'уфа':[54.74,55.97],'красноярск':[56.01,92.85],
+  'воронеж':[51.66,39.20],'перм':[58.01,56.23],'волгоград':[48.71,44.51],'краснодар':[45.04,38.97],
+  'саратов':[51.53,46.03],'тюмен':[57.15,65.53],'удмурт':[56.85,53.20],'ижевск':[56.85,53.20],
+  'алтайский край':[53.35,83.78],'барнаул':[53.35,83.78],'ульяновск':[54.31,48.40],'иркутск':[52.29,104.30],
+  'хабаровск':[48.48,135.08],'ярославск':[57.63,39.87],'ярославль':[57.63,39.87],'приморск':[43.12,131.89],
+  'владивосток':[43.12,131.89],'дагестан':[42.98,47.50],'махачкала':[42.98,47.50],'томск':[56.49,84.95],
+  'оренбург':[51.77,55.10],'кемеров':[55.35,86.09],'кузбасс':[55.35,86.09],'рязанск':[54.62,39.74],'рязань':[54.62,39.74],
+  'пенз':[53.20,45.00],'липецк':[52.60,39.57],'тульск':[54.19,37.62],'тула':[54.19,37.62],
+  'кировск':[58.60,49.66],'киров':[58.60,49.66],'чуваш':[56.15,47.25],'чебоксар':[56.15,47.25],
+  'калининград':[54.71,20.45],'курск':[51.73,36.19],'бурят':[51.83,107.58],'улан-удэ':[51.83,107.58],
+  'ставропольск':[45.04,41.97],'ставрополь':[45.04,41.97],'тверск':[56.86,35.92],'тверь':[56.86,35.92],
+  'ивановск':[57.00,40.97],'брянск':[53.24,34.36],'белгород':[50.60,36.59],'ханты-мансийск':[61.00,69.00],
+  'югра':[61.00,69.00],'сургут':[61.25,73.40],'владимирск':[56.13,40.41],'владимир':[56.13,40.41],
+  'архангельск':[64.54,40.52],'забайкальск':[52.03,113.50],'чита':[52.03,113.50],'калужск':[54.51,36.27],
+  'калуга':[54.51,36.27],'смоленск':[54.78,32.05],'саха':[62.03,129.73],'якути':[62.03,129.73],'якутск':[62.03,129.73],
+  'мордови':[54.18,45.18],'саранск':[54.18,45.18],'вологодск':[59.22,39.89],'вологда':[59.22,39.89],
+  'курганск':[55.44,65.34],'курган':[55.44,65.34],'орловск':[52.97,36.07],'орёл':[52.97,36.07],'орел':[52.97,36.07],
+  'мурманск':[68.97,33.07],'тамбов':[52.72,41.45],'чечен':[43.32,45.69],'чечн':[43.32,45.69],'грозн':[43.32,45.69],
+  'карели':[61.79,34.39],'петрозаводск':[61.79,34.39],'костромск':[57.77,40.93],'кострома':[57.77,40.93],
+  'кабардино':[43.48,43.61],'нальчик':[43.48,43.61],'псков':[57.82,28.33],'марий эл':[56.63,47.89],'йошкар':[56.63,47.89],
+  'сахалин':[46.96,142.74],'хакаси':[53.72,91.44],'абакан':[53.72,91.44],'амурск':[50.29,127.54],'благовещенск':[50.29,127.54],
+  'великий новгород':[58.52,31.27],'новгородск':[58.52,31.27],'осети':[43.02,44.68],'владикавказ':[43.02,44.68],
+  'калмыки':[46.31,44.27],'элиста':[46.31,44.27],'тыва':[51.72,94.45],'тува':[51.72,94.45],'кызыл':[51.72,94.45],
+  'республика алтай':[51.96,85.96],'горно-алтайск':[51.96,85.96],'адыге':[44.61,40.10],'майкоп':[44.61,40.10],
+  'ямал':[66.53,66.61],'салехард':[66.53,66.61],'ненецк':[67.64,53.01],'еврейск':[48.79,132.92],'биробиджан':[48.79,132.92],
+  'магадан':[59.56,150.80],'чукот':[64.73,177.51],'анадырь':[64.73,177.51],'камчат':[53.04,158.65],
+  'севастополь':[44.62,33.53],'крым':[44.95,34.10],'симферополь':[44.95,34.10],'ингушет':[43.17,44.81],
+  'карачаево':[44.23,42.05],'черкесск':[44.23,42.05],
+};
+const REGION_KEYS = Object.keys(REGION_COORDS).sort((a,b)=>b.length-a.length);
+function findRegionCoords(region){
+  if(!region) return null;
+  const r = region.toLowerCase();
+  for(const k of REGION_KEYS){ if(r.includes(k)) return REGION_COORDS[k]; }
+  return null;
+}
+
+// Ключ Яндекс.Карт (JS API). Получить бесплатно в кабинете разработчика Яндекса
+// (developer.tech.yandex.ru → «JavaScript API и HTTP Геокодер»). Впишите сюда.
+const YANDEX_MAPS_KEY = '9226bef3-2ca9-476f-9370-7f8fbbd8b4b8';
+let _ymapsLoading = null;
+function loadYmaps(){
+  if(typeof ymaps !== 'undefined') return Promise.resolve();
+  if(_ymapsLoading) return _ymapsLoading;
+  if(!YANDEX_MAPS_KEY) return Promise.reject(new Error('no-key'));
+  _ymapsLoading = new Promise((resolve, reject)=>{
+    const s = document.createElement('script');
+    s.src = `https://api-maps.yandex.ru/2.1/?apikey=${encodeURIComponent(YANDEX_MAPS_KEY)}&lang=ru_RU`;
+    s.onload = ()=>resolve();
+    s.onerror = ()=>reject(new Error('load-failed'));
+    document.head.appendChild(s);
+  });
+  return _ymapsLoading;
+}
+
+function mapFilterRegion(region){
+  if(!region || region==='—') return;
+  $('region').value = region;
+  closeInfo();
+  refresh(true);
+  const c = document.getElementById('content'); if(c) c.scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+let _vacMap = null;
+function openMap(){
+  const items = (VIEW && VIEW.length) ? VIEW : DATA;
+  const groups = {};
+  let unmapped = 0;
+  items.forEach(v=>{
+    const c = findRegionCoords(v.region);
+    if(!c){ unmapped++; return; }
+    const key = v.region || '—';
+    if(!groups[key]) groups[key] = {n:0, sal:0, salN:0, coords:c, name:key};
+    groups[key].n++; const s = v.salaryFrom||v.salaryTo; if(s){ groups[key].sal+=s; groups[key].salN++; }
+  });
+  const regionsCount = Object.keys(groups).length;
+  const intro = `<p style="color:var(--muted);font-size:13px;margin:0 0 12px">${fmt(items.length)} вакансий в ${fmt(regionsCount)} регионах${unmapped?`. Не размещено на карте: ${fmt(unmapped)}`:''}. Карта отражает текущие фильтры и поиск.</p>`;
+
+  if(!YANDEX_MAPS_KEY){
+    openInfoHTML('Карта вакансий', intro + `<div style="background:var(--navy-soft);border:1px solid #d5e3f4;border-radius:var(--r);padding:16px 18px;font-size:14px;color:var(--ink-soft)">
+      <b>Для карты нужен бесплатный ключ Яндекс.Карт.</b>
+      <ol style="margin:10px 0 0;padding-left:20px;line-height:1.65">
+        <li>Откройте <a href="https://developer.tech.yandex.ru/services/" target="_blank" rel="noopener">кабинет разработчика Яндекса</a>.</li>
+        <li>Подключите сервис «JavaScript API и HTTP Геокодер» — получите API-ключ.</li>
+        <li>Пришлите ключ — впишем его в сайт, и карта России с точками по регионам заработает.</li>
+      </ol></div>`, true);
+    return;
+  }
+
+  openInfoHTML('Карта вакансий', intro + `<div id="vac-map" style="height:62vh;min-height:380px;border-radius:var(--r);overflow:hidden;border:1px solid var(--line)"></div>`, true);
+  loadYmaps().then(()=>{
+    ymaps.ready(()=>{
+      const el = document.getElementById('vac-map');
+      if(!el) return;
+      if(_vacMap){ try{ _vacMap.destroy(); }catch(e){} _vacMap = null; }
+      const map = new ymaps.Map('vac-map', { center:[64, 96], zoom:2, controls:['zoomControl','fullscreenControl'] }, { suppressMapOpenBlock:true });
+      _vacMap = map;
+      const list = Object.values(groups);
+      const maxN = Math.max(...list.map(g=>g.n), 1);
+      const circles = [];
+      list.forEach(g=>{
+        const radius = 40000 + Math.round(230000 * Math.sqrt(g.n) / Math.sqrt(maxN));
+        const circle = new ymaps.Circle([[g.coords[0], g.coords[1]], radius], {
+          hintContent: `${g.name} — ${fmt(g.n)} вакансий (клик — фильтр)`,
+        }, { fillColor:'#e0852b', fillOpacity:0.55, strokeColor:'#1d4f9c', strokeWidth:1.5 });
+        circle.events.add('click', ()=> mapFilterRegion(g.name));
+        map.geoObjects.add(circle);
+        circles.push(circle);
+      });
+      try{ map.setBounds(map.geoObjects.getBounds(), { checkZoomRange:true, zoomMargin:30 }); }catch(e){}
+
+      // При приближении (зум ≥ 7) показываем конкретные адреса вакансий
+      const ADDR_ZOOM = 7;
+      const addrLayer = new ymaps.GeoObjectCollection();
+      map.geoObjects.add(addrLayer);
+      const geoCache = {};
+      let addrMode = false;
+      const within = (c,b)=> c[0]>=Math.min(b[0][0],b[1][0]) && c[0]<=Math.max(b[0][0],b[1][0]) && c[1]>=Math.min(b[0][1],b[1][1]) && c[1]<=Math.max(b[0][1],b[1][1]);
+      function drawAddresses(){
+        addrLayer.removeAll();
+        const b = map.getBounds();
+        const visRegions = new Set(list.filter(g=>within(g.coords,b)).map(g=>g.name));
+        const cands = items.filter(v=> v.address && visRegions.has(v.region||'—')).slice(0,60);
+        cands.forEach(v=>{
+          const put = (coords)=>{
+            addrLayer.add(new ymaps.Placemark(coords, {
+              hintContent: v.title,
+              balloonContentHeader: escapeHtml(v.title),
+              balloonContentBody: `${escapeHtml(v.company||'')}<br>${escapeHtml(v.address)}${(v.salaryFrom||v.salaryTo)?'<br><b>'+salaryText(v).text+'</b>':''}`,
+            }, { preset:'islands#orangeDotIcon' }));
+          };
+          const key = v.address;
+          if(Array.isArray(geoCache[key])){ put(geoCache[key]); return; }
+          if(geoCache[key] === 'pending' || geoCache[key] === null) return;
+          geoCache[key] = 'pending';
+          ymaps.geocode((v.region ? v.region+', ' : '') + v.address, { results:1 }).then(res=>{
+            const obj = res.geoObjects.get(0);
+            if(obj){ const c = obj.geometry.getCoordinates(); geoCache[key] = c; if(addrMode) put(c); }
+            else geoCache[key] = null;
+          }).catch(()=>{ geoCache[key] = null; });
+        });
+      }
+      map.events.add('boundschange', ()=>{
+        const z = map.getZoom();
+        if(z >= ADDR_ZOOM){
+          if(!addrMode){ addrMode = true; circles.forEach(c=>c.options.set('visible', false)); }
+          drawAddresses();
+        }else if(addrMode){
+          addrMode = false; addrLayer.removeAll(); circles.forEach(c=>c.options.set('visible', true));
+        }
+      });
+    });
+  }).catch(()=>{
+    const el = document.getElementById('vac-map');
+    if(el) el.innerHTML = '<div style="padding:20px;color:var(--muted)">Не удалось загрузить Яндекс.Карты — проверьте ключ и соединение.</div>';
+  });
+}
+function closeInfo(){
+  $('overlay2').classList.remove('open');
+  if(!$('overlay').classList.contains('open')) document.body.style.overflow = '';
+}
+function copyTpl(btn){
+  const pre = document.getElementById('resumeTpl');
+  if(!pre || !navigator.clipboard) return;
+  navigator.clipboard.writeText(pre.textContent.trim()).then(()=>{
+    const t = btn.textContent;
+    btn.textContent = 'Скопировано ✓';
+    setTimeout(()=>{ btn.textContent = t; }, 1500);
+  }).catch(()=>{});
+}
+$('i-close').addEventListener('click', closeInfo);
+$('overlay2').addEventListener('click', e=>{ if(e.target === $('overlay2')) closeInfo(); });
+document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeInfo(); });
+document.querySelectorAll('.u-card[data-info]').forEach(b=>{
+  b.addEventListener('click', ()=> openInfo(b.dataset.info));
+});
+$('card-analytics').addEventListener('click', openAnalytics);
+$('card-map').addEventListener('click', openMap);
+
+// --- Умный подбор: обработчики ---
+function readProfileInputs(){
+  return {
+    city: $('p-city').value.trim(),
+    cat: $('p-cat').value,
+    sport: $('p-sport').value.trim(),
+    edu: $('p-edu').value,
+    exp: $('p-exp').value,
+    salary: parseInt($('p-salary').value,10) || 0,
+  };
+}
+function applyProfile(){
+  profile = readProfileInputs();
+  profileActive = Object.values(profile).some(v=>v!=='' && v!==0 && v!=null);
+  $('smart').classList.toggle('active', profileActive);
+  try{ localStorage.setItem(PROFILE_KEY, JSON.stringify({active:profileActive, profile})); }catch(e){}
+  if(profileActive) $('sort').value = 'match';
+  refresh(true);
+}
+$('smart-toggle').addEventListener('click', ()=>{
+  const body = $('smart-body'); const willOpen = body.hidden;
+  body.hidden = !willOpen;
+  $('smart-toggle').setAttribute('aria-expanded', String(willOpen));
+  $('smart-toggle').textContent = willOpen ? 'Свернуть' : 'Настроить';
+});
+$('smart-apply').addEventListener('click', applyProfile);
+$('smart-clear').addEventListener('click', ()=>{
+  ['p-city','p-cat','p-sport','p-edu','p-exp','p-salary'].forEach(id=>{ $(id).value=''; });
+  profileActive = false; profile = {};
+  $('smart').classList.remove('active');
+  try{ localStorage.removeItem(PROFILE_KEY); }catch(e){}
+  if($('sort').value==='match') $('sort').value='';
+  refresh(true);
+});
+(function restoreProfile(){
+  try{
+    const saved = JSON.parse(localStorage.getItem(PROFILE_KEY) || 'null');
+    if(saved && saved.profile){
+      const p = saved.profile;
+      $('p-city').value=p.city||''; $('p-cat').value=p.cat||''; $('p-sport').value=p.sport||'';
+      $('p-edu').value=p.edu||''; $('p-exp').value=(p.exp??''); $('p-salary').value=p.salary||'';
+      if(saved.active){
+        profile=p; profileActive=true;
+        $('smart').classList.add('active');
+        $('smart-body').hidden=false;
+        $('smart-toggle').textContent='Свернуть';
+        $('smart-toggle').setAttribute('aria-expanded','true');
+        $('sort').value='match';
+      }
+    }
+  }catch(e){}
+})();
+
+readURL();
 load();
 </script>
 </body>
