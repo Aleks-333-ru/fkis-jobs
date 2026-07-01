@@ -1674,6 +1674,14 @@ function loadYmaps(){
   return _ymapsLoading;
 }
 
+function mapFilterRegion(region){
+  if(!region || region==='—') return;
+  $('region').value = region;
+  closeInfo();
+  refresh(true);
+  const c = document.getElementById('content'); if(c) c.scrollIntoView({behavior:'smooth', block:'start'});
+}
+
 let _vacMap = null;
 function openMap(){
   const items = (VIEW && VIEW.length) ? VIEW : DATA;
@@ -1710,17 +1718,58 @@ function openMap(){
       _vacMap = map;
       const list = Object.values(groups);
       const maxN = Math.max(...list.map(g=>g.n), 1);
+      const circles = [];
       list.forEach(g=>{
-        const avg = g.salN ? Math.round(g.sal/g.salN) : 0;
         const radius = 40000 + Math.round(230000 * Math.sqrt(g.n) / Math.sqrt(maxN));
         const circle = new ymaps.Circle([[g.coords[0], g.coords[1]], radius], {
-          hintContent: `${g.name}: ${fmt(g.n)}`,
-          balloonContentHeader: g.name,
-          balloonContentBody: `Вакансий: <b>${fmt(g.n)}</b>${avg?`<br>Средняя з/п: ${avg.toLocaleString('ru-RU')} ₽`:''}`,
+          hintContent: `${g.name} — ${fmt(g.n)} вакансий (клик — фильтр)`,
         }, { fillColor:'#e0852b', fillOpacity:0.55, strokeColor:'#1d4f9c', strokeWidth:1.5 });
+        circle.events.add('click', ()=> mapFilterRegion(g.name));
         map.geoObjects.add(circle);
+        circles.push(circle);
       });
       try{ map.setBounds(map.geoObjects.getBounds(), { checkZoomRange:true, zoomMargin:30 }); }catch(e){}
+
+      // При приближении (зум ≥ 7) показываем конкретные адреса вакансий
+      const ADDR_ZOOM = 7;
+      const addrLayer = new ymaps.GeoObjectCollection();
+      map.geoObjects.add(addrLayer);
+      const geoCache = {};
+      let addrMode = false;
+      const within = (c,b)=> c[0]>=Math.min(b[0][0],b[1][0]) && c[0]<=Math.max(b[0][0],b[1][0]) && c[1]>=Math.min(b[0][1],b[1][1]) && c[1]<=Math.max(b[0][1],b[1][1]);
+      function drawAddresses(){
+        addrLayer.removeAll();
+        const b = map.getBounds();
+        const visRegions = new Set(list.filter(g=>within(g.coords,b)).map(g=>g.name));
+        const cands = items.filter(v=> v.address && visRegions.has(v.region||'—')).slice(0,60);
+        cands.forEach(v=>{
+          const put = (coords)=>{
+            addrLayer.add(new ymaps.Placemark(coords, {
+              hintContent: v.title,
+              balloonContentHeader: escapeHtml(v.title),
+              balloonContentBody: `${escapeHtml(v.company||'')}<br>${escapeHtml(v.address)}${(v.salaryFrom||v.salaryTo)?'<br><b>'+salaryText(v).text+'</b>':''}`,
+            }, { preset:'islands#orangeDotIcon' }));
+          };
+          const key = v.address;
+          if(Array.isArray(geoCache[key])){ put(geoCache[key]); return; }
+          if(geoCache[key] === 'pending' || geoCache[key] === null) return;
+          geoCache[key] = 'pending';
+          ymaps.geocode((v.region ? v.region+', ' : '') + v.address, { results:1 }).then(res=>{
+            const obj = res.geoObjects.get(0);
+            if(obj){ const c = obj.geometry.getCoordinates(); geoCache[key] = c; if(addrMode) put(c); }
+            else geoCache[key] = null;
+          }).catch(()=>{ geoCache[key] = null; });
+        });
+      }
+      map.events.add('boundschange', ()=>{
+        const z = map.getZoom();
+        if(z >= ADDR_ZOOM){
+          if(!addrMode){ addrMode = true; circles.forEach(c=>c.options.set('visible', false)); }
+          drawAddresses();
+        }else if(addrMode){
+          addrMode = false; addrLayer.removeAll(); circles.forEach(c=>c.options.set('visible', true));
+        }
+      });
     });
   }).catch(()=>{
     const el = document.getElementById('vac-map');
