@@ -33,6 +33,11 @@ const HH_QUERY = '(тренер OR инструктор OR фитнес OR "уч
 //   SUPERJOB_KEY=... node server.js
 const SUPERJOB_KEY = process.env.SUPERJOB_KEY || '';
 
+// Таймаут запроса к внешнему источнику: кто не успел — пропускаем,
+// чтобы один зависший API не держал всю выдачу.
+const FETCH_TIMEOUT_MS = 12000;
+const withTimeout = () => AbortSignal.timeout(FETCH_TIMEOUT_MS);
+
 // --- Категория должности по названию вакансии --------------------------------
 function categorize(title = '') {
   const t = title.toLowerCase();
@@ -108,6 +113,7 @@ async function fetchHH(userText, page = 0) {
       'Accept': 'application/json',
       'Accept-Language': 'ru,en;q=0.9',
     },
+    signal: withTimeout(),
   });
   if (!res.ok) throw new Error('hh.ru ответил ' + res.status);
   const data = await res.json();
@@ -143,7 +149,7 @@ async function fetchTrudvsemOne(term, page = 0) {
   url.searchParams.set('limit', '50');
   url.searchParams.set('offset', String(page * 50));
 
-  const res = await fetch(url);
+  const res = await fetch(url, { signal: withTimeout() });
   if (!res.ok) throw new Error('trudvsem ответил ' + res.status);
   const data = await res.json();
   const list = data?.results?.vacancies || [];
@@ -194,7 +200,7 @@ async function fetchSuperJobOne(term, page = 0) {
   url.searchParams.set('count', '100');
   url.searchParams.set('page', String(page));
 
-  const res = await fetch(url, { headers: { 'X-Api-App-Id': SUPERJOB_KEY } });
+  const res = await fetch(url, { headers: { 'X-Api-App-Id': SUPERJOB_KEY }, signal: withTimeout() });
   if (!res.ok) throw new Error('SuperJob ответил ' + res.status);
   const data = await res.json();
 
@@ -230,12 +236,13 @@ async function fetchSuperJob(userText, page = 0) {
 async function getVacancies({ text, sources, page = 0 }) {
   const want = sources && sources.length ? sources : ['hh', 'trudvsem', 'superjob'];
   const tasks = [];
-  const errors = [];
+  const errors = [];   // реальные сбои — показываются посетителям
+  const notices = [];  // служебные заметки — только в консоль/для администратора
   if (want.includes('hh')) tasks.push(fetchHH(text, page));
   if (want.includes('trudvsem')) tasks.push(fetchTrudvsem(text, page));
   if (want.includes('superjob')) {
     if (SUPERJOB_KEY) tasks.push(fetchSuperJob(text, page));
-    else errors.push('SuperJob отключён: не задан ключ SUPERJOB_KEY');
+    else notices.push('SuperJob отключён: не задан ключ SUPERJOB_KEY');
   }
 
   const settled = await Promise.allSettled(tasks);
@@ -245,10 +252,13 @@ async function getVacancies({ text, sources, page = 0 }) {
     else errors.push(String(r.reason?.message || r.reason));
   }
 
-  // Дедупликация по «название + работодатель»
+  // Дедупликация по «название + работодатель + регион».
+  // Регион обязателен в ключе: сетевые работодатели публикуют одинаковые
+  // вакансии в разных городах — это разные вакансии, а не дубли.
   const seen = new Set();
   merged = merged.filter((v) => {
-    const key = (v.title + '|' + v.company).toLowerCase().replace(/\s+/g, ' ').trim();
+    const key = (v.title + '|' + v.company + '|' + (v.region || ''))
+      .toLowerCase().replace(/\s+/g, ' ').trim();
     if (seen.has(key)) return false;
     seen.add(key);
     return true;
@@ -262,7 +272,7 @@ async function getVacancies({ text, sources, page = 0 }) {
     return (b.publishedAt || '').localeCompare(a.publishedAt || '');
   });
 
-  return { vacancies: merged, errors };
+  return { vacancies: merged, errors, notices };
 }
 
 // --- Статика -----------------------------------------------------------------
@@ -293,6 +303,29 @@ function serveStatic(req, res) {
   });
 }
 
+// --- Кеш ответов API ----------------------------------------------------------
+// Вакансии меняются нечасто, а каждый запрос к /api/vacancies стоит до 15
+// обращений к внешним API. Кешируем готовый ответ на 10 минут: сайт отвечает
+// мгновенно, источники не перегружаются (меньше шансов попасть под анти-бот).
+const CACHE_TTL_MS = 10 * 60 * 1000;
+const CACHE_MAX = 100;
+const apiCache = new Map(); // key -> { at, body }
+
+function cacheGet(key) {
+  const hit = apiCache.get(key);
+  if (!hit) return null;
+  if (Date.now() - hit.at > CACHE_TTL_MS) { apiCache.delete(key); return null; }
+  return hit.body;
+}
+function cacheSet(key, body) {
+  if (apiCache.size >= CACHE_MAX) {
+    // выселяем самый старый ключ
+    const oldest = apiCache.keys().next().value;
+    apiCache.delete(oldest);
+  }
+  apiCache.set(key, { at: Date.now(), body });
+}
+
 // --- Сервер ------------------------------------------------------------------
 const server = http.createServer(async (req, res) => {
   const u = new URL(req.url, 'http://x');
@@ -302,9 +335,17 @@ const server = http.createServer(async (req, res) => {
       const text = (u.searchParams.get('text') || '').trim();
       const sources = (u.searchParams.get('source') || '').split(',').filter(Boolean);
       const page = parseInt(u.searchParams.get('page'), 10) || 0;
-      const result = await getVacancies({ text, sources, page });
+
+      const key = `${text.toLowerCase()}|${[...sources].sort().join(',')}|${page}`;
+      let body = cacheGet(key);
+      if (!body) {
+        const result = await getVacancies({ text, sources, page });
+        body = JSON.stringify(result);
+        // не кешируем полностью неудачные ответы (все источники упали)
+        if (result.vacancies.length || !result.errors.length) cacheSet(key, body);
+      }
       res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
-      res.end(JSON.stringify(result));
+      res.end(body);
     } catch (e) {
       res.writeHead(500, { 'Content-Type': 'application/json; charset=utf-8' });
       res.end(JSON.stringify({ vacancies: [], errors: [String(e.message || e)] }));

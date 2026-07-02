@@ -1330,6 +1330,7 @@ async function load(){
     const j = await fetchPage(0);
     DATA = j.vacancies || [];
     usingDemo = false;
+    if(j.notices && j.notices.length) console.info('Заметки сервера:', j.notices.join('; '));
     if(j.errors && j.errors.length){
       $('banner').innerHTML = `<div class="banner">Часть источников недоступна: ${escapeHtml(j.errors.join('; '))}</div>`;
     }
