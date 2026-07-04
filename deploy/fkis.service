@@ -7,6 +7,9 @@ Type=simple
 WorkingDirectory=/var/www/fkis
 ExecStart=/usr/bin/node server.js
 Environment=PORT=3000
+# Ключи hh.ru (рекомендуется — авторизованные запросы стабильнее):
+# Environment=HH_CLIENT_ID=ваш_client_id
+# Environment=HH_CLIENT_SECRET=ваш_client_secret
 # Ключ SuperJob (по желанию) — раскомментируйте и впишите:
 # Environment=SUPERJOB_KEY=ваш_ключ
 Restart=always
