@@ -33,6 +33,17 @@ const HH_QUERY = '(тренер OR инструктор OR фитнес OR "уч
 //   SUPERJOB_KEY=... node server.js
 const SUPERJOB_KEY = process.env.SUPERJOB_KEY || '';
 
+// --- Авторизация hh.ru (по желанию) -------------------------------------------
+// Публичные вакансии hh отдаёт и без ключей, но авторизованные запросы
+// надёжнее (лимиты выше, меньше шансов на блокировку анти-ботом).
+// Задайте в .env либо готовый токен, либо пару Client ID/Secret приложения —
+// тогда сервер сам получит и будет обновлять токен приложения:
+//   HH_ACCESS_TOKEN=...          (если токен уже есть)
+//   HH_CLIENT_ID=... HH_CLIENT_SECRET=...   (получим токен сами)
+const HH_ACCESS_TOKEN = process.env.HH_ACCESS_TOKEN || '';
+const HH_CLIENT_ID = process.env.HH_CLIENT_ID || '';
+const HH_CLIENT_SECRET = process.env.HH_CLIENT_SECRET || '';
+
 // Таймаут запроса к внешнему источнику: кто не успел — пропускаем,
 // чтобы один зависший API не держал всю выдачу.
 const FETCH_TIMEOUT_MS = 12000;
@@ -98,6 +109,41 @@ function yearsWord(n) {
   return 'лет';
 }
 
+// Токен приложения hh: берём из .env или получаем по Client ID/Secret.
+// Держим в памяти; при 403/401 сбрасываем и пробуем получить заново
+// (hh позволяет запрашивать новый токен приложения не чаще раза в 5 минут).
+let hhToken = HH_ACCESS_TOKEN;
+let hhTokenFetchedAt = 0;
+async function getHHToken() {
+  if (hhToken) return hhToken;
+  if (!HH_CLIENT_ID || !HH_CLIENT_SECRET) return '';
+  if (Date.now() - hhTokenFetchedAt < 5 * 60 * 1000) return '';
+  hhTokenFetchedAt = Date.now();
+  try {
+    const res = await fetch('https://api.hh.ru/token', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'User-Agent': 'FKiS-Jobs/1.0 (aleksandr220395@gmail.com)',
+      },
+      body: new URLSearchParams({
+        grant_type: 'client_credentials',
+        client_id: HH_CLIENT_ID,
+        client_secret: HH_CLIENT_SECRET,
+      }),
+      signal: withTimeout(),
+    });
+    if (!res.ok) throw new Error('hh token: ' + res.status);
+    const data = await res.json();
+    hhToken = data.access_token || '';
+    if (hhToken) console.log('  hh.ru: токен приложения получен');
+    return hhToken;
+  } catch (e) {
+    console.warn('  hh.ru: не удалось получить токен приложения —', e.message);
+    return '';
+  }
+}
+
 // --- Запрос к hh.ru ----------------------------------------------------------
 async function fetchHH(userText, page = 0) {
   const text = userText ? `${HH_QUERY} AND (${userText})` : HH_QUERY;
@@ -107,14 +153,20 @@ async function fetchHH(userText, page = 0) {
   url.searchParams.set('page', String(page));
   url.searchParams.set('order_by', 'publication_time');
 
-  const res = await fetch(url, {
-    headers: {
-      'User-Agent': 'FKiS-Jobs/1.0 (aleksandr220395@gmail.com)',
-      'Accept': 'application/json',
-      'Accept-Language': 'ru,en;q=0.9',
-    },
-    signal: withTimeout(),
-  });
+  const headers = {
+    'User-Agent': 'FKiS-Jobs/1.0 (aleksandr220395@gmail.com)',
+    'Accept': 'application/json',
+    'Accept-Language': 'ru,en;q=0.9',
+  };
+  const token = await getHHToken();
+  if (token) headers['Authorization'] = 'Bearer ' + token;
+
+  const res = await fetch(url, { headers, signal: withTimeout() });
+  if (res.status === 401 || res.status === 403) {
+    // токен мог протухнуть/быть отозванным — сбросим, чтобы получить новый
+    if (token) hhToken = '';
+    throw new Error('hh.ru ответил ' + res.status);
+  }
   if (!res.ok) throw new Error('hh.ru ответил ' + res.status);
   const data = await res.json();
 
