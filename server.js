@@ -81,9 +81,18 @@ function isRelevant(title = '') {
   return false;
 }
 
-// Убирает html-теги и схлопывает пробелы
+// Чистит текст из API: убирает теги/сущности, лишние пробелы, ведущие и
+// висящие многоточия (hh отдаёт обрезанные фрагменты вида «…текст…»),
+// а также пробел перед знаками препинания («фитнеса .» → «фитнеса.»).
 function clean(s = '') {
-  return String(s).replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+  return String(s)
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/&[a-z]+;/gi, ' ')
+    .replace(/\s+/g, ' ')
+    .replace(/\s+([.,;:!?»])/g, '$1')
+    .replace(/^\s*(?:\.{2,}|…|[—–-])\s*/, '')
+    .replace(/\s*(?:\.{2,}|…)\s*$/, '')
+    .trim();
 }
 
 // Очищает адрес. API «Работы России» часто склеивает два варианта адреса
@@ -193,8 +202,9 @@ async function fetchHH(userText, page = 0) {
     schedule: v.schedule?.name || '',
     url: v.alternate_url || '',
     publishedAt: v.published_at || '',
-    description: [v.snippet?.responsibility, v.snippet?.requirement]
-      .filter(Boolean).join(' ').replace(/<[^>]+>/g, ''),
+    // Обязанности — только «responsibility», требования — отдельно,
+    // чтобы текст требований не затекал в блок обязанностей.
+    description: clean(v.snippet?.responsibility),
     requirement: clean(v.snippet?.requirement),
     address: cleanAddress(v.address?.raw
       || [v.address?.city, v.address?.street, v.address?.building].filter(Boolean).join(', ')),

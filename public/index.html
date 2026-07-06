@@ -1029,16 +1029,25 @@ function matchScore(v){
 }
 
 // Текст обязанностей → пункты списка; требования → пункты чек-листа
+// Приводит фрагмент в порядок: убирает ведущие многоточия/тире, лишний
+// пробел перед знаком препинания и поднимает первую букву.
+function tidy(s){
+  return String(s)
+    .replace(/^[\s.…•—–\-]+/, '')
+    .replace(/\s+([.,;:!?»])/g, '$1')
+    .trim()
+    .replace(/^([а-яёa-z])/, c=>c.toUpperCase());
+}
 function toBullets(text, req){
   if(!text) return [];
   let t = String(text).trim();
   if(req){ const i = t.indexOf(req); if(i > 0) t = t.slice(0, i).trim(); }
   t = t.replace(/\bТребовани[ея][:\s].*$/i, '').trim();
-  return t.split(/(?<=[.!?])\s+|\s*[;•]\s*/).map(s=>s.replace(/^[—\-\s]+/,'').trim()).filter(s=>s.length>3).slice(0,8);
+  return t.split(/(?<=[.!?])\s+|\s*[;•]\s*/).map(tidy).filter(s=>s.length>3).slice(0,8);
 }
 function toChecklist(req){
   if(!req) return [];
-  return String(req).split(/\s*[·;,]\s*/).map(s=>s.trim()).filter(Boolean).slice(0,8);
+  return String(req).split(/\s*[·;]\s*/).map(tidy).filter(s=>s.length>1).slice(0,8);
 }
 
 function salaryText(v){
