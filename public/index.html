@@ -1705,7 +1705,7 @@ function openMap(){
     groups[key].n++; const s = v.salaryFrom||v.salaryTo; if(s){ groups[key].sal+=s; groups[key].salN++; }
   });
   const regionsCount = Object.keys(groups).length;
-  const intro = `<p style="color:var(--muted);font-size:13px;margin:0 0 12px">${fmt(items.length)} вакансий в ${fmt(regionsCount)} регионах${unmapped?`. Не размещено на карте: ${fmt(unmapped)}`:''}. Карта отражает текущие фильтры и поиск.</p>`;
+  const intro = `<p style="color:var(--muted);font-size:13px;margin:0 0 12px">${fmt(items.length)} вакансий в ${fmt(regionsCount)} регионах${unmapped?`. Не размещено на карте: ${fmt(unmapped)}`:''}. Число на точке — количество вакансий; близкие регионы объединяются в кластер (приблизьте для детализации). Клик по региону — показать его вакансии.</p>`;
 
   if(!YANDEX_MAPS_KEY){
     openInfoHTML('Карта вакансий', intro + `<div style="background:var(--navy-soft);border:1px solid #d5e3f4;border-radius:var(--r);padding:16px 18px;font-size:14px;color:var(--ink-soft)">
@@ -1727,18 +1727,42 @@ function openMap(){
       const map = new ymaps.Map('vac-map', { center:[64, 96], zoom:2, controls:['zoomControl','fullscreenControl'] }, { suppressMapOpenBlock:true });
       _vacMap = map;
       const list = Object.values(groups);
-      const maxN = Math.max(...list.map(g=>g.n), 1);
-      const circles = [];
-      list.forEach(g=>{
-        const radius = 40000 + Math.round(230000 * Math.sqrt(g.n) / Math.sqrt(maxN));
-        const circle = new ymaps.Circle([[g.coords[0], g.coords[1]], radius], {
-          hintContent: `${g.name} — ${fmt(g.n)} вакансий (клик — фильтр)`,
-        }, { fillColor:'#e0852b', fillOpacity:0.55, strokeColor:'#1d4f9c', strokeWidth:1.5 });
-        circle.events.add('click', ()=> mapFilterRegion(g.name));
-        map.geoObjects.add(circle);
-        circles.push(circle);
+      const tierColor = (n) => n>=25 ? '#e0852b' : n>=10 ? '#173f7d' : n>=3 ? '#1d4f9c' : '#5b86c9';
+
+      const clusterer = new ymaps.Clusterer({
+        preset: 'islands#invertedBlueClusterIcons',
+        groupByCoordinates: false,
+        clusterDisableClickZoom: false,
+        clusterHideIconOnBalloonOpen: false,
+        geoObjectHideIconOnBalloonOpen: false,
+        gridSize: 72,
       });
-      try{ map.setBounds(map.geoObjects.getBounds(), { checkZoomRange:true, zoomMargin:30 }); }catch(e){}
+      // Кластер показывает СУММУ вакансий сгруппированных регионов (а не их число).
+      clusterer.createCluster = function(center, geoObjects){
+        const cluster = ymaps.Clusterer.prototype.createCluster.call(this, center, geoObjects);
+        const total = geoObjects.reduce((s,o)=> s + (o.properties.get('vac') || 0), 0);
+        cluster.properties.set('iconContent', String(total));
+        cluster.properties.set('hintContent', total + ' вакансий в этих регионах — приблизьте');
+        return cluster;
+      };
+
+      const placemarks = list.map(g => {
+        const avg = g.salN ? Math.round(g.sal/g.salN) : 0;
+        const rn = g.name.replace(/'/g, "\\'");
+        return new ymaps.Placemark(g.coords, {
+          vac: g.n,
+          iconContent: fmt(g.n),
+          hintContent: `${g.name}: ${fmt(g.n)} вакансий`,
+          balloonContentHeader: escapeHtml(g.name),
+          balloonContentBody: `Вакансий: <b>${fmt(g.n)}</b>${avg?`<br>Средняя з/п: ${avg.toLocaleString('ru-RU')} ₽`:''}<br><a href="#" onclick="mapFilterRegion('${rn}');return false;">Показать вакансии региона</a>`,
+        }, {
+          preset: 'islands#circleIcon',
+          iconColor: tierColor(g.n),
+        });
+      });
+      clusterer.add(placemarks);
+      map.geoObjects.add(clusterer);
+      try{ map.setBounds(clusterer.getBounds(), { checkZoomRange:true, zoomMargin:35 }); }catch(e){}
     });
   }).catch(()=>{
     const el = document.getElementById('vac-map');
