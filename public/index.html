@@ -412,6 +412,20 @@
   /* Окно полезных материалов (наполнение) */
   .info-modal{max-width:640px}
   .info-modal.map-modal{max-width:920px}
+
+  /* Конструктор резюме */
+  .u-card-cv{border-color:#f0d6b3;background:#fffaf2}
+  .u-card-cv .u-ico{background:#fbeede;color:var(--accent-deep)}
+  .cv-modal{max-width:720px}
+  #overlay-cv .cv-hint{color:var(--muted);font-size:13px;margin:0 0 14px}
+  #overlay-cv .cv-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px 14px;margin-bottom:6px}
+  #overlay-cv label.f{display:block;margin:2px 0 6px}
+  #overlay-cv .cv-cap{color:var(--muted);font-weight:400;text-transform:none;letter-spacing:0}
+  #overlay-cv textarea{width:100%;padding:10px 12px;border:1.5px solid var(--line);
+    border-radius:var(--r-sm);font-family:inherit;font-size:14px;color:var(--ink);
+    background:var(--panel-soft);resize:vertical;margin-bottom:12px;line-height:1.5}
+  #overlay-cv textarea:focus{outline:none;border-color:var(--navy-bright);box-shadow:0 0 0 4px var(--ring)}
+  @media(max-width:560px){ #overlay-cv .cv-grid{grid-template-columns:1fr} }
   #i-body .leaflet-container{font-family:'Open Sans',system-ui,sans-serif}
   .info-modal h3{margin:0 46px 0 0;font-family:'Montserrat',system-ui,sans-serif;
     font-size:19px;line-height:1.3}
@@ -812,6 +826,11 @@
       <span class="u-tx"><span class="u-t">Образцы и шаблоны резюме</span><span class="u-d">Готовый шаблон — скопируйте и заполните</span></span>
     </button>
 
+    <button class="u-card u-card-cv" id="card-cv" type="button">
+      <span class="u-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2Z"/><path d="M9 13h6M9 17h4"/></svg></span>
+      <span class="u-tx"><span class="u-t">Конструктор резюме</span><span class="u-d">Заполните форму — скачайте готовый PDF</span></span>
+    </button>
+
     <button class="u-card" type="button" data-info="professiograms">
       <span class="u-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
       <span class="u-tx"><span class="u-t">Профессиограммы</span><span class="u-d">Чем занимаются тренер, учитель ФК, методист</span></span>
@@ -905,6 +924,44 @@
 </button>
 
 <!-- Модальное окно «Подробнее» -->
+<!-- Конструктор резюме -->
+<div class="overlay" id="overlay-cv" role="dialog" aria-modal="true" aria-labelledby="cv-title">
+  <div class="modal cv-modal">
+    <div class="mhead">
+      <button class="mclose" id="cv-close" aria-label="Закрыть">×</button>
+      <h3 id="cv-title">Конструктор резюме</h3>
+    </div>
+    <div class="mbody">
+      <p class="cv-hint">Заполните поля — сформируется аккуратное резюме в PDF (двухколоночный формат). Пустые разделы в файл не попадут. Данные сохраняются в браузере.</p>
+      <div class="cv-grid">
+        <div><label class="f" for="cv-name">ФИО</label><input id="cv-name" placeholder="Иванов Иван Иванович"></div>
+        <div><label class="f" for="cv-role">Желаемая должность</label><input id="cv-role" placeholder="Тренер по плаванию"></div>
+        <div><label class="f" for="cv-city">Город</label><input id="cv-city" placeholder="Санкт-Петербург"></div>
+        <div><label class="f" for="cv-phone">Телефон</label><input id="cv-phone" placeholder="+7 900 000-00-00"></div>
+        <div><label class="f" for="cv-email">E-mail</label><input id="cv-email" placeholder="mail@example.com"></div>
+        <div><label class="f" for="cv-birth">Дата рождения</label><input id="cv-birth" placeholder="01.01.1995"></div>
+      </div>
+      <label class="f" for="cv-about">О себе</label>
+      <textarea id="cv-about" rows="3" placeholder="Коротко о сильных сторонах и цели: кто вы, что умеете, чего хотите."></textarea>
+      <label class="f" for="cv-experience">Опыт работы <span class="cv-cap">— разные места разделяйте пустой строкой</span></label>
+      <textarea id="cv-experience" rows="5" placeholder="Организация, должность, период. Что делали и каких результатов достигли."></textarea>
+      <label class="f" for="cv-education">Образование <span class="cv-cap">— каждый пункт с новой строки</span></label>
+      <textarea id="cv-education" rows="3" placeholder="Университет им. П.Ф. Лесгафта, физическая культура и спорт, 2026"></textarea>
+      <label class="f" for="cv-skills">Ключевые навыки <span class="cv-cap">— с новой строки</span></label>
+      <textarea id="cv-skills" rows="3" placeholder="Методика тренировок&#10;Первая помощь&#10;Работа с детьми"></textarea>
+      <label class="f" for="cv-certs">Разряды, звания, сертификаты <span class="cv-cap">— с новой строки</span></label>
+      <textarea id="cv-certs" rows="2" placeholder="КМС по плаванию&#10;Сертификат инструктора"></textarea>
+      <label class="f" for="cv-langs">Языки</label>
+      <input id="cv-langs" placeholder="Русский — родной, английский — базовый">
+    </div>
+    <div class="mfoot">
+      <a class="goto" id="cv-download" href="#">Скачать PDF</a>
+      <button class="mcancel" id="cv-preview" type="button">Предпросмотр</button>
+      <button class="mcancel" id="cv-clear" type="button">Очистить</button>
+    </div>
+  </div>
+</div>
+
 <!-- Окно полезных материалов -->
 <div class="overlay" id="overlay2" role="dialog" aria-modal="true" aria-labelledby="i-title">
   <div class="modal info-modal">
@@ -1790,6 +1847,81 @@ document.querySelectorAll('.u-card[data-info]').forEach(b=>{
 });
 $('card-analytics').addEventListener('click', openAnalytics);
 $('card-map').addEventListener('click', openMap);
+
+// --- Конструктор резюме ---
+const CV_KEY = 'fkis_cv';
+const CV_FIELDS = ['cv-name','cv-role','cv-city','cv-phone','cv-email','cv-birth','cv-about','cv-experience','cv-education','cv-skills','cv-certs','cv-langs'];
+function cvData(){ const d={}; CV_FIELDS.forEach(id=> d[id.slice(3)] = $(id).value.trim()); return d; }
+function cvSave(){ try{ const d={}; CV_FIELDS.forEach(id=> d[id]=$(id).value); localStorage.setItem(CV_KEY, JSON.stringify(d)); }catch(e){} }
+function cvRestore(){ try{ const d=JSON.parse(localStorage.getItem(CV_KEY)||'null'); if(d) CV_FIELDS.forEach(id=>{ if(d[id]!=null) $(id).value=d[id]; }); }catch(e){} }
+function openCv(){ cvRestore(); $('overlay-cv').classList.add('open'); document.body.style.overflow='hidden'; loadPdfMake().catch(()=>{}); $('cv-close').focus(); }
+function closeCv(){ $('overlay-cv').classList.remove('open'); if(!$('overlay').classList.contains('open') && !$('overlay2').classList.contains('open')) document.body.style.overflow=''; }
+
+let _pdfLoading = null;
+function loadPdfMake(){
+  if(window.pdfMake && window.pdfMake.vfs) return Promise.resolve();
+  if(_pdfLoading) return _pdfLoading;
+  _pdfLoading = new Promise((resolve, reject)=>{
+    const s1=document.createElement('script');
+    s1.src='https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js';
+    s1.onload=()=>{ const s2=document.createElement('script'); s2.src='https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js'; s2.onload=()=>resolve(); s2.onerror=()=>reject(new Error('vfs')); document.head.appendChild(s2); };
+    s1.onerror=()=>reject(new Error('pdfmake'));
+    document.head.appendChild(s1);
+  });
+  return _pdfLoading;
+}
+function buildCvDoc(){
+  const d = cvData();
+  const lines = t => String(t||'').split(/\n+/).map(s=>s.trim()).filter(Boolean);
+  const side = [];
+  side.push({text:'КОНТАКТЫ', style:'sideH'});
+  const c = [d.phone,d.email,d.city,d.birth].filter(Boolean).map(x=>({text:x, margin:[0,0,0,3]}));
+  side.push({stack: c.length?c:[{text:'—'}], style:'sideBody', margin:[0,0,0,12]});
+  if(lines(d.skills).length){ side.push({text:'НАВЫКИ', style:'sideH'}); side.push({ul:lines(d.skills), style:'sideBody', margin:[0,2,0,12]}); }
+  if(d.langs){ side.push({text:'ЯЗЫКИ', style:'sideH'}); side.push({text:d.langs, style:'sideBody', margin:[0,0,0,12]}); }
+  if(lines(d.certs).length){ side.push({text:'РАЗРЯДЫ И СЕРТИФИКАТЫ', style:'sideH'}); side.push({ul:lines(d.certs), style:'sideBody'}); }
+
+  const main = [];
+  if(d.about){ main.push({text:'О себе', style:'mainH'}); main.push({text:d.about, style:'mainBody', margin:[0,0,0,10]}); }
+  if(d.experience){ main.push({text:'Опыт работы', style:'mainH'}); String(d.experience).split(/\n{2,}/).map(s=>s.trim()).filter(Boolean).forEach(b=> main.push({text:b, style:'mainBody', margin:[0,0,0,8]})); }
+  if(lines(d.education).length){ main.push({text:'Образование', style:'mainH'}); main.push({ul:lines(d.education), style:'mainBody'}); }
+  if(!main.length) main.push({text:'Заполните разделы — здесь появятся «О себе», опыт и образование.', style:'mainBody', color:'#8793a3'});
+
+  return {
+    pageSize:'A4', pageMargins:[0,0,0,28],
+    content:[
+      { table:{ widths:['*'], body:[[ { stack:[ {text:d.name||'Имя Фамилия', style:'name'}, {text:d.role||'', style:'role'} ], fillColor:'#173f7d', margin:[28,22,28,20] } ]] }, layout:'noBorders' },
+      { table:{ widths:[175,'*'], body:[[
+          { stack:side, fillColor:'#eef3fb', margin:[20,20,16,24] },
+          { stack:main, margin:[22,20,28,24] }
+      ]] }, layout:'noBorders' }
+    ],
+    styles:{
+      name:{fontSize:22, bold:true, color:'#ffffff'},
+      role:{fontSize:12, color:'#c5d4ec', margin:[0,5,0,0]},
+      sideH:{fontSize:10, bold:true, color:'#173f7d', margin:[0,0,0,5]},
+      sideBody:{fontSize:10, color:'#33414f', lineHeight:1.25},
+      mainH:{fontSize:13, bold:true, color:'#173f7d', margin:[0,8,0,6]},
+      mainBody:{fontSize:10.5, color:'#28323d', lineHeight:1.3}
+    },
+    defaultStyle:{fontSize:10.5}
+  };
+}
+function cvFileName(){ const n=(cvData().name||'resume').replace(/\s+/g,'_'); return 'Резюме_'+n+'.pdf'; }
+function cvGenerate(mode){
+  loadPdfMake().then(()=>{
+    const pdf = pdfMake.createPdf(buildCvDoc());
+    if(mode==='preview') pdf.open(); else pdf.download(cvFileName());
+  }).catch(()=>{ alert('Не удалось загрузить генератор PDF. Проверьте интернет-соединение и попробуйте ещё раз.'); });
+}
+$('card-cv').addEventListener('click', openCv);
+$('cv-close').addEventListener('click', closeCv);
+$('overlay-cv').addEventListener('click', e=>{ if(e.target===$('overlay-cv')) closeCv(); });
+document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeCv(); });
+CV_FIELDS.forEach(id=> $(id).addEventListener('input', cvSave));
+$('cv-download').addEventListener('click', e=>{ e.preventDefault(); cvGenerate('download'); });
+$('cv-preview').addEventListener('click', ()=> cvGenerate('preview'));
+$('cv-clear').addEventListener('click', ()=>{ if(!confirm('Очистить все поля резюме?')) return; CV_FIELDS.forEach(id=> $(id).value=''); cvSave(); });
 
 // --- Умный подбор: обработчики ---
 function readProfileInputs(){
