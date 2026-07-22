@@ -413,19 +413,63 @@
   .info-modal{max-width:640px}
   .info-modal.map-modal{max-width:920px}
 
-  /* Конструктор резюме */
+  /* Карточка «Резюме» */
   .u-card-cv{border-color:#f0d6b3;background:#fffaf2}
   .u-card-cv .u-ico{background:#fbeede;color:var(--accent-deep)}
-  .cv-modal{max-width:720px}
-  #overlay-cv .cv-hint{color:var(--muted);font-size:13px;margin:0 0 14px}
-  #overlay-cv .cv-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px 14px;margin-bottom:6px}
-  #overlay-cv label.f{display:block;margin:2px 0 6px}
-  #overlay-cv .cv-cap{color:var(--muted);font-weight:400;text-transform:none;letter-spacing:0}
-  #overlay-cv textarea{width:100%;padding:10px 12px;border:1.5px solid var(--line);
-    border-radius:var(--r-sm);font-family:inherit;font-size:14px;color:var(--ink);
-    background:var(--panel-soft);resize:vertical;margin-bottom:12px;line-height:1.5}
-  #overlay-cv textarea:focus{outline:none;border-color:var(--navy-bright);box-shadow:0 0 0 4px var(--ring)}
-  @media(max-width:560px){ #overlay-cv .cv-grid{grid-template-columns:1fr} }
+
+  /* ---- Страница «Резюме» (полноэкранная) ---- */
+  .cvpage{position:fixed;inset:0;z-index:60;background:var(--bg);overflow-y:auto;display:none}
+  .cvpage.open{display:block}
+  .cvp-hero{background:var(--navy-deep);color:#fff;border-bottom:3px solid var(--accent)}
+  .cvp-hero-in{padding:22px 24px 30px}
+  .cvp-back{background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.25);
+    border-radius:var(--r-sm);font-family:inherit;font-weight:700;font-size:13px;padding:8px 14px;cursor:pointer;margin-bottom:18px}
+  .cvp-back:hover{background:rgba(255,255,255,.2)}
+  .cvp-eyebrow{display:inline-flex;align-items:center;gap:8px;background:rgba(242,165,66,.18);
+    color:#f8ca8e;font-size:11.5px;font-weight:800;text-transform:uppercase;letter-spacing:.12em;padding:6px 13px;border-radius:999px;margin-bottom:14px}
+  .cvp-eyebrow .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+  .cvp-hero h1{font-family:'Montserrat',system-ui,sans-serif;margin:0;font-weight:800;font-size:clamp(26px,4vw,40px);line-height:1.1;letter-spacing:-.02em}
+  .cvp-hero h1 .accent{color:var(--accent)}
+  .cvp-sub{margin:14px 0 0;color:#c5d4ec;font-size:15px;max-width:620px;line-height:1.55}
+  .cvp-body{padding:26px 24px 60px}
+  .cvp-h2{font-family:'Montserrat',system-ui,sans-serif;font-size:20px;font-weight:700;color:var(--navy);margin:0 0 16px}
+  .cvp-tips{margin-bottom:30px}
+  .cvp-tip-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+  .cvp-tip{display:flex;gap:12px;align-items:flex-start;background:var(--panel);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow-sm);padding:14px 16px}
+  .cvp-tip .cvp-num{flex:0 0 28px;width:28px;height:28px;border-radius:8px;background:var(--navy-soft);color:var(--navy);font-family:'Open Sans';font-weight:800;font-size:14px;display:flex;align-items:center;justify-content:center}
+  .cvp-tip:nth-child(3n+1) .cvp-num{background:#fbeede;color:var(--accent-deep)}
+  .cvp-tip:nth-child(3n+2) .cvp-num{background:#e1f5ee;color:#0f6e56}
+  .cvp-tip p{margin:0;font-size:13.5px;color:var(--ink-soft);line-height:1.45}
+  .cvp-build{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start}
+  .cvp-form{background:var(--panel);border:1px solid var(--line);border-radius:var(--r-lg);box-shadow:var(--shadow);padding:22px}
+  .cvpage .cv-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px 14px;margin-bottom:6px}
+  .cvpage label.f{display:block;margin:6px 0 6px}
+  .cvpage .cv-cap{color:var(--muted);font-weight:400;text-transform:none;letter-spacing:0}
+  .cvpage textarea{width:100%;padding:10px 12px;border:1.5px solid var(--line);border-radius:var(--r-sm);font-family:inherit;font-size:14px;color:var(--ink);background:var(--panel-soft);resize:vertical;margin-bottom:12px;line-height:1.5}
+  .cvpage textarea:focus,.cvpage input:focus{outline:none;border-color:var(--navy-bright);box-shadow:0 0 0 4px var(--ring)}
+  .cvp-form-actions{display:flex;align-items:center;gap:14px;margin-top:8px;flex-wrap:wrap}
+  .cvp-clear{background:#fff;color:var(--ink-soft);border:1.5px solid var(--line);border-radius:var(--r-sm);font-family:inherit;font-weight:700;font-size:14px;padding:10px 18px;cursor:pointer}
+  .cvp-clear:hover{background:#f3f5f9}
+  .cvp-saved{font-size:12px;color:var(--muted)}
+  .cvp-preview{position:sticky;top:18px}
+  .cvp-preview-bar{display:flex;justify-content:space-between;align-items:center;background:var(--navy);color:#fff;border-radius:var(--r) var(--r) 0 0;padding:11px 16px;font-family:'Montserrat',system-ui,sans-serif;font-weight:700;font-size:14px}
+  .cvp-dl{background:var(--accent);color:#fff;border-radius:var(--r-sm);font-weight:700;font-size:13px;padding:8px 16px;text-decoration:none}
+  .cvp-dl:hover{background:var(--accent-deep);color:#fff}
+  .cvp-sheet-wrap{background:#dfe5ee;border:1px solid var(--line);border-top:none;border-radius:0 0 var(--r) var(--r);padding:18px;max-height:calc(100vh - 120px);overflow:auto}
+  .cv-sheet{background:#fff;box-shadow:var(--shadow-lg);max-width:520px;margin:0 auto;overflow:hidden;font-size:12.5px;color:#28323d}
+  .cv-sheet .sheet-head{background:#173f7d;color:#fff;padding:22px 24px}
+  .cv-sheet .sheet-name{font-family:'Montserrat',system-ui,sans-serif;font-size:22px;font-weight:800;line-height:1.15}
+  .cv-sheet .sheet-role{color:#c5d4ec;font-size:13px;margin-top:5px}
+  .cv-sheet .sheet-body{display:grid;grid-template-columns:38% 1fr}
+  .cv-sheet .sheet-side{background:#eef3fb;padding:18px 16px}
+  .cv-sheet .sheet-main{padding:18px}
+  .cv-sheet h5{font-family:'Montserrat',system-ui,sans-serif;color:#173f7d;font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;margin:14px 0 6px}
+  .cv-sheet .sheet-side h5:first-child,.cv-sheet .sheet-main h5:first-child{margin-top:0}
+  .cv-sheet p{margin:0 0 8px;line-height:1.45}
+  .cv-sheet ul{margin:0 0 8px;padding-left:16px}
+  .cv-sheet li{margin-bottom:3px;line-height:1.4}
+  .cv-sheet .sheet-hint{color:#8793a3}
+  @media(max-width:820px){ .cvp-build{grid-template-columns:1fr} .cvp-preview{position:static} .cvpage .cv-grid{grid-template-columns:1fr} }
   #i-body .leaflet-container{font-family:'Open Sans',system-ui,sans-serif}
   .info-modal h3{margin:0 46px 0 0;font-family:'Montserrat',system-ui,sans-serif;
     font-size:19px;line-height:1.3}
@@ -842,19 +886,9 @@
 
     <div class="u-head" style="margin-top:8px">В помощь соискателю</div>
 
-    <button class="u-card" type="button" data-info="resume">
-      <span class="u-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2Z"/><path d="M9 13h6M9 17h6"/></svg></span>
-      <span class="u-tx"><span class="u-t">Как составить резюме</span><span class="u-d">Структура и советы для сферы ФКиС</span></span>
-    </button>
-
-    <button class="u-card" type="button" data-info="resume_template">
-      <span class="u-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h8"/></svg></span>
-      <span class="u-tx"><span class="u-t">Образцы и шаблоны резюме</span><span class="u-d">Готовый шаблон — скопируйте и заполните</span></span>
-    </button>
-
     <button class="u-card u-card-cv" id="card-cv" type="button">
       <span class="u-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2Z"/><path d="M9 13h6M9 17h4"/></svg></span>
-      <span class="u-tx"><span class="u-t">Конструктор резюме</span><span class="u-d">Заполните форму — скачайте готовый PDF</span></span>
+      <span class="u-tx"><span class="u-t">Резюме: конструктор и советы</span><span class="u-d">Заполните форму → скачайте красивый PDF</span></span>
     </button>
 
     <button class="u-card" type="button" data-info="professiograms">
@@ -950,41 +984,67 @@
 </button>
 
 <!-- Модальное окно «Подробнее» -->
-<!-- Конструктор резюме -->
-<div class="overlay" id="overlay-cv" role="dialog" aria-modal="true" aria-labelledby="cv-title">
-  <div class="modal cv-modal">
-    <div class="mhead">
-      <button class="mclose" id="cv-close" aria-label="Закрыть">×</button>
-      <h3 id="cv-title">Конструктор резюме</h3>
+<!-- Страница «Резюме» -->
+<div class="cvpage" id="cvpage" role="dialog" aria-modal="true" aria-label="Конструктор резюме">
+  <header class="cvp-hero">
+    <div class="wrap cvp-hero-in">
+      <button class="cvp-back" id="cvp-close" type="button">← Вернуться на сайт</button>
+      <div class="cvp-eyebrow"><span class="dot"></span> Центр карьеры · Университет Лесгафта</div>
+      <h1>Конструктор <span class="accent">резюме</span></h1>
+      <p class="cvp-sub">Заполните форму — соберём аккуратное резюме и выгрузим в PDF. Предпросмотр обновляется прямо во время ввода.</p>
     </div>
-    <div class="mbody">
-      <p class="cv-hint">Заполните поля — сформируется аккуратное резюме в PDF (двухколоночный формат). Пустые разделы в файл не попадут. Данные сохраняются в браузере.</p>
-      <div class="cv-grid">
-        <div><label class="f" for="cv-name">ФИО</label><input id="cv-name" placeholder="Иванов Иван Иванович"></div>
-        <div><label class="f" for="cv-role">Желаемая должность</label><input id="cv-role" placeholder="Тренер по плаванию"></div>
-        <div><label class="f" for="cv-city">Город</label><input id="cv-city" placeholder="Санкт-Петербург"></div>
-        <div><label class="f" for="cv-phone">Телефон</label><input id="cv-phone" placeholder="+7 900 000-00-00"></div>
-        <div><label class="f" for="cv-email">E-mail</label><input id="cv-email" placeholder="mail@example.com"></div>
-        <div><label class="f" for="cv-birth">Дата рождения</label><input id="cv-birth" placeholder="01.01.1995"></div>
+  </header>
+
+  <div class="wrap cvp-body">
+    <section class="cvp-tips">
+      <h2 class="cvp-h2">Что делает резюме сильным</h2>
+      <div class="cvp-tip-grid">
+        <div class="cvp-tip"><span class="cvp-num">1</span><p>Одна страница — рекрутёр просматривает резюме за 7–10 секунд.</p></div>
+        <div class="cvp-tip"><span class="cvp-num">2</span><p>Сверху — ФИО и желаемая должность, рядом контакты.</p></div>
+        <div class="cvp-tip"><span class="cvp-num">3</span><p>Опыт — с конкретными результатами, а не общими фразами.</p></div>
+        <div class="cvp-tip"><span class="cvp-num">4</span><p>Для ФКиС укажите виды спорта, разряды и звания, работу с возрастными группами.</p></div>
+        <div class="cvp-tip"><span class="cvp-num">5</span><p>Один акцентный цвет, много воздуха, единая типографика — без пестроты.</p></div>
+        <div class="cvp-tip"><span class="cvp-num">6</span><p>Проверьте текст на ошибки; деловое фото — по желанию.</p></div>
       </div>
-      <label class="f" for="cv-about">О себе</label>
-      <textarea id="cv-about" rows="3" placeholder="Коротко о сильных сторонах и цели: кто вы, что умеете, чего хотите."></textarea>
-      <label class="f" for="cv-experience">Опыт работы <span class="cv-cap">— разные места разделяйте пустой строкой</span></label>
-      <textarea id="cv-experience" rows="5" placeholder="Организация, должность, период. Что делали и каких результатов достигли."></textarea>
-      <label class="f" for="cv-education">Образование <span class="cv-cap">— каждый пункт с новой строки</span></label>
-      <textarea id="cv-education" rows="3" placeholder="Университет им. П.Ф. Лесгафта, физическая культура и спорт, 2026"></textarea>
-      <label class="f" for="cv-skills">Ключевые навыки <span class="cv-cap">— с новой строки</span></label>
-      <textarea id="cv-skills" rows="3" placeholder="Методика тренировок&#10;Первая помощь&#10;Работа с детьми"></textarea>
-      <label class="f" for="cv-certs">Разряды, звания, сертификаты <span class="cv-cap">— с новой строки</span></label>
-      <textarea id="cv-certs" rows="2" placeholder="КМС по плаванию&#10;Сертификат инструктора"></textarea>
-      <label class="f" for="cv-langs">Языки</label>
-      <input id="cv-langs" placeholder="Русский — родной, английский — базовый">
-    </div>
-    <div class="mfoot">
-      <a class="goto" id="cv-download" href="#">Скачать PDF</a>
-      <button class="mcancel" id="cv-preview" type="button">Предпросмотр</button>
-      <button class="mcancel" id="cv-clear" type="button">Очистить</button>
-    </div>
+    </section>
+
+    <section class="cvp-build">
+      <div class="cvp-form">
+        <h2 class="cvp-h2">Ваши данные</h2>
+        <div class="cv-grid">
+          <div><label class="f" for="cv-name">ФИО</label><input id="cv-name" placeholder="Иванов Иван Иванович"></div>
+          <div><label class="f" for="cv-role">Желаемая должность</label><input id="cv-role" placeholder="Тренер по плаванию"></div>
+          <div><label class="f" for="cv-city">Город</label><input id="cv-city" placeholder="Санкт-Петербург"></div>
+          <div><label class="f" for="cv-phone">Телефон</label><input id="cv-phone" placeholder="+7 900 000-00-00"></div>
+          <div><label class="f" for="cv-email">E-mail</label><input id="cv-email" placeholder="mail@example.com"></div>
+          <div><label class="f" for="cv-birth">Дата рождения</label><input id="cv-birth" placeholder="01.01.1995"></div>
+        </div>
+        <label class="f" for="cv-about">О себе</label>
+        <textarea id="cv-about" rows="3" placeholder="Коротко о сильных сторонах и цели: кто вы, что умеете, чего хотите."></textarea>
+        <label class="f" for="cv-experience">Опыт работы <span class="cv-cap">— разные места разделяйте пустой строкой</span></label>
+        <textarea id="cv-experience" rows="5" placeholder="Организация, должность, период. Что делали и каких результатов достигли."></textarea>
+        <label class="f" for="cv-education">Образование <span class="cv-cap">— каждый пункт с новой строки</span></label>
+        <textarea id="cv-education" rows="3" placeholder="Университет им. П.Ф. Лесгафта, физическая культура и спорт, 2026"></textarea>
+        <label class="f" for="cv-skills">Ключевые навыки <span class="cv-cap">— с новой строки</span></label>
+        <textarea id="cv-skills" rows="3" placeholder="Методика тренировок&#10;Первая помощь&#10;Работа с детьми"></textarea>
+        <label class="f" for="cv-certs">Разряды, звания, сертификаты <span class="cv-cap">— с новой строки</span></label>
+        <textarea id="cv-certs" rows="2" placeholder="КМС по плаванию&#10;Сертификат инструктора"></textarea>
+        <label class="f" for="cv-langs">Языки</label>
+        <input id="cv-langs" placeholder="Русский — родной, английский — базовый">
+        <div class="cvp-form-actions">
+          <button class="cvp-clear" id="cv-clear" type="button">Очистить всё</button>
+          <span class="cvp-saved">Данные сохраняются в браузере</span>
+        </div>
+      </div>
+
+      <div class="cvp-preview">
+        <div class="cvp-preview-bar">
+          <span>Предпросмотр резюме</span>
+          <a class="cvp-dl" id="cv-download" href="#">Скачать PDF</a>
+        </div>
+        <div class="cvp-sheet-wrap"><div class="cv-sheet" id="cv-sheet"></div></div>
+      </div>
+    </section>
   </div>
 </div>
 
@@ -1951,8 +2011,33 @@ const CV_FIELDS = ['cv-name','cv-role','cv-city','cv-phone','cv-email','cv-birth
 function cvData(){ const d={}; CV_FIELDS.forEach(id=> d[id.slice(3)] = $(id).value.trim()); return d; }
 function cvSave(){ try{ const d={}; CV_FIELDS.forEach(id=> d[id]=$(id).value); localStorage.setItem(CV_KEY, JSON.stringify(d)); }catch(e){} }
 function cvRestore(){ try{ const d=JSON.parse(localStorage.getItem(CV_KEY)||'null'); if(d) CV_FIELDS.forEach(id=>{ if(d[id]!=null) $(id).value=d[id]; }); }catch(e){} }
-function openCv(){ cvRestore(); $('overlay-cv').classList.add('open'); document.body.style.overflow='hidden'; loadPdfMake().catch(()=>{}); $('cv-close').focus(); }
-function closeCv(){ $('overlay-cv').classList.remove('open'); if(!$('overlay').classList.contains('open') && !$('overlay2').classList.contains('open')) document.body.style.overflow=''; }
+function openCvPage(){ cvRestore(); cvRenderPreview(); $('cvpage').classList.add('open'); document.body.style.overflow='hidden'; loadPdfMake().catch(()=>{}); window.scrollTo(0,0); }
+function closeCvPage(){ $('cvpage').classList.remove('open'); document.body.style.overflow=''; }
+function cvRenderPreview(){
+  const d = cvData();
+  const esc = s => escapeHtml(s||'');
+  const ul = t => { const a=(t||'').split(/\n+/).map(s=>s.trim()).filter(Boolean); return a.length ? '<ul>'+a.map(x=>`<li>${esc(x)}</li>`).join('')+'</ul>' : ''; };
+  const exp = t => (t||'').split(/\n{2,}/).map(s=>s.trim()).filter(Boolean).map(b=>`<p>${esc(b).replace(/\n/g,'<br>')}</p>`).join('');
+  const contacts = [d.phone,d.email,d.city,d.birth].filter(Boolean).map(esc).join('<br>');
+  const hasMain = d.about || d.experience || (d.education||'').trim();
+  const sheet = $('cv-sheet'); if(!sheet) return;
+  sheet.innerHTML = `
+    <div class="sheet-head"><div class="sheet-name">${esc(d.name)||'Имя Фамилия'}</div>${d.role?`<div class="sheet-role">${esc(d.role)}</div>`:''}</div>
+    <div class="sheet-body">
+      <aside class="sheet-side">
+        <h5>Контакты</h5><p>${contacts||'—'}</p>
+        ${ul(d.skills)?`<h5>Навыки</h5>${ul(d.skills)}`:''}
+        ${d.langs?`<h5>Языки</h5><p>${esc(d.langs)}</p>`:''}
+        ${ul(d.certs)?`<h5>Разряды и сертификаты</h5>${ul(d.certs)}`:''}
+      </aside>
+      <main class="sheet-main">
+        ${d.about?`<h5>О себе</h5><p>${esc(d.about)}</p>`:''}
+        ${d.experience?`<h5>Опыт работы</h5>${exp(d.experience)}`:''}
+        ${ul(d.education)?`<h5>Образование</h5>${ul(d.education)}`:''}
+        ${hasMain?'':'<p class="sheet-hint">Заполните поля слева — резюме появится здесь.</p>'}
+      </main>
+    </div>`;
+}
 
 let _pdfLoading = null;
 function loadPdfMake(){
@@ -2011,14 +2096,12 @@ function cvGenerate(mode){
     if(mode==='preview') pdf.open(); else pdf.download(cvFileName());
   }).catch(()=>{ alert('Не удалось загрузить генератор PDF. Проверьте интернет-соединение и попробуйте ещё раз.'); });
 }
-$('card-cv').addEventListener('click', openCv);
-$('cv-close').addEventListener('click', closeCv);
-$('overlay-cv').addEventListener('click', e=>{ if(e.target===$('overlay-cv')) closeCv(); });
-document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeCv(); });
-CV_FIELDS.forEach(id=> $(id).addEventListener('input', cvSave));
+$('card-cv').addEventListener('click', openCvPage);
+$('cvp-close').addEventListener('click', closeCvPage);
+document.addEventListener('keydown', e=>{ if(e.key==='Escape' && $('cvpage').classList.contains('open')) closeCvPage(); });
+CV_FIELDS.forEach(id=> $(id).addEventListener('input', ()=>{ cvSave(); cvRenderPreview(); }));
 $('cv-download').addEventListener('click', e=>{ e.preventDefault(); cvGenerate('download'); });
-$('cv-preview').addEventListener('click', ()=> cvGenerate('preview'));
-$('cv-clear').addEventListener('click', ()=>{ if(!confirm('Очистить все поля резюме?')) return; CV_FIELDS.forEach(id=> $(id).value=''); cvSave(); });
+$('cv-clear').addEventListener('click', ()=>{ if(!confirm('Очистить все поля резюме?')) return; CV_FIELDS.forEach(id=> $(id).value=''); cvSave(); cvRenderPreview(); });
 
 // --- Умный подбор: обработчики ---
 function readProfileInputs(){
