@@ -459,30 +459,66 @@
   .cvp-photo-ctl input[type=file]{font-size:13px;width:100%;background:none;border:none;padding:0}
   .cvp-photo-clear{margin-top:8px;background:#fff;color:var(--ink-soft);border:1.5px solid var(--line);border-radius:var(--r-sm);font-family:inherit;font-weight:700;font-size:13px;padding:7px 14px;cursor:pointer}
   .cvp-photo-clear:hover{background:#f3f5f9}
+  .cvp-design{background:var(--panel-soft);border:1px solid var(--line);border-radius:var(--r);padding:12px 14px;margin-bottom:18px;display:flex;flex-direction:column;gap:10px}
+  .cvp-design-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+  .cvp-design-lbl{font-size:11px;font-weight:700;color:var(--navy);text-transform:uppercase;letter-spacing:.06em;min-width:56px}
+  .cvp-tpls{display:flex;gap:8px;flex-wrap:wrap}
+  .cvp-tpl{display:flex;align-items:center;gap:7px;background:#fff;border:1.5px solid var(--line);border-radius:var(--r-sm);padding:6px 10px;cursor:pointer;color:#9aa7b8;font-family:inherit;font-size:12.5px;font-weight:600}
+  .cvp-tpl svg{width:26px;height:19px;flex:0 0 auto}
+  .cvp-tpl span{color:var(--ink-soft)}
+  .cvp-tpl:hover{border-color:var(--navy-bright)}
+  .cvp-tpl.active{border-color:var(--navy-2);color:var(--navy-2);box-shadow:0 0 0 3px var(--ring)}
+  .cvp-colors{display:flex;gap:8px;flex-wrap:wrap}
+  .cvp-color{width:26px;height:26px;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 1.5px var(--line);cursor:pointer;padding:0}
+  .cvp-color.active{box-shadow:0 0 0 2px #fff,0 0 0 4px var(--navy-2)}
   .cvp-preview{position:sticky;top:18px}
   .cvp-preview-bar{display:flex;justify-content:space-between;align-items:center;background:var(--navy);color:#fff;border-radius:var(--r) var(--r) 0 0;padding:11px 16px;font-family:'Montserrat',system-ui,sans-serif;font-weight:700;font-size:14px}
   .cvp-dl{background:var(--accent);color:#fff;border-radius:var(--r-sm);font-weight:700;font-size:13px;padding:8px 16px;text-decoration:none}
   .cvp-dl:hover{background:var(--accent-deep);color:#fff}
   .cvp-sheet-wrap{background:#dfe5ee;border:1px solid var(--line);border-top:none;border-radius:0 0 var(--r) var(--r);padding:18px;max-height:calc(100vh - 120px);overflow:auto}
-  .cv-sheet{background:#fff;box-shadow:var(--shadow-lg);max-width:540px;margin:0 auto;overflow:hidden;font-size:12px;color:#28323d}
-  .cv-sheet .sheet-top{display:grid;grid-template-columns:34% 1fr}
-  .cv-sheet .sheet-photo{background:#eef1f5;min-height:158px;display:flex;align-items:center;justify-content:center;color:#9aa3ad;font-size:12px}
-  .cv-sheet .sheet-photo img{width:100%;height:100%;object-fit:cover;display:block}
-  .cv-sheet .sheet-band{background:#f5c97a;color:#2a2113;padding:20px 22px;display:flex;flex-direction:column;justify-content:center}
-  .cv-sheet .sheet-name{font-family:'Montserrat',system-ui,sans-serif;font-size:21px;font-weight:800;line-height:1.12}
-  .cv-sheet .sheet-role{font-size:13px;margin-top:4px;color:#6b5624;font-weight:600}
-  .cv-sheet .sheet-contacts{font-size:11px;margin-top:14px;color:#4a4024;line-height:1.5}
-  .cv-sheet .sheet-body{display:grid;grid-template-columns:34% 1fr}
-  .cv-sheet .sheet-side{background:#f4f6fa;padding:16px 15px}
-  .cv-sheet .sheet-main{padding:16px 18px}
-  .cv-sheet h5{font-family:'Montserrat',system-ui,sans-serif;color:#173f7d;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;margin:14px 0 7px}
-  .cv-sheet .sheet-side h5:first-child,.cv-sheet .sheet-main h5:first-child{margin-top:0}
+  .cv-sheet{--ac:#173f7d;--acText:#fff;--acRGB:23,63,125;background:#fff;box-shadow:var(--shadow-lg);max-width:560px;margin:0 auto;overflow:hidden;font-size:12px;color:#28323d}
+  .cv-sheet .s-photo{background:#eef1f5;display:flex;align-items:center;justify-content:center;color:#9aa3ad;font-size:12px;overflow:hidden}
+  .cv-sheet .s-photo img{width:100%;height:100%;object-fit:cover;display:block}
+  .cv-sheet .s-name{font-family:'Montserrat',system-ui,sans-serif;font-size:21px;font-weight:800;line-height:1.12}
+  .cv-sheet .s-role{font-size:13px;font-weight:600;margin-top:4px}
+  .cv-sheet .s-contacts{font-size:11px;line-height:1.5;margin-top:12px}
+  .cv-sheet h5{font-family:'Montserrat',system-ui,sans-serif;color:var(--ac);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;margin:14px 0 7px}
+  .cv-sheet h6{font-family:'Montserrat',system-ui,sans-serif;color:var(--ac);font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;margin:13px 0 6px}
+  .cv-sheet .s-main > h5:first-child,.cv-sheet .s-side > h6:first-child{margin-top:0}
   .cv-sheet p{margin:0 0 8px;line-height:1.45}
   .cv-sheet ul{margin:0 0 8px;padding-left:16px}
   .cv-sheet li{margin-bottom:3px;line-height:1.4}
-  .cv-sheet .sheet-chips{display:flex;flex-direction:column;gap:6px;margin-bottom:6px}
-  .cv-sheet .sheet-chip{background:#fbe7c2;color:#7a5a1e;border-radius:6px;padding:5px 9px;font-size:11px;line-height:1.3}
+  .cv-sheet .sheet-chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:6px}
+  .cv-sheet .sheet-chip{border-radius:6px;padding:4px 9px;font-size:11px;line-height:1.3;background:rgba(var(--acRGB),.12);color:var(--ac)}
   .cv-sheet .sheet-hint{color:#8793a3}
+  /* Боковая панель */
+  .tpl-sidebar .s-cols{display:grid;grid-template-columns:35% 1fr;min-height:360px}
+  .tpl-sidebar .s-side{background:var(--ac);color:var(--acText);padding:0 0 18px}
+  .tpl-sidebar .s-side .s-photo{width:100%;min-height:150px;aspect-ratio:1/1;background:rgba(255,255,255,.12);color:rgba(255,255,255,.7)}
+  .tpl-sidebar .s-side > h6,.tpl-sidebar .s-side > p,.tpl-sidebar .s-side > .sheet-chips{margin-left:15px;margin-right:15px}
+  .tpl-sidebar .s-side h6{color:var(--acText);opacity:.92}
+  .tpl-sidebar .s-side p{opacity:.94}
+  .tpl-sidebar .s-side .sheet-chip{background:rgba(255,255,255,.2);color:var(--acText)}
+  .tpl-sidebar .s-main{padding:20px}
+  .tpl-sidebar .s-main .s-name{color:var(--ac)}
+  .tpl-sidebar .s-main .s-role{color:#5f6b7a}
+  /* Цветная шапка */
+  .tpl-header .s-top{display:grid;grid-template-columns:34% 1fr}
+  .tpl-header .s-photo{min-height:160px}
+  .tpl-header .s-band{background:var(--ac);color:var(--acText);padding:20px 22px;display:flex;flex-direction:column;justify-content:center}
+  .tpl-header .s-band .s-role,.tpl-header .s-band .s-contacts{opacity:.92}
+  .tpl-header .s-body{display:grid;grid-template-columns:34% 1fr}
+  .tpl-header .s-side{background:#f4f6fa;padding:16px 15px}
+  .tpl-header .s-main{padding:16px 18px}
+  /* Классический */
+  .tpl-classic .s-head{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;padding:22px 24px 14px;border-bottom:2px solid var(--ac)}
+  .tpl-classic .s-head .s-photo{flex:0 0 78px;width:78px;height:96px;border-radius:6px}
+  .tpl-classic .s-head-l .s-name{color:#1a2430}
+  .tpl-classic .s-head-l .s-role{color:var(--ac)}
+  .tpl-classic .s-head-l .s-contacts{color:#5f6b7a;margin-top:8px}
+  .tpl-classic .s-body{display:grid;grid-template-columns:1fr 36%;gap:0 22px;padding:16px 24px 20px}
+  .tpl-classic .s-side h6{border-bottom:1px solid rgba(var(--acRGB),.25);padding-bottom:4px}
+  .tpl-classic .s-main h5{border-bottom:1px solid rgba(var(--acRGB),.25);padding-bottom:4px}
   @media(max-width:820px){ .cvp-build{grid-template-columns:1fr} .cvp-preview{position:static} .cvpage .cv-grid{grid-template-columns:1fr} }
   #i-body .leaflet-container{font-family:'Open Sans',system-ui,sans-serif}
   .info-modal h3{margin:0 46px 0 0;font-family:'Montserrat',system-ui,sans-serif;
@@ -1024,6 +1060,38 @@
 
     <section class="cvp-build">
       <div class="cvp-form">
+        <h2 class="cvp-h2">Оформление</h2>
+        <div class="cvp-design">
+          <div class="cvp-design-row">
+            <span class="cvp-design-lbl">Шаблон</span>
+            <div class="cvp-tpls" id="cv-tpls">
+              <button class="cvp-tpl" data-tpl="sidebar" type="button" title="Боковая панель">
+                <svg viewBox="0 0 28 20"><rect width="28" height="20" rx="2" fill="#e6ebf2"/><rect width="10" height="20" rx="2" fill="currentColor"/><rect x="13" y="4" width="12" height="1.6" fill="#b9c4d4"/><rect x="13" y="8" width="12" height="1.6" fill="#b9c4d4"/><rect x="13" y="12" width="9" height="1.6" fill="#b9c4d4"/></svg>
+                <span>Боковая</span>
+              </button>
+              <button class="cvp-tpl" data-tpl="header" type="button" title="Цветная шапка">
+                <svg viewBox="0 0 28 20"><rect width="28" height="20" rx="2" fill="#e6ebf2"/><rect width="28" height="7" rx="2" fill="currentColor"/><rect x="3" y="11" width="9" height="1.5" fill="#b9c4d4"/><rect x="3" y="15" width="9" height="1.5" fill="#b9c4d4"/><rect x="15" y="11" width="10" height="1.5" fill="#b9c4d4"/><rect x="15" y="15" width="10" height="1.5" fill="#b9c4d4"/></svg>
+                <span>Шапка</span>
+              </button>
+              <button class="cvp-tpl" data-tpl="classic" type="button" title="Классический">
+                <svg viewBox="0 0 28 20"><rect width="28" height="20" rx="2" fill="#e6ebf2"/><rect x="3" y="3" width="16" height="2.4" fill="currentColor"/><rect x="3" y="7.5" width="22" height="1.2" fill="currentColor"/><rect x="3" y="11" width="12" height="1.4" fill="#b9c4d4"/><rect x="17" y="11" width="8" height="1.4" fill="#b9c4d4"/><rect x="3" y="14.5" width="12" height="1.4" fill="#b9c4d4"/><rect x="17" y="14.5" width="8" height="1.4" fill="#b9c4d4"/></svg>
+                <span>Классический</span>
+              </button>
+            </div>
+          </div>
+          <div class="cvp-design-row">
+            <span class="cvp-design-lbl">Цвет</span>
+            <div class="cvp-colors" id="cv-colors">
+              <button class="cvp-color" data-color="#173f7d" style="background:#173f7d" type="button" aria-label="Тёмно-синий"></button>
+              <button class="cvp-color" data-color="#1d4f9c" style="background:#1d4f9c" type="button" aria-label="Синий"></button>
+              <button class="cvp-color" data-color="#0f766e" style="background:#0f766e" type="button" aria-label="Бирюзовый"></button>
+              <button class="cvp-color" data-color="#15803d" style="background:#15803d" type="button" aria-label="Зелёный"></button>
+              <button class="cvp-color" data-color="#b23a2e" style="background:#b23a2e" type="button" aria-label="Терракотовый"></button>
+              <button class="cvp-color" data-color="#f5c97a" style="background:#f5c97a" type="button" aria-label="Тёплый амбер"></button>
+            </div>
+          </div>
+        </div>
+
         <h2 class="cvp-h2">Ваши данные</h2>
         <div class="cvp-photo-field">
           <div class="cvp-photo-prev" id="cv-photo-prev"><span>Фото</span></div>
@@ -2034,12 +2102,22 @@ const CV_KEY = 'fkis_cv';
 const CV_PHOTO_KEY = 'fkis_cv_photo';
 const CV_FIELDS = ['cv-name','cv-role','cv-city','cv-phone','cv-email','cv-birth','cv-about','cv-experience','cv-education','cv-skills','cv-certs','cv-langs','cv-portfolio'];
 let cvPhoto = '';
+let cvTemplate = 'sidebar', cvAccent = '#173f7d';
+const CV_TPL_KEY = 'fkis_cv_tpl', CV_AC_KEY = 'fkis_cv_ac';
+function hexToRgb(h){ const c=String(h).replace('#',''); return [parseInt(c.substr(0,2),16), parseInt(c.substr(2,2),16), parseInt(c.substr(4,2),16)]; }
+function textOn(hex){ const [r,g,b]=hexToRgb(hex); return (0.299*r+0.587*g+0.114*b)/255 > 0.62 ? '#2a2416' : '#ffffff'; }
+function tintHex(hex, wr){ const [r,g,b]=hexToRgb(hex); const m=v=>Math.round(v+(255-v)*wr); return '#'+[m(r),m(g),m(b)].map(x=>x.toString(16).padStart(2,'0')).join(''); }
+function cvUpdateDesignUI(){
+  document.querySelectorAll('#cv-tpls .cvp-tpl').forEach(b=> b.classList.toggle('active', b.dataset.tpl===cvTemplate));
+  document.querySelectorAll('#cv-colors .cvp-color').forEach(b=> b.classList.toggle('active', b.dataset.color===cvAccent));
+}
 function cvData(){ const d={}; CV_FIELDS.forEach(id=> d[id.slice(3)] = $(id).value.trim()); return d; }
 function cvSave(){ try{ const d={}; CV_FIELDS.forEach(id=> d[id]=$(id).value); localStorage.setItem(CV_KEY, JSON.stringify(d)); }catch(e){} }
 function cvRestore(){
   try{ const d=JSON.parse(localStorage.getItem(CV_KEY)||'null'); if(d) CV_FIELDS.forEach(id=>{ if(d[id]!=null) $(id).value=d[id]; }); }catch(e){}
   try{ cvPhoto = localStorage.getItem(CV_PHOTO_KEY) || ''; }catch(e){ cvPhoto=''; }
-  cvUpdatePhotoPrev();
+  try{ cvTemplate = localStorage.getItem(CV_TPL_KEY) || 'sidebar'; cvAccent = localStorage.getItem(CV_AC_KEY) || '#173f7d'; }catch(e){}
+  cvUpdatePhotoPrev(); cvUpdateDesignUI();
 }
 function cvUpdatePhotoPrev(){
   const p=$('cv-photo-prev'); if(p) p.innerHTML = cvPhoto ? `<img src="${cvPhoto}" alt="">` : '<span>Фото</span>';
@@ -2059,32 +2137,42 @@ function cvRenderPreview(){
   const ul = t => { const a=lns(t); return a.length ? '<ul>'+a.map(x=>`<li>${esc(x)}</li>`).join('')+'</ul>' : ''; };
   const chips = t => { const a=lns(t); return a.length ? '<div class="sheet-chips">'+a.map(x=>`<span class="sheet-chip">${esc(x)}</span>`).join('')+'</div>' : ''; };
   const exp = t => (t||'').split(/\n{2,}/).map(s=>s.trim()).filter(Boolean).map(b=>`<p>${esc(b).replace(/\n/g,'<br>')}</p>`).join('');
-  const contacts = [d.city,d.email,d.phone].filter(Boolean).map(esc).join('<br>');
+  const photo = cvPhoto ? `<img src="${cvPhoto}" alt="">` : '<span>Фото</span>';
+  const cBr = [d.city,d.email,d.phone].filter(Boolean).map(esc).join('<br>');
+  const cDot = [d.city,d.email,d.phone].filter(Boolean).map(esc).join(' · ');
+  const nm = esc(d.name)||'Имя Фамилия';
+  const role = d.role ? `<div class="s-role">${esc(d.role)}</div>` : '';
   const hasMain = d.about || (d.education||'').trim() || d.experience;
-  const sheet = $('cv-sheet'); if(!sheet) return;
-  sheet.innerHTML = `
-    <div class="sheet-top">
-      <div class="sheet-photo">${cvPhoto?`<img src="${cvPhoto}" alt="">`:'<span>Фото</span>'}</div>
-      <div class="sheet-band">
-        <div class="sheet-name">${esc(d.name)||'Имя Фамилия'}</div>
-        ${d.role?`<div class="sheet-role">${esc(d.role)}</div>`:''}
-        <div class="sheet-contacts">${contacts||'—'}</div>
-      </div>
-    </div>
-    <div class="sheet-body">
-      <aside class="sheet-side">
-        ${d.portfolio?`<h5>Портфолио</h5><p>${esc(d.portfolio)}</p>`:''}
-        ${chips(d.skills)?`<h5>Навыки</h5>${chips(d.skills)}`:''}
-        ${d.langs?`<h5>Языки</h5><p>${esc(d.langs)}</p>`:''}
-        ${ul(d.certs)?`<h5>Разряды и сертификаты</h5>${ul(d.certs)}`:''}
-      </aside>
-      <main class="sheet-main">
-        ${d.about?`<h5>О себе</h5><p>${esc(d.about)}</p>`:''}
-        ${ul(d.education)?`<h5>Образование</h5>${ul(d.education)}`:''}
-        ${d.experience?`<h5>Опыт работы</h5>${exp(d.experience)}`:''}
-        ${hasMain?'':'<p class="sheet-hint">Заполните поля слева — резюме появится здесь.</p>'}
-      </main>
+  const sideInner = `
+    ${d.portfolio?`<h6>Портфолио</h6><p>${esc(d.portfolio)}</p>`:''}
+    ${chips(d.skills)?`<h6>Навыки</h6>${chips(d.skills)}`:''}
+    ${d.langs?`<h6>Языки</h6><p>${esc(d.langs)}</p>`:''}
+    ${ul(d.certs)?`<h6>Разряды и сертификаты</h6>${ul(d.certs)}`:''}`;
+  const mainInner = `
+    ${d.about?`<h5>О себе</h5><p>${esc(d.about)}</p>`:''}
+    ${ul(d.education)?`<h5>Образование</h5>${ul(d.education)}`:''}
+    ${d.experience?`<h5>Опыт работы</h5>${exp(d.experience)}`:''}
+    ${hasMain?'':'<p class="sheet-hint">Заполните поля — резюме появится здесь.</p>'}`;
+  let html;
+  if(cvTemplate==='sidebar'){
+    html = `<div class="s-cols">
+      <aside class="s-side"><div class="s-photo">${photo}</div><h6>Контакты</h6><p>${cBr||'—'}</p>${sideInner}</aside>
+      <main class="s-main"><div class="s-name">${nm}</div>${role}${mainInner}</main>
     </div>`;
+  } else if(cvTemplate==='header'){
+    html = `<div class="s-top"><div class="s-photo">${photo}</div>
+      <div class="s-band"><div class="s-name">${nm}</div>${role}<div class="s-contacts">${cBr||'—'}</div></div></div>
+      <div class="s-body"><aside class="s-side">${sideInner||'<p class="sheet-hint">—</p>'}</aside><main class="s-main">${mainInner}</main></div>`;
+  } else {
+    html = `<div class="s-head"><div class="s-head-l"><div class="s-name">${nm}</div>${role}<div class="s-contacts">${cDot||'—'}</div></div><div class="s-photo">${photo}</div></div>
+      <div class="s-body"><main class="s-main">${mainInner}</main><aside class="s-side">${sideInner||''}</aside></div>`;
+  }
+  const sheet = $('cv-sheet'); if(!sheet) return;
+  sheet.className = 'cv-sheet tpl-' + cvTemplate;
+  sheet.style.setProperty('--ac', cvAccent);
+  sheet.style.setProperty('--acText', textOn(cvAccent));
+  sheet.style.setProperty('--acRGB', hexToRgb(cvAccent).join(','));
+  sheet.innerHTML = html;
 }
 
 let _pdfLoading = null;
@@ -2103,61 +2191,48 @@ function loadPdfMake(){
 function buildCvDoc(){
   const d = cvData();
   const lines = t => String(t||'').split(/\n+/).map(s=>s.trim()).filter(Boolean);
-  const SIDE_W = 190;
-
-  // Шапка: слева фото, справа амбер-полоса с ФИО/должностью/контактами
-  const photoCell = cvPhoto
-    ? { image: cvPhoto, fit:[SIDE_W, 205], alignment:'center' }
-    : { text:'ФОТО', alignment:'center', color:'#9aa3ad', fillColor:'#eef1f5', margin:[0,90,0,90] };
+  const ac = cvAccent, onAc = textOn(ac);
   const contacts = [d.city, d.email, d.phone].filter(Boolean).join('\n');
-  const header = { table:{ widths:[SIDE_W,'*'], body:[[
-      photoCell,
-      { stack:[
-          {text:d.name||'Имя Фамилия', style:'name'},
-          {text:d.role||'', style:'role'},
-          {text:contacts||'', style:'contacts', margin:[0,16,0,0]}
-        ], fillColor:'#f5c97a', margin:[24,24,22,20] }
-  ]]}, layout:'noBorders' };
+  const NAVY='#173f7d', INK='#28323d', GREY='#5f6b7a';
+  const noPad = { defaultBorder:false, paddingLeft:()=>0, paddingRight:()=>0, paddingTop:()=>0, paddingBottom:()=>0 };
+  const photoBox = (w,h)=> cvPhoto ? {image:cvPhoto, fit:[w,h], alignment:'center'} : {text:'ФОТО', alignment:'center', color:'#9aa3ad', fillColor:'#eef1f5', margin:[0,Math.max(8,Math.round(h/2-9)),0,Math.max(8,Math.round(h/2-9))]};
+  const chipRows = (bg,col)=> lines(d.skills).map(sk=>({ table:{widths:['*'],body:[[{text:sk, fillColor:bg, color:col, fontSize:9, margin:[7,3,7,3]}]]}, layout:noPad, margin:[0,0,0,4] }));
+  const mainStack = (hc)=>{ const m=[]; const H=t=>({text:t, color:hc, bold:true, fontSize:12.5, margin:[0,6,0,5]});
+    if(d.about){ m.push(H('О себе')); m.push({text:d.about, fontSize:10.5, color:INK, lineHeight:1.32, margin:[0,0,0,10]}); }
+    if(lines(d.education).length){ m.push(H('Образование')); m.push({ul:lines(d.education), fontSize:10.5, color:INK, lineHeight:1.3, margin:[0,0,0,10]}); }
+    if(d.experience){ m.push(H('Опыт работы')); String(d.experience).split(/\n{2,}/).map(s=>s.trim()).filter(Boolean).forEach(b=> m.push({text:b, fontSize:10.5, color:INK, lineHeight:1.32, margin:[0,0,0,8]})); }
+    if(!m.length) m.push({text:'Заполните разделы — здесь появятся «О себе», образование и опыт.', color:'#8793a3', fontSize:10.5}); return m; };
+  const sideStack = (hc,bc,chipBg,chipCol,withContacts)=>{ const s=[]; const H=t=>({text:t, color:hc, bold:true, fontSize:9.5, margin:[0,8,0,5]});
+    if(withContacts){ s.push(H('КОНТАКТЫ')); s.push({text:contacts||'—', color:bc, fontSize:9.5, lineHeight:1.4}); }
+    if(d.portfolio){ s.push(H('ПОРТФОЛИО')); s.push({text:d.portfolio, color:bc, fontSize:9.5}); }
+    if(lines(d.skills).length){ s.push(H('НАВЫКИ')); chipRows(chipBg,chipCol).forEach(c=>s.push(c)); }
+    if(d.langs){ s.push(H('ЯЗЫКИ')); s.push({text:d.langs, color:bc, fontSize:9.5, lineHeight:1.35}); }
+    if(lines(d.certs).length){ s.push(H('РАЗРЯДЫ И СЕРТИФИКАТЫ')); s.push({ul:lines(d.certs), color:bc, fontSize:9.5}); }
+    if(!s.length) s.push({text:'', fontSize:9.5}); return s; };
 
-  // Сайдбар
-  const side = [];
-  if(d.portfolio){ side.push({text:'ПОРТФОЛИО', style:'sideH'}); side.push({text:d.portfolio, style:'sideBody', margin:[0,0,0,12]}); }
-  if(lines(d.skills).length){
-    side.push({text:'НАВЫКИ', style:'sideH', margin:[0,0,0,6]});
-    lines(d.skills).forEach(sk=> side.push({ table:{widths:['*'], body:[[{ text:sk, fillColor:'#fbe7c2', color:'#7a5a1e', fontSize:9.5, margin:[8,4,8,4] }]]}, layout:'noBorders', margin:[0,0,0,5] }));
-    side.push({text:'', margin:[0,0,0,6]});
+  if(cvTemplate==='sidebar'){
+    const SW=190;
+    const sidePhoto = cvPhoto ? {image:cvPhoto, fit:[SW,180], margin:[0,0,0,12]} : {text:'ФОТО', alignment:'center', color:onAc, fillColor:tintHex(ac,0.2), margin:[0,66,0,66]};
+    return { pageSize:'A4', pageMargins:[0,0,0,28], defaultStyle:{fontSize:10.5},
+      content:[ { table:{widths:[SW,'*'], body:[[
+        { fillColor:ac, stack:[ sidePhoto, {stack:sideStack(onAc,onAc,tintHex(ac,0.25),onAc,true), margin:[16,0,16,16]} ] },
+        { margin:[22,22,24,22], stack:[ {text:d.name||'Имя Фамилия', color:ac, bold:true, fontSize:23}, {text:d.role||'', color:GREY, bold:true, fontSize:12.5, margin:[0,4,0,10]}, ...mainStack(NAVY) ] }
+      ]]}, layout:noPad } ] };
   }
-  if(d.langs){ side.push({text:'ЯЗЫКИ', style:'sideH'}); side.push({text:d.langs, style:'sideBody', margin:[0,0,0,12]}); }
-  if(lines(d.certs).length){ side.push({text:'РАЗРЯДЫ И СЕРТИФИКАТЫ', style:'sideH'}); side.push({ul:lines(d.certs), style:'sideBody'}); }
-  if(!side.length) side.push({text:'', style:'sideBody'});
-
-  // Основное
-  const main = [];
-  if(d.about){ main.push({text:'О себе', style:'mainH'}); main.push({text:d.about, style:'mainBody', margin:[0,0,0,10]}); }
-  if(lines(d.education).length){ main.push({text:'Образование', style:'mainH'}); main.push({ul:lines(d.education), style:'mainBody', margin:[0,0,0,10]}); }
-  if(d.experience){ main.push({text:'Опыт работы', style:'mainH'}); String(d.experience).split(/\n{2,}/).map(s=>s.trim()).filter(Boolean).forEach(b=> main.push({text:b, style:'mainBody', margin:[0,0,0,8]})); }
-  if(!main.length) main.push({text:'Заполните разделы — здесь появятся «О себе», образование и опыт.', style:'mainBody', color:'#8793a3'});
-
-  return {
-    pageSize:'A4', pageMargins:[0,0,0,28],
+  if(cvTemplate==='header'){
+    const SW=185;
+    return { pageSize:'A4', pageMargins:[0,0,0,28], defaultStyle:{fontSize:10.5},
+      content:[
+        { table:{widths:[SW,'*'], body:[[ photoBox(SW,200), { fillColor:ac, margin:[22,22,20,18], stack:[ {text:d.name||'Имя Фамилия', color:onAc, bold:true, fontSize:24}, {text:d.role||'', color:onAc, bold:true, fontSize:13, margin:[0,4,0,0]}, {text:contacts||'', color:onAc, fontSize:10, lineHeight:1.4, margin:[0,14,0,0]} ] } ]]}, layout:noPad },
+        { table:{widths:[SW,'*'], body:[[ { fillColor:'#f4f6fa', margin:[18,18,14,22], stack:sideStack(ac,'#33414f',tintHex(ac,0.84),ac,false) }, { margin:[20,18,24,22], stack:mainStack(NAVY) } ]]}, layout:noPad }
+      ] };
+  }
+  return { pageSize:'A4', pageMargins:[36,32,36,28], defaultStyle:{fontSize:10.5},
     content:[
-      header,
-      { table:{ widths:[SIDE_W,'*'], body:[[
-          { stack:side, fillColor:'#f4f6fa', margin:[20,20,16,24] },
-          { stack:main, margin:[22,20,26,24] }
-      ]] }, layout:'noBorders' }
-    ],
-    styles:{
-      name:{fontSize:24, bold:true, color:'#2a2113'},
-      role:{fontSize:13, color:'#6b5624', bold:true, margin:[0,4,0,0]},
-      contacts:{fontSize:10, color:'#4a4024', lineHeight:1.4},
-      sideH:{fontSize:10, bold:true, color:'#173f7d', margin:[0,4,0,5]},
-      sideBody:{fontSize:10, color:'#33414f', lineHeight:1.3},
-      mainH:{fontSize:13, bold:true, color:'#173f7d', margin:[0,8,0,6]},
-      mainBody:{fontSize:10.5, color:'#28323d', lineHeight:1.32}
-    },
-    defaultStyle:{fontSize:10.5}
-  };
+      { columns:[ {width:'*', stack:[ {text:d.name||'Имя Фамилия', color:'#1a2430', bold:true, fontSize:24}, {text:d.role||'', color:ac, bold:true, fontSize:13, margin:[0,3,0,0]}, {text:[d.city,d.email,d.phone].filter(Boolean).join('  ·  '), color:GREY, fontSize:10, margin:[0,7,0,0]} ]}, {width:96, stack:[photoBox(96,116)]} ], columnGap:16 },
+      { canvas:[{type:'line', x1:0, y1:6, x2:523, y2:6, lineWidth:1.2, lineColor:ac}], margin:[0,4,0,10] },
+      { columns:[ {width:'*', stack:mainStack(ac)}, {width:168, stack:sideStack(ac,'#33414f',tintHex(ac,0.84),ac,true)} ], columnGap:22 }
+    ] };
 }
 function cvFileName(){ const n=(cvData().name||'resume').replace(/\s+/g,'_'); return 'Резюме_'+n+'.pdf'; }
 function cvGenerate(mode){
@@ -2185,6 +2260,9 @@ $('cv-photo').addEventListener('change', e=>{
 });
 $('cv-photo-clear').addEventListener('click', ()=>{ cvSetPhoto(''); $('cv-photo').value=''; });
 $('cv-clear').addEventListener('click', ()=>{ if(!confirm('Очистить все поля резюме?')) return; CV_FIELDS.forEach(id=> $(id).value=''); cvSetPhoto(''); $('cv-photo').value=''; cvSave(); cvRenderPreview(); });
+document.querySelectorAll('#cv-tpls .cvp-tpl').forEach(b=> b.addEventListener('click', ()=>{ cvTemplate=b.dataset.tpl; try{localStorage.setItem(CV_TPL_KEY,cvTemplate);}catch(e){} cvUpdateDesignUI(); cvRenderPreview(); }));
+document.querySelectorAll('#cv-colors .cvp-color').forEach(b=> b.addEventListener('click', ()=>{ cvAccent=b.dataset.color; try{localStorage.setItem(CV_AC_KEY,cvAccent);}catch(e){} cvUpdateDesignUI(); cvRenderPreview(); }));
+cvUpdateDesignUI();
 
 // --- Умный подбор: обработчики ---
 function readProfileInputs(){
