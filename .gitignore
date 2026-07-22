@@ -3,3 +3,8 @@ node_modules/
 *.log
 files.zip
 .claude/
+
+# посторонние файлы в корне (не часть сайта)
+/blagodarstvennoe-pismo-volonter.html
+/pismo-hudozhka-po-gruppam.html
+/pismo-vstupitelnye-ispytaniya.html
