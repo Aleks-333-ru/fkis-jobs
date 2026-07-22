@@ -520,6 +520,32 @@
   #i-body .an-track{height:8px;background:#eef2f7;border-radius:6px;overflow:hidden}
   #i-body .an-bar{height:100%;background:var(--navy-2);border-radius:6px}
 
+  /* Дашборд аналитики */
+  #i-body .dash-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin:6px 0 18px}
+  #i-body .mc{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;box-shadow:var(--shadow-xs)}
+  #i-body .mc-label{font-size:12px;color:var(--muted);margin-bottom:6px}
+  #i-body .mc-val{font-family:'Open Sans';font-weight:800;font-size:24px;color:var(--navy);
+    font-variant-numeric:tabular-nums;line-height:1.1;display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+  #i-body .mc-delta{font-size:13px;font-weight:700}
+  #i-body .mc-delta.up{color:#1d9e75}
+  #i-body .mc-delta.down{color:#d84a4a}
+  #i-body .dash-chart{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:16px 18px;margin-bottom:18px}
+  #i-body .dash-chart h4{margin:0 0 12px}
+  #i-body .chart-wrap{position:relative;height:240px}
+  #i-body .an-table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r-sm)}
+  #i-body table.an-table{width:100%;border-collapse:collapse;font-size:13px}
+  #i-body table.an-table th{background:var(--navy-soft);color:var(--navy);font-weight:700;
+    text-align:right;padding:9px 10px;border-bottom:1px solid var(--line);font-size:11.5px;white-space:nowrap}
+  #i-body table.an-table th:nth-child(1){text-align:center}
+  #i-body table.an-table th:nth-child(2){text-align:left}
+  #i-body table.an-table td{padding:8px 10px;border-bottom:1px solid var(--line-soft);
+    color:var(--ink-soft);text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+  #i-body table.an-table td.t-num{text-align:center;color:var(--muted)}
+  #i-body table.an-table td.t-name{text-align:left;color:var(--ink);font-weight:600;white-space:normal}
+  #i-body table.an-table td.up{color:#1d9e75;font-weight:700}
+  #i-body table.an-table tbody tr:last-child td{border-bottom:none}
+  #i-body table.an-table tbody tr:hover td{background:#f7f9fc}
+
   /* Карьерный маршрут (лестница) */
   #i-body .ladder{list-style:none;margin:8px 0 0;padding:0}
   #i-body .ladder li{position:relative;padding:0 0 18px 28px;border-left:2px solid var(--line)}
@@ -1656,28 +1682,99 @@ function openInfoHTML(title, html, wide){
 }
 function openInfo(key){ const d = INFO[key]; if(d) openInfoHTML(d.title, d.html); }
 
-// --- Аналитика рынка: считаем из загруженных вакансий ---
+// --- Аналитика рынка: дашборд из загруженных вакансий ---
+let _anChart = null, _chartLoading = null;
+function loadChartJs(){
+  if(window.Chart) return Promise.resolve();
+  if(_chartLoading) return _chartLoading;
+  _chartLoading = new Promise((res,rej)=>{
+    const s=document.createElement('script');
+    s.src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js';
+    s.onload=()=>res(); s.onerror=()=>rej(new Error('chart'));
+    document.head.appendChild(s);
+  });
+  return _chartLoading;
+}
 function openAnalytics(){
   const data = DATA.slice();
   const n = data.length;
-  if(!n){ openInfoHTML('Аналитика рынка', '<p>Данные ещё не загружены. Попробуйте позже.</p>'); return; }
-  const rub = x => x ? x.toLocaleString('ru-RU') + ' ₽' : '—';
+  if(!n){ openInfoHTML('Аналитика рынка', '<p>Данные ещё не загружены. Попробуйте позже.</p>', true); return; }
+  const now = Date.now(), dayMs = 86400000, weekAgo = now - 7*dayMs;
+  const parse = v => Date.parse(v.publishedAt);
   const withSal = data.filter(v=>v.salaryFrom||v.salaryTo);
   const avg = withSal.length ? Math.round(withSal.reduce((s,v)=>s+(v.salaryFrom||v.salaryTo),0)/withSal.length) : 0;
-  const weekAgo = Date.now()-7*86400000;
-  const week = data.filter(v=>{const t=Date.parse(v.publishedAt);return !isNaN(t)&&t>=weekAgo;}).length;
-  const group = (keyFn)=>{ const m={}; data.forEach(v=>{ const k=keyFn(v)||'—'; (m[k]=m[k]||{n:0,sal:0,salN:0}); m[k].n++; const s=v.salaryFrom||v.salaryTo; if(s){m[k].sal+=s;m[k].salN++;} }); return Object.entries(m).map(([k,o])=>({k,n:o.n,avg:o.salN?Math.round(o.sal/o.salN):0})).sort((a,b)=>b.n-a.n); };
-  const cats = group(v=>v.category);
-  const regs = group(v=>v.region).slice(0,8);
-  const maxCat = Math.max(...cats.map(c=>c.n),1);
-  const maxReg = Math.max(...regs.map(r=>r.n),1);
-  const bar = (label,val,max,extra)=>`<div class="an-row"><div class="an-top"><span class="an-lbl">${escapeHtml(label)}</span><span class="an-val">${val}${extra?' · '+extra:''}</span></div><div class="an-track"><div class="an-bar" style="width:${Math.max(4,Math.round(val/max*100))}%"></div></div></div>`;
-  let html = `<p style="color:var(--muted);font-size:13px;margin:0 0 4px">По ${fmt(n)} загруженным вакансиям${week?`, из них ${fmt(week)} за последнюю неделю`:''}.</p>`;
-  html += `<div class="an-cards"><div class="an-card"><div class="an-num">${fmt(n)}</div><div class="an-cap">вакансий</div></div><div class="an-card"><div class="an-num">+${fmt(week)}</div><div class="an-cap">за неделю</div></div><div class="an-card"><div class="an-num">${avg?fmt(avg):'—'}</div><div class="an-cap">средняя з/п, ₽</div></div></div>`;
-  html += `<h4>Самые востребованные направления</h4>` + cats.map(c=>bar(c.k,c.n,maxCat,c.avg?'ср. '+rub(c.avg):'')).join('');
-  html += `<h4>Топ регионов по числу вакансий</h4>` + regs.map(r=>bar(r.k,r.n,maxReg,r.avg?'ср. '+rub(r.avg):'')).join('');
-  html += `<p style="color:var(--muted);font-size:12px;margin-top:14px">Расчёт по открытым данным источников; зарплата усреднена по вакансиям, где она указана.</p>`;
-  openInfoHTML('Аналитика рынка', html);
+  const week = data.filter(v=>{const t=parse(v);return !isNaN(t)&&t>=weekAgo;}).length;
+  const salPct = Math.round(withSal.length / n * 100);
+  const regionsCount = new Set(data.map(v=>v.region).filter(Boolean)).size;
+
+  const groupBy = (keyFn)=>{
+    const m={};
+    data.forEach(v=>{ const k=keyFn(v)||'—'; (m[k]=m[k]||{n:0,week:0,sal:0,salN:0}); m[k].n++;
+      const t=parse(v); if(!isNaN(t)&&t>=weekAgo) m[k].week++;
+      const s=v.salaryFrom||v.salaryTo; if(s){m[k].sal+=s;m[k].salN++;} });
+    return Object.entries(m).map(([k,o])=>({k, n:o.n, week:o.week, avg:o.salN?Math.round(o.sal/o.salN):0, share:Math.round(o.salN/o.n*100)})).sort((a,b)=>b.n-a.n);
+  };
+  const cats = groupBy(v=>v.category);
+  const regs = groupBy(v=>v.region).slice(0,10);
+
+  // динамика: новые вакансии по дням за 30 дней
+  const days = 30;
+  const startDay = new Date(); startDay.setHours(0,0,0,0);
+  const start0 = startDay.getTime() - (days-1)*dayMs;
+  const buckets = new Array(days).fill(0);
+  data.forEach(v=>{ const t=parse(v); if(isNaN(t)) return; const i=Math.floor((t-start0)/dayMs); if(i>=0&&i<days) buckets[i]++; });
+  const labels = []; for(let i=0;i<days;i++){ const d=new Date(start0+i*dayMs); labels.push(('0'+d.getDate()).slice(-2)+'.'+('0'+(d.getMonth()+1)).slice(-2)); }
+
+  const mc = (label,val,delta)=>`<div class="mc"><div class="mc-label">${label}</div><div class="mc-val">${val}${delta?`<span class="mc-delta up">${delta}</span>`:''}</div></div>`;
+  const dt = w => w>0 ? `<td class="up">+${w}</td>` : `<td>—</td>`;
+  const catRows = cats.map((c,i)=>`<tr><td class="t-num">${i+1}</td><td class="t-name">${escapeHtml(c.k)}</td><td>${fmt(c.n)}</td>${dt(c.week)}<td>${c.avg?fmt(c.avg)+' ₽':'—'}</td><td>${c.share}%</td></tr>`).join('');
+  const regRows = regs.map((r,i)=>`<tr><td class="t-num">${i+1}</td><td class="t-name">${escapeHtml(r.k)}</td><td>${fmt(r.n)}</td>${dt(r.week)}<td>${r.avg?fmt(r.avg)+' ₽':'—'}</td></tr>`).join('');
+
+  const html = `
+    <div class="dash">
+      <div class="dash-cards">
+        ${mc('Вакансий, всего', fmt(n), week?`+${fmt(week)}`:'')}
+        ${mc('Новых за неделю', `+${fmt(week)}`)}
+        ${mc('Средняя зарплата', avg?fmt(avg)+' ₽':'—')}
+        ${mc('С указанной з/п', salPct+'%')}
+        ${mc('Регионов', fmt(regionsCount))}
+      </div>
+      <div class="dash-chart">
+        <h4>Динамика — новые вакансии за 30 дней</h4>
+        <div class="chart-wrap"><canvas id="an-chart"></canvas></div>
+      </div>
+      <h4>Рейтинг по направлениям</h4>
+      <div class="an-table-wrap"><table class="an-table">
+        <thead><tr><th>№</th><th>Направление</th><th>Вакансий</th><th>Δ нед.</th><th>Ср. з/п</th><th>С з/п</th></tr></thead>
+        <tbody>${catRows}</tbody>
+      </table></div>
+      <h4>Топ регионов</h4>
+      <div class="an-table-wrap"><table class="an-table">
+        <thead><tr><th>№</th><th>Регион</th><th>Вакансий</th><th>Δ нед.</th><th>Ср. з/п</th></tr></thead>
+        <tbody>${regRows}</tbody>
+      </table></div>
+      <p style="color:var(--muted);font-size:12px;margin-top:14px">По загруженным вакансиям источников; «Δ нед.» — появившиеся за 7 дней; зарплата усреднена по вакансиям, где она указана.</p>
+    </div>`;
+  openInfoHTML('Аналитика рынка', html, true);
+
+  loadChartJs().then(()=>{
+    const cv = document.getElementById('an-chart'); if(!cv) return;
+    if(_anChart){ try{_anChart.destroy();}catch(e){} _anChart=null; }
+    _anChart = new Chart(cv.getContext('2d'), {
+      type:'line',
+      data:{ labels, datasets:[{ data:buckets, borderColor:'#1d4f9c', backgroundColor:'rgba(29,79,156,.10)',
+        fill:true, tension:.35, borderWidth:2, pointRadius:0, pointHoverRadius:5, pointHoverBackgroundColor:'#e0852b', pointHoverBorderColor:'#fff', pointHoverBorderWidth:2 }] },
+      options:{
+        responsive:true, maintainAspectRatio:false,
+        interaction:{ mode:'index', intersect:false },
+        plugins:{ legend:{display:false}, tooltip:{ callbacks:{ title:t=>t[0].label, label:c=>c.parsed.y+' вакансий' } } },
+        scales:{
+          y:{ beginAtZero:true, ticks:{ precision:0, color:'#8793a3', font:{size:11} }, grid:{ color:'#eef2f7' } },
+          x:{ ticks:{ color:'#8793a3', font:{size:10}, maxTicksLimit:8, autoSkip:true, maxRotation:0 }, grid:{ display:false } }
+        }
+      }
+    });
+  }).catch(()=>{ const cw=document.querySelector('.chart-wrap'); if(cw) cw.innerHTML='<div style="padding:16px;color:var(--muted)">График не загрузился (нет соединения).</div>'; });
 }
 
 // --- Карта вакансий: координаты регионов и отрисовка ---

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Благодарственное письмо — волонтёрская деятельность (профориентация)</title>
+<style>
+  :root{
+    --navy:#0f172a;
+    --orange:#e57f1f;
+    --slate:#334155;
+    --muted:#64748b;
+    --line:#d9dee7;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:#eef2f7;font-family:'PT Serif','Times New Roman',Georgia,serif;color:var(--navy);}
+
+  /* Панель управления (не печатается) */
+  .toolbar{
+    position:sticky;top:0;z-index:10;
+    background:var(--navy);color:#fff;
+    display:flex;gap:14px;align-items:center;justify-content:center;
+    padding:12px 16px;font-family:'Segoe UI',Arial,sans-serif;font-size:14px;
+  }
+  .toolbar button{
+    background:var(--orange);color:#fff;border:0;border-radius:6px;
+    padding:8px 18px;font-size:14px;font-weight:700;cursor:pointer;
+  }
+  .toolbar span{opacity:.8;}
+
+  /* Лист A4 */
+  .page{
+    width:210mm;min-height:297mm;
+    margin:24px auto;background:#fff;
+    padding:22mm 20mm 20mm 20mm;
+    box-shadow:0 6px 28px rgba(15,23,42,.18);
+    position:relative;
+    display:flex;flex-direction:column;
+  }
+
+  /* Декоративная рамка */
+  .page::before{
+    content:"";position:absolute;inset:10mm;
+    border:1.5px solid var(--orange);
+    pointer-events:none;
+  }
+  .page::after{
+    content:"";position:absolute;inset:12mm;
+    border:0.5px solid var(--navy);
+    pointer-events:none;
+  }
+  .inner{position:relative;z-index:1;display:flex;flex-direction:column;flex:1;}
+
+  /* Шапка */
+  .head{display:flex;align-items:center;gap:16px;border-bottom:2px solid var(--navy);padding-bottom:14px;}
+  .head img{width:74px;height:auto;flex:0 0 auto;}
+  .head .org{font-family:'Segoe UI',Arial,sans-serif;}
+  .head .org .big{font-size:12.5px;font-weight:800;line-height:1.35;letter-spacing:.2px;color:var(--navy);text-transform:uppercase;}
+  .head .org .sub{font-size:10.5px;color:var(--muted);margin-top:5px;line-height:1.4;}
+  .logo-fallback{
+    width:74px;height:74px;border-radius:50%;
+    background:var(--navy);color:#fff;flex:0 0 auto;
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Segoe UI',Arial,sans-serif;font-weight:800;font-size:22px;letter-spacing:1px;
+  }
+
+  /* Заголовок */
+  .title{text-align:center;margin-top:34px;}
+  .title .kicker{font-family:'Segoe UI',Arial,sans-serif;font-size:12px;font-weight:800;letter-spacing:4px;color:var(--orange);text-transform:uppercase;}
+  .title h1{font-size:44px;font-weight:700;letter-spacing:1px;margin:8px 0 0 0;color:var(--navy);}
+  .title .rule{width:120px;height:3px;background:var(--orange);margin:16px auto 0;}
+
+  /* Тело */
+  .body{margin-top:30px;text-align:center;flex:1;}
+  .awarded{font-family:'Segoe UI',Arial,sans-serif;font-size:13px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;}
+  .fio{
+    font-size:32px;font-weight:700;margin:14px auto 6px;
+    display:inline-block;padding:0 20px 8px;
+    border-bottom:1.5px solid var(--line);min-width:60%;
+  }
+  .role{font-size:15px;color:var(--slate);font-style:italic;margin-top:4px;}
+
+  .text{font-size:17px;line-height:1.85;color:var(--slate);margin:26px auto 0;max-width:150mm;}
+  .text b{color:var(--navy);}
+
+  .badge{
+    display:inline-block;margin:24px auto 0;
+    font-family:'Segoe UI',Arial,sans-serif;font-size:13px;font-weight:700;
+    color:var(--navy);border:1.5px solid var(--orange);border-radius:40px;
+    padding:9px 22px;letter-spacing:.5px;
+  }
+
+  /* Подвал: подпись + печать */
+  .foot{display:flex;align-items:flex-end;justify-content:space-between;margin-top:auto;padding-top:36px;}
+  .sign{font-family:'Segoe UI',Arial,sans-serif;max-width:95mm;}
+  .sign .post{font-size:12.5px;color:var(--slate);line-height:1.5;}
+  .sign .line{border-bottom:1px solid var(--navy);height:26px;margin:6px 0 4px;}
+  .sign .name{font-size:14px;font-weight:700;color:var(--navy);}
+  .sign .hint{font-size:10px;color:var(--muted);margin-top:2px;}
+  .stamp{
+    width:96px;height:96px;border-radius:50%;
+    border:2px dashed var(--muted);color:var(--muted);
+    display:flex;align-items:center;justify-content:center;text-align:center;
+    font-family:'Segoe UI',Arial,sans-serif;font-size:10px;line-height:1.3;
+    flex:0 0 auto;opacity:.6;
+  }
+  .date{font-family:'Segoe UI',Arial,sans-serif;font-size:12px;color:var(--muted);margin-top:20px;text-align:center;}
+
+  @media print{
+    html,body{background:#fff;}
+    .toolbar{display:none;}
+    .page{margin:0;box-shadow:none;width:auto;min-height:auto;}
+    @page{size:A4;margin:0;}
+  }
+</style>
+</head>
+<body>
+
+<div class="toolbar">
+  <span>Шаблон готов. Ф.И.О. подставляется в поле ниже.</span>
+  <button onclick="window.print()">🖨 Печать / Сохранить в PDF</button>
+</div>
+
+<div class="page">
+ <div class="inner">
+
+  <!-- ШАПКА -->
+  <div class="head">
+    <img src="https://eimage.sendsay.ru/image/x_1751987166347702/l%5Flesgaft.png" alt="НГУ им. П.Ф. Лесгафта"
+         onerror="this.outerHTML='&lt;div class=&quot;logo-fallback&quot;&gt;НГУ&lt;/div&gt;'">
+    <div class="org">
+      <div class="big">Национальный государственный университет физической культуры, спорта и здоровья имени П.&nbsp;Ф.&nbsp;Лесгафта, Санкт-Петербург</div>
+      <div class="sub">Управление молодёжной политики и развития карьеры</div>
+    </div>
+  </div>
+
+  <!-- ЗАГОЛОВОК -->
+  <div class="title">
+    <div class="kicker">Управление молодёжной политики и развития карьеры</div>
+    <h1>Благодарственное&nbsp;письмо</h1>
+    <div class="rule"></div>
+  </div>
+
+  <!-- ТЕЛО -->
+  <div class="body">
+    <div class="awarded">награждается</div>
+    <div class="fio">Фамилия Имя Отчество</div>
+    <div class="role">обучающийся(-аяся) &nbsp;__________________________________&nbsp; факультета (института), &nbsp;____&nbsp;курс</div>
+
+    <p class="text">
+      за активную <b>волонтёрскую (добровольческую) деятельность</b> и личный вклад
+      в&nbsp;организацию и&nbsp;проведение <b>профориентационных мероприятий</b>,
+      проводимых Университетом в&nbsp;<b>2025/2026&nbsp;учебном&nbsp;году</b>.
+    </p>
+
+    <div class="badge">Участие не&nbsp;менее чем в&nbsp;3&nbsp;мероприятиях за&nbsp;учебный год</div>
+
+    <p class="text">
+      Управление молодёжной политики и&nbsp;развития карьеры выражает искреннюю
+      признательность за&nbsp;неравнодушие, инициативность и&nbsp;помощь в&nbsp;популяризации
+      Университета среди абитуриентов.
+    </p>
+  </div>
+
+  <!-- ПОДПИСЬ + ПЕЧАТЬ -->
+  <div class="foot">
+    <div class="sign">
+      <div class="post">Начальник управления молодёжной политики<br>и&nbsp;развития карьеры</div>
+      <div class="line"></div>
+      <div class="name">А.&nbsp;И.&nbsp;Кузнецов</div>
+      <div class="hint">подпись</div>
+    </div>
+    <div class="stamp">М.&nbsp;П.</div>
+  </div>
+
+  <div class="date">Санкт-Петербург &nbsp;·&nbsp; 2026&nbsp;год</div>
+
+ </div>
+</div>
+
+</body>
+</html>
