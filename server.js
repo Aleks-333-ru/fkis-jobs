@@ -363,7 +363,8 @@ const MIME = {
 
 function serveStatic(req, res) {
   let p = decodeURIComponent(new URL(req.url, 'http://x').pathname);
-  if (p === '/') p = '/index.html';
+  // Каталог отдаём его index.html — так работает и «/», и «/resume/».
+  if (p.endsWith('/')) p += 'index.html';
   const file = path.join(__dirname, 'public', p);
   if (!file.startsWith(path.join(__dirname, 'public'))) {
     res.writeHead(403); return res.end('Forbidden');

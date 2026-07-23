@@ -1,0 +1,66 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-navy: #173f7d;
+  --color-navy-2: #1d4f9c;
+  --color-navy-deep: #102a55;
+  --color-navy-soft: #eaf1fa;
+  --color-accent: #e0852b;
+  --color-accent-2: #f2a542;
+  --color-line: #e6ebf2;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', system-ui, sans-serif;
+  background: #f4f6fa;
+  color: #16233a;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Тонкий скроллбар в панели редактора */
+.thin-scroll::-webkit-scrollbar {
+  width: 8px;
+}
+.thin-scroll::-webkit-scrollbar-thumb {
+  background: #cfd8e6;
+  border-radius: 8px;
+}
+.thin-scroll::-webkit-scrollbar-thumb:hover {
+  background: #b3c0d4;
+}
+
+/* Печать: на бумагу уходит только лист резюме, без интерфейса */
+@media print {
+  body {
+    background: #fff;
+  }
+  .no-print {
+    display: none !important;
+  }
+  .print-root {
+    position: static !important;
+    display: block !important;
+    overflow: visible !important;
+    padding: 0 !important;
+  }
+  .resume-page {
+    box-shadow: none !important;
+    margin: 0 !important;
+    transform: none !important;
+    break-after: page;
+  }
+  .resume-page:last-child {
+    break-after: auto;
+  }
+}
+
+@page {
+  margin: 0;
+}
